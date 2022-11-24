@@ -1,5 +1,9 @@
 /node_modules
-/public
+/public/hot
+/public/storage
+/public/adminlte3-1-0
+/public/js
+/public/css
 /storage/*.key
 /vendor
 .env
