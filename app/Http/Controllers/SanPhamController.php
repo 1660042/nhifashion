@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\TheLoai;
 use App\Helpers\AppHelper;
+use App\Models\MauSac;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
 use Illuminate\Http\Request;
@@ -42,13 +43,15 @@ class SanPhamController extends Controller
         return view('sanpham.index', ['data' => $data]);
     }
 
-    public function create(TheLoai $theLoaiModel)
+    public function create(TheLoai $theLoaiModel, MauSac $mauSacModel)
     {
+        $dsMauSac = $mauSacModel->dsMauSac($this->sort);
         $dsTheLoai = $theLoaiModel->dsTheLoai($this->sort);
         return response()->json([
             'view' => view('sanpham.modal', [
                 'data' => null,
                 'dsTheLoai' => $dsTheLoai,
+                'dsMauSac' => $dsMauSac,
                 'type_modal' => $this->cfTypeModal['create'],
             ])->render(),
         ], 200);

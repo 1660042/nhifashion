@@ -1,11 +1,11 @@
 (function ($) {
     let SanPham = function () {
-        this.baseUrl = 'san-pham';
+        this.baseUrl = "san-pham";
     };
     jQuery.SanPham = new SanPham();
     jQuery.extend(SanPham.prototype, {
         func_init: function () {
-            $('.select2').select2();
+            $(".select2").select2();
         },
         func_callback_error: function (err, data) {
             func_hide_error_validation("#form-modal");
@@ -13,7 +13,7 @@
                 func_show_error_validation(err.data.messages, "#form-modal");
             }
             if (err.data.message) {
-                swalAlert('error', 'Lỗi', err.data.message);
+                swalAlert("error", "Lỗi", err.data.message);
             }
         },
 
@@ -33,9 +33,9 @@
         },
 
         func_view_modal: function (data = {}) {
-            let url = '/create';
+            let url = "/create";
             if (data.type_modal == modal_edit) {
-                url = '/edit' + '/' + data.id;
+                url = "/edit" + "/" + data.id;
             }
             izanagi(
                 jQuery.SanPham.baseUrl + url,
@@ -48,13 +48,12 @@
         },
 
         func_view_modal_callback: function (res) {
-
             $("#modal-box").html(res.data.view);
             $("#my-modal").modal({
-                backdrop: 'static',
-                keyboard: false
+                backdrop: "static",
+                keyboard: false,
             });
-            $('#my-modal').modal('show');
+            $("#my-modal").modal("show");
             jQuery.SanPham.func_init();
         },
 
@@ -107,6 +106,17 @@
             jQuery.SanPham.func_search(data, jQuery.SanPham.page);
         },
 
+        func_reload_num_id: function (el) {
+            $(el).each(function (i, subEle) {
+                $(subEle).find("select[name='mau_sac']")[0].id = "mau_sac_" + i;
+
+                $(subEle).find("select[name='trang_thai']")[0].id =
+                    "trang_thai_" + i;
+                $(subEle).find("input[name='size']")[0].id = "size_" + i;
+                $(subEle).find("input[name='gia']")[0].id = "gia_" + i;
+            });
+            // jQuery.SanPham.func_init();
+        },
     });
 })(jQuery);
 
@@ -122,7 +132,6 @@ jQuery(document).ready(function () {
         let idFormModal = "#form-modal";
 
         jQuery.SanPham.func_init();
-
 
         //clear search form
         $layoutSearch.on("click", ".button-clear", function () {
@@ -140,7 +149,7 @@ jQuery(document).ready(function () {
         $layoutList.on("click", "#btn-add", function () {
             func_clear_form(idFormModal);
             let data = {
-                type_modal: modal_create
+                type_modal: modal_create,
             };
             jQuery.SanPham.func_view_modal(data);
         });
@@ -148,11 +157,11 @@ jQuery(document).ready(function () {
         $layoutList.on("click", ".btn-edit", function () {
             func_clear_form(idFormModal);
             let data = {
-                type_modal: modal_edit
+                type_modal: modal_edit,
             };
             data.id = $(this).parent().parent("tr").attr("data-id");
             if (typeof data.id === "undefined" || $.trim(data.id).length == 0) {
-                swalAlert('error', 'Lỗi', 'Không tìm thấy dữ liệu.');
+                swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
             jQuery.SanPham.func_view_modal(data);
@@ -160,8 +169,11 @@ jQuery(document).ready(function () {
 
         $modalBox.on("click", "#btn-save", function (e) {
             let data = func_get_value_form(idFormModal);
-            if (typeof data.type_modal === "undefined" || $.trim(data.type_modal).length == 0) {
-                swalAlert('error', 'Lỗi', 'Không tìm thấy dữ liệu.');
+            if (
+                typeof data.type_modal === "undefined" ||
+                $.trim(data.type_modal).length == 0
+            ) {
+                swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
             jQuery.SanPham.func_submit_form(data);
@@ -169,19 +181,20 @@ jQuery(document).ready(function () {
 
         $layoutList.on("click", ".btn-delete", function (e) {
             e.preventDefault();
-            const $mess = "Hành động xóa sẽ không thể khôi phục.</br>Bạn có chắc chắn muốn xóa?";
-            const sw_confirm = swalConfirm($mess, 'Thông báo');
-            sw_confirm.fire({}).then(result => {
+            const $mess =
+                "Hành động xóa sẽ không thể khôi phục.</br>Bạn có chắc chắn muốn xóa?";
+            const sw_confirm = swalConfirm($mess, "Thông báo");
+            sw_confirm.fire({}).then((result) => {
                 if (result.value) {
                     let id = $(this).parent().parent("tr").attr("data-id");
                     if (typeof id === "undefined" || $.trim(id).length == 0) {
-                        swalAlert('error', 'Lỗi', 'Không tìm thấy dữ liệu.');
+                        swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                         return;
                     }
                     jQuery.SanPham.func_delete_data(id);
                 }
             });
-        })
+        });
 
         $layoutList.on("click", ".page-link", function (e) {
             e.preventDefault();
@@ -193,6 +206,31 @@ jQuery(document).ready(function () {
             jQuery.SanPham.page = page;
             let data = func_get_value_form(idFormSearch);
             jQuery.SanPham.func_search(data, jQuery.SanPham.page);
+        });
+
+        $modalBox.on("click", ".btn-add-row", function (e) {
+            e.preventDefault();
+            let el = $(this).parent().parent();
+            let spItem = $("#modal-box .sanpham-item");
+
+            spItem.find("select[name='mau_sac']").select2("destroy"); //Destroy select2
+            spItem.find("select[name='trang_thai']").select2("destroy");
+
+            let clone = $(spItem.last()).clone();
+
+            clone.insertAfter($(spItem.last()));
+            jQuery.SanPham.func_reload_num_id("#modal-box .sanpham-item");
+            jQuery.SanPham.func_init();
+        });
+        $modalBox.on("click", ".btn-remove-row", function (e) {
+            e.preventDefault();
+            let spItem = $("#modal-box .sanpham-item");
+            if (spItem.length == 1) {
+                swalAlert("error", "Lỗi", "Không thể xóa dòng duy nhất.");
+                return;
+            }
+            $(this).parent().parent().remove();
+            jQuery.SanPham.func_reload_num_id("#modal-box .sanpham-item");
         });
     } catch (e) {
         console.log(e);

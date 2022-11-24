@@ -109,12 +109,13 @@ body.modal-open {
     cursor: pointer;
 }
 
-
 .select2-container .select2-selection--single {
     height: calc(2.25rem + 2px) !important;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__arrow {
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
     height: 31px !important;
     right: 6px !important;
 }
@@ -124,5 +125,39 @@ body.modal-open {
 }
 
 #sanpham-page .modal-dialog {
-    max-width: 70%;
+    max-width: 80%;
+}
+
+#sanpham-page #modal-box .sanpham-detail {
+    overflow-y: auto;
+    height: calc(100vh - 360px);
+}
+
+#sanpham-page #modal-box .sanpham-item {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+
+#sanpham-page #modal-box .remove-row {
+    position: absolute;
+    right: 0;
+    top: 0;
+    /* padding: 7px; */
+    padding-right: unset;
+    padding-left: unset;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#sanpham-page #modal-box .btn-remove-row {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-top: 36px;
+    padding-bottom: 35px;
+    padding-right: 15px;
+    /* margin-right: 10px; */
 }
