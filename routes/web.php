@@ -39,6 +39,14 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update/{id}', 'TheLoaiController@update')->name('update');
         Route::delete('/delete/{id}', 'TheLoaiController@delete')->name('delete');
     });
+    Route::prefix('san-pham')->name('san_pham.')->group(function () {
+        Route::match(['get', 'post'], '/', 'SanPhamController@index')->name('index');
+        Route::post('/create', 'SanPhamController@create')->name('create');
+        Route::post('/store', 'SanPhamController@store')->name('store');
+        Route::post('/edit/{id}', 'SanPhamController@edit')->name('edit');
+        Route::put('/update/{id}', 'SanPhamController@update')->name('update');
+        Route::delete('/delete/{id}', 'SanPhamController@delete')->name('delete');
+    });
     Route::prefix('cart')->name('cart.')->group(function () {
         // Route::get('/', 'CartController@index')->name('index');
         // Route::post('/search', 'MenuController@search')->name('search');

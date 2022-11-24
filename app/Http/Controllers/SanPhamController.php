@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\TheLoai;
 use App\Helpers\AppHelper;
+use App\Models\SanPham;
 use App\Models\ThuongHieu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
-class TheLoaiController extends Controller
+class SanPhamController extends Controller
 {
     private $model = null;
     private $sort = null;
@@ -19,7 +20,7 @@ class TheLoaiController extends Controller
     private $pagination = null;
     private $rules = null;
 
-    public function __construct(TheLoai $model)
+    public function __construct(SanPham $model)
     {
         $this->pagination = config('constant.pagination');
         $this->cfTypeModal = config('constant.type_modal');
@@ -35,19 +36,19 @@ class TheLoaiController extends Controller
         $data = $this->model->searchData($request, $this->sort, $this->pagination);
         if ($request->method() == 'POST') {
             return response()->json([
-                'view' => view('theloai.data', ['data' => $data])->render()
+                'view' => view('sanpham.data', ['data' => $data])->render()
             ], 200);
         }
-        return view('theloai.index', ['data' => $data]);
+        return view('sanpham.index', ['data' => $data]);
     }
 
-    public function create()
+    public function create(TheLoai $theLoaiModel)
     {
-        $dsTheLoaiCha = $this->model->dsTheLoaiCha($this->sort);
+        $dsTheLoai = $theLoaiModel->dsTheLoai($this->sort);
         return response()->json([
-            'view' => view('theloai.modal', [
+            'view' => view('sanpham.modal', [
                 'data' => null,
-                'dsTheLoaiCha' => $dsTheLoaiCha,
+                'dsTheLoai' => $dsTheLoai,
                 'type_modal' => $this->cfTypeModal['create'],
             ])->render(),
         ], 200);

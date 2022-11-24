@@ -39,8 +39,8 @@ class TheLoai extends Model
 
         $condition = [];
 
-        if ($request->ten !== null) {
-            $condition[] = ['column' => 'ten', 'compare' => 'like', 'value' => $request->ten];
+        if ($request->ten_search !== null) {
+            $condition[] = ['column' => 'ten', 'compare' => 'like', 'value' => $request->ten_search];
         }
 
         return AppHelper::findData($this, $condition, $typeSearch, $pagination, $sort, null, $joins, $select);
@@ -58,6 +58,16 @@ class TheLoai extends Model
         return AppHelper::findData($this, $condition, 'ALL', null, $sort, null, null, $select);
     }
 
+    public function dsTheLoai($sort = null)
+    {
+        $select = [
+            $this->table . '.id',
+            $this->table . '.ten',
+        ];
+
+        return AppHelper::findData($this, null, 'ALL', null, $sort, null, null, $select);
+    }
+
     public function timTheLoai($params)
     {
 
@@ -67,14 +77,5 @@ class TheLoai extends Model
         }
         if (count($condition) == 0) return null;
         return AppHelper::findData($this, $condition);
-    }
-
-    public function theLoaiCha()
-    {
-        return $this->belongsTo(TheLoai::class, 'the_loai_cha_id', 'id');
-    }
-    public function nguoiTao()
-    {
-        return $this->hasOne(User::class, 'id', 'created_by');
     }
 }

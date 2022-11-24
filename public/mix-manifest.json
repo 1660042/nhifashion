@@ -9,6 +9,7 @@
     "/js/order-placed.js": "/js/order-placed.js",
     "/js/product-admin.js": "/js/product-admin.js",
     "/js/theloai.js": "/js/theloai.js",
+    "/js/sanpham.js": "/js/sanpham.js",
     "/adminlte3-1-0/plugins/jquery/jquery.min.js": "/adminlte3-1-0/plugins/jquery/jquery.min.js",
     "/adminlte3-1-0/plugins/jquery-ui/jquery-ui.min.js": "/adminlte3-1-0/plugins/jquery-ui/jquery-ui.min.js",
     "/adminlte3-1-0/plugins/bootstrap/js/bootstrap.bundle.min.js": "/adminlte3-1-0/plugins/bootstrap/js/bootstrap.bundle.min.js",

@@ -13,7 +13,7 @@
         <form id="form-search" action="">
             <div class="row d-flex justify-content-between align-items-center">
                 <div class="form-group col-md-4 row my-0">
-                    <label for="ten_search" class="col-md-3 col-form-label">{{ 'Tên thể loại' }}</label>
+                    <label for="ten_search" class="col-md-3 col-form-label">{{ 'Tên sản phẩm' }}</label>
                     <div class="col-md-9">
                         <input type="text" value="" class="form-control" id="ten_search" name="ten_search">
                     </div>

@@ -11,7 +11,8 @@ body.modal-open {
 }*/
 
 #menu-page #list-area,
-#theloai-page #list-area {
+#theloai-page #list-area,
+#sanpham-page #list-area {
     padding: 20px;
     background: #fff;
     border-radius: 0.25rem;
@@ -120,4 +121,8 @@ body.modal-open {
 
 #btn-add {
     margin-bottom: 1rem;
+}
+
+#sanpham-page .modal-dialog {
+    max-width: 70%;
 }
