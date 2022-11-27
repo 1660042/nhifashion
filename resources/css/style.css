@@ -151,6 +151,7 @@ body.modal-open {
     padding-left: unset;
     display: flex;
     justify-content: flex-end;
+    height: 100%;
 }
 
 #sanpham-page #modal-box .btn-remove-row {
@@ -160,4 +161,15 @@ body.modal-open {
     padding-bottom: 35px;
     padding-right: 15px;
     /* margin-right: 10px; */
+}
+
+#sanpham-page #modal-box .preview {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 15px;
+}
+
+#sanpham-page #modal-box .preview img {
+    width: 100px !important;
+    margin: 10px;
 }

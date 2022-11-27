@@ -23,7 +23,7 @@ return [
     ],
 
     'pagination' => [
-        'item_per_page' => 2, //Phần tử trên trang
+        'item_per_page' => 10, //Phần tử trên trang
         'columns' => ['*'], //columns
         'page_name' => 'page', //tên phân trang
         'page' => 1 //Page hiện tại

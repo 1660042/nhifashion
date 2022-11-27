@@ -19,16 +19,52 @@ class AppHelper
     public static function getRules($routeName, $option = [])
     {
         switch ($routeName) {
-            case 'the_loai.store':
+            case 'backend.the_loai.store':
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:the_loai,ten',
                     'the_loai_cha_id' => 'bail|nullable|integer'
                 ];
                 break;
-            case 'the_loai.update':
+            case 'backend.the_loai.update':
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:the_loai,ten,' . $option['id'],
                     'the_loai_cha_id' => 'bail|nullable|integer'
+                ];
+                break;
+            case 'backend.san_pham.store':
+                return [
+                    'ten' => 'bail|required|min:4|max:60|unique:san_pham,ten',
+                    'the_loai_id' => 'bail|required|integer',
+                    'gia_mac_dinh' => 'bail|required|numeric',
+                    'gioi_thieu' => 'bail|nullable|string|max:255',
+                    'mau_sac' => 'bail|required|array',
+                    'mau_sac.*' => 'bail|required|integer',
+                    'size' => 'bail|required|array',
+                    'size.*' => 'bail|required|numeric',
+                    'gia' => 'bail|required|array',
+                    'gia.*' => 'bail|required|numeric',
+                    'trang_thai' => 'bail|required|array',
+                    'trang_thai.*' => 'bail|required|integer',
+                    'anh' => 'bail|required|array',
+                    'anh.*' => 'bail|required|image|mimes:jpeg,jpg,png,gif|max:10000',
+                ];
+                break;
+            case 'backend.san_pham.update':
+                return [
+                    'ten' => 'bail|required|min:4|max:60|unique:san_pham,ten,' . $option['id'],
+                    'the_loai_id' => 'bail|required|integer',
+                    'gia_mac_dinh' => 'bail|required|numeric',
+                    'gioi_thieu' => 'bail|nullable|string|max:255',
+                    'mau_sac' => 'bail|required|array',
+                    'mau_sac.*' => 'bail|required|integer',
+                    'size' => 'bail|required|array',
+                    'size.*' => 'bail|required|numeric',
+                    'gia' => 'bail|required|array',
+                    'gia.*' => 'bail|required|numeric',
+                    'trang_thai' => 'bail|required|array',
+                    'trang_thai.*' => 'bail|required|integer',
+                    'anh' => 'bail|nullable|array',
+                    'anh.*' => 'bail|nullable|image|mimes:jpeg,jpg,png,gif|max:10000',
                 ];
                 break;
             case 'customer.store':
@@ -270,24 +306,63 @@ class AppHelper
     public static function getAttributes($routeName)
     {
         switch ($routeName) {
-            case 'the_loai.store':
+            case 'backend.the_loai.store':
                 return [
                     'ten' => 'Tên thể loại',
                     'the_loai_cha_id' => 'Thể loại cha'
                 ];
                 break;
-            case 'the_loai.update':
+            case 'backend.the_loai.update':
                 return [
                     'ten' => 'Tên thể loại',
                     'the_loai_cha_id' => 'Thể loại cha'
+                ];
+                break;
+            case 'backend.san_pham.store':
+                return [
+                    'ten' => 'Tên sản phẩm',
+                    'the_loai_id' => 'Thể loại',
+                    'anh' => 'Hình ảnh',
+                    'anh.*' => 'HÌnh ảnh',
+                    'gia_mac_dinh' => 'Giá tiền',
+                    'gioi_thieu' => 'Giới thiệu',
+                    'mau_sac.*' => 'Màu sắc',
+                    'size.*' => 'Kích thước',
+                    'gia.*' => 'Giá',
+                    'trang_thai.*' => 'Trạng thái',
+                ];
+                break;
+            case 'backend.san_pham.update':
+                return [
+                    'ten' => 'Tên sản phẩm',
+                    'the_loai_id' => 'Thể loại',
+                    'anh' => 'Hình ảnh',
+                    'anh.*' => 'HÌnh ảnh',
+                    'gia_mac_dinh' => 'Giá tiền',
+                    'gioi_thieu' => 'Giới thiệu',
+                    'mau_sac.*' => 'Màu sắc',
+                    'size.*' => 'Kích thước',
+                    'gia.*' => 'Giá',
+                    'trang_thai.*' => 'Trạng thái',
                 ];
                 break;
         }
         return [];
     }
 
-    public static function findData($model, $params, $type = 'ONE', $pagination = null, $sort = null, $relation = null, $joins = null, $select = null, $groupBy = null, $having = null)
-    {
+    public static function findData(
+        $model,
+        $params,
+        $type = 'ONE',
+        $pagination = null,
+        $sort = null,
+        $relation = null,
+        $joins = null,
+        $select = null,
+        $groupBy = null,
+        $having = null,
+        $limit = null,
+    ) {
         $query =  $model->query();
         $query = self::fillQuery($query, $params);
         //Nếu có relation
@@ -367,10 +442,11 @@ class AppHelper
             if ($pagination) {
                 return $query->paginate($pagination['item_per_page'], $pagination['columns'], $pagination['page_name'], $pagination['page']);
             }
-
             return $query->get();
         } else if ($type === 'EXISTS') {
             return $query->exists();
+        } else if ($type === 'LIMIT') {
+            return $query->take($limit)->get();
         }
         return $query->first();
     }

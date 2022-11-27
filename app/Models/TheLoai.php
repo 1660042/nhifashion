@@ -49,8 +49,7 @@ class TheLoai extends Model
     public function dsTheLoaiCha($sort = null)
     {
         $select = [
-            $this->table . '.id',
-            $this->table . '.ten',
+            $this->table . '.*',
         ];
         $whereRaw = $this->table . '.the_loai_cha_id is null';
         $condition[] = ['type' => 'RAW', 'value' => $whereRaw];
@@ -61,8 +60,7 @@ class TheLoai extends Model
     public function dsTheLoai($sort = null)
     {
         $select = [
-            $this->table . '.id',
-            $this->table . '.ten',
+            $this->table . '.*',
         ];
 
         return AppHelper::findData($this, null, 'ALL', null, $sort, null, null, $select);
@@ -77,5 +75,10 @@ class TheLoai extends Model
         }
         if (count($condition) == 0) return null;
         return AppHelper::findData($this, $condition);
+    }
+
+    public function theLoaiCon()
+    {
+        return $this->hasMany(TheLoai::class, 'the_loai_cha_id', 'id');
     }
 }

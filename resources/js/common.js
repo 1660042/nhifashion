@@ -41,7 +41,7 @@ function izanagi(
 ) {
     var protocol = window.location.protocol;
     var hostname = window.location.hostname;
-    var prefix = "";
+    var prefix = "admin";
 
     var options = {
         baseURL: protocol + "//" + hostname + "/" + prefix + "/",
@@ -52,10 +52,10 @@ function izanagi(
     var arrTemp = [];
 
     if (disabled.length > 0) {
-        disabled.forEach(element => {
-            if ($(element).prop('disabled') == true) {
+        disabled.forEach((element) => {
+            if ($(element).prop("disabled") == true) {
                 arrTemp.push(element);
-            } else $(element).prop('disabled', true);
+            } else $(element).prop("disabled", true);
         });
     }
 
@@ -80,7 +80,7 @@ function izanagi(
     axios(options)
         .then(function (response) {
             if (disabled.length > 0) {
-                disabled.forEach(element => {
+                disabled.forEach((element) => {
                     if ($.inArray(element, arrTemp) == -1) {
                         $(element).prop("disabled", false);
                     }
@@ -94,7 +94,7 @@ function izanagi(
         })
         .catch(function (error) {
             if (disabled.length > 0) {
-                disabled.forEach(element => {
+                disabled.forEach((element) => {
                     if ($.inArray(element, arrTemp) == -1) {
                         $(element).prop("disabled", false);
                     }
@@ -156,7 +156,7 @@ function swalAlertConfirm(
     colorButtonConfirm,
     _functionSubmit,
     data,
-    cancelBtn = 'Cancel',
+    cancelBtn = "Cancel"
 ) {
     Swal.fire({
         title: title,
@@ -178,13 +178,7 @@ function swalAlertConfirm(
 }
 
 function getCart(data = {}, url = "cart", method = "get") {
-    izanagi(
-        url,
-        method,
-        data,
-        null,
-        getCartCallback
-    );
+    izanagi(url, method, data, null, getCartCallback);
 }
 
 function getCartCallback(res) {
@@ -261,13 +255,15 @@ function func_get_value_form(ele) {
 }
 
 function func_clear_form(ele) {
-
     $(ele).find(".is-invalid").removeClass("is-invalid");
     $(ele).find("span[class='error invalid-feedback']").remove();
-    $(ele).find(
-        "input:text:not(:disabled), input:password, input:file, textarea:not(:disabled)"
-    ).val("");
-    $(ele).find("input:radio:not(:disabled), input:checkbox:not(:disabled)")
+    $(ele)
+        .find(
+            "input:text:not(:disabled), input:password, input:file, textarea:not(:disabled)"
+        )
+        .val("");
+    $(ele)
+        .find("input:radio:not(:disabled), input:checkbox:not(:disabled)")
         .prop("checked", false)
         .removeAttr("selected");
     let radios = $(ele).find("input:radio");
@@ -296,12 +292,22 @@ function func_clear_form(ele) {
 function func_show_error_validation(errs, idForm) {
     $(idForm).find(".is-invalid").removeClass("is-invalid");
     $(idForm).find("span[class='error invalid-feedback']").remove();
+    let keys = [];
+    // let i = 0;
     $.each(errs, function (key, value) {
-        $(idForm + " #" + key).addClass("is-invalid");
-        let html = '<span class="error invalid-feedback">' + value + "</span>";
-        $(idForm + " #" + key)
-            .parent()
-            .append(html);
+        // console.log(key);
+        key = key.replace(".", "_");
+        console.log(jQuery.inArray(key, keys));
+        if (jQuery.inArray(key, keys) == -1) {
+            // console.log(vào);
+            $(idForm + " #" + key).addClass("is-invalid");
+            let html =
+                '<span class="error invalid-feedback">' + value + "</span>";
+            $(idForm + " #" + key)
+                .parent()
+                .append(html);
+        }
+        keys.push(key);
     });
     let listSelect = $(idForm).find("select");
     $(listSelect).each(function () {

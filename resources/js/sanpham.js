@@ -10,7 +10,10 @@
         func_callback_error: function (err, data) {
             func_hide_error_validation("#form-modal");
             if (err.data.messages) {
-                func_show_error_validation(err.data.messages, "#form-modal");
+                jQuery.SanPham.func_show_error_validation(
+                    err.data.messages,
+                    "#form-modal"
+                );
             }
             if (err.data.message) {
                 swalAlert("error", "Lỗi", err.data.message);
@@ -60,12 +63,13 @@
         func_submit_form: function (data) {
             let url = "";
             let method = "post";
-            if (data.type_modal == modal_create) {
+            console.log(data);
+            if (data.get("type_modal") == modal_create) {
                 url = "/store";
             }
-            if (data.type_modal == modal_edit) {
-                url = "/update/" + data.id;
-                method = "put";
+            if (data.get("type_modal") == modal_edit) {
+                url = "/update/" + data.get("id");
+                // method = "put";
             }
 
             if (url.length == 0) return;
@@ -106,16 +110,57 @@
             jQuery.SanPham.func_search(data, jQuery.SanPham.page);
         },
 
-        func_reload_num_id: function (el) {
+        func_reload_num_id: function (el, isAddRow = true) {
             $(el).each(function (i, subEle) {
-                $(subEle).find("select[name='mau_sac']")[0].id = "mau_sac_" + i;
+                $(subEle).find("select[name='mau_sac[]']")[0].id =
+                    "mau_sac_" + i;
 
-                $(subEle).find("select[name='trang_thai']")[0].id =
+                $(subEle).find("select[name='trang_thai[]']")[0].id =
                     "trang_thai_" + i;
-                $(subEle).find("input[name='size']")[0].id = "size_" + i;
-                $(subEle).find("input[name='gia']")[0].id = "gia_" + i;
+                $(subEle).find("input[name='size[]']")[0].id = "size_" + i;
+                $(subEle).find("input[name='gia[]']")[0].id = "gia_" + i;
             });
-            // jQuery.SanPham.func_init();
+
+            if (isAddRow) {
+                $(el).last().find(".is-invalid").removeClass("is-invalid");
+                $(el)
+                    .last()
+                    .find("span[class='error invalid-feedback']")
+                    .remove();
+                $(el).last().find("input").val("");
+            }
+        },
+
+        func_show_error_validation: function (errs, idForm) {
+            $(idForm).find(".is-invalid").removeClass("is-invalid");
+            $(idForm).find("span[class='error invalid-feedback']").remove();
+            let keys = [];
+            $.each(errs, function (key, value) {
+                if (key.indexOf("anh.") != -1) {
+                    key = "anh";
+                } else key = key.replace(".", "_");
+                if (jQuery.inArray(key, keys) == -1) {
+                    $(idForm + " #" + key).addClass("is-invalid");
+                    let html =
+                        '<span class="error invalid-feedback">' +
+                        value +
+                        "</span>";
+                    $(idForm + " #" + key)
+                        .parent()
+                        .append(html);
+                }
+                keys.push(key);
+            });
+            let listSelect = $(idForm).find("select");
+            $(listSelect).each(function () {
+                let el = $(this);
+                if (el.hasClass("is-invalid")) {
+                    el.siblings("span:first")
+                        .children("span:first")
+                        .children("span:first")
+                        .addClass("is-invalid");
+                }
+            });
         },
     });
 })(jQuery);
@@ -176,7 +221,30 @@ jQuery(document).ready(function () {
                 swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
-            jQuery.SanPham.func_submit_form(data);
+
+            let formData = new FormData();
+            if (data.type_modal == modal_edit) {
+                if (
+                    typeof data.id === "undefined" ||
+                    $.trim(data.id).length == 0
+                ) {
+                    swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
+                    return;
+                }
+                // formData.append("_method", "PUT");
+            }
+            let dsHinhAnh = $(idFormModal + " input[name='anh'")[0].files;
+
+            $.each(data, function (index, value) {
+                formData.append(index, value);
+            });
+            $.each(dsHinhAnh, function (index, value) {
+                formData.append("anh[]", value);
+            });
+
+            console.log(formData);
+
+            jQuery.SanPham.func_submit_form(formData);
         });
 
         $layoutList.on("click", ".btn-delete", function (e) {
@@ -213,8 +281,8 @@ jQuery(document).ready(function () {
             let el = $(this).parent().parent();
             let spItem = $("#modal-box .sanpham-item");
 
-            spItem.find("select[name='mau_sac']").select2("destroy"); //Destroy select2
-            spItem.find("select[name='trang_thai']").select2("destroy");
+            spItem.find("select[name='mau_sac[]']").select2("destroy"); //Destroy select2
+            spItem.find("select[name='trang_thai[]']").select2("destroy");
 
             let clone = $(spItem.last()).clone();
 
@@ -230,7 +298,10 @@ jQuery(document).ready(function () {
                 return;
             }
             $(this).parent().parent().remove();
-            jQuery.SanPham.func_reload_num_id("#modal-box .sanpham-item");
+            jQuery.SanPham.func_reload_num_id(
+                "#modal-box .sanpham-item",
+                false
+            );
         });
     } catch (e) {
         console.log(e);

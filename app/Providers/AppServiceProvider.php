@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\TheLoai;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +31,11 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
+
+        View::composer(['frontend.layouts.header'], function ($view) {
+            $theLoaiModel = new TheLoai();
+            $dsTheLoai = $theLoaiModel->with(['theLoaiCon'])->get();
+            $view->with('dsTheLoai', $dsTheLoai);
+        });
     }
 }

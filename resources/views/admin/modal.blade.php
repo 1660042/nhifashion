@@ -14,17 +14,18 @@
                     @endif
                     <div class="form-group">
                         <label for="tenmon">Tên món ăn</label>
-                        <input type="text" class="form-control" id="tenmon" value="{{ optional($data)->tenmon }}" name="tenmon"
-                            placeholder="Nhập tên món" {{ $type == 'view' ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" id="tenmon" value="{{ optional($data)->tenmon }}"
+                            name="tenmon" placeholder="Nhập tên món" {{ $type == 'view' ? 'disabled' : '' }}>
                     </div>
                     <div class="form-group">
                         <label for="anh">Ảnh món ăn</label>
                         @if ($type == 'view')
-                            <img src="{{ optional($data)->anh }}" class="form-control-file" style="width: 80px" alt="">
+                            <img src="{{ optional($data)->anh }}" class="form-control-file" style="width: 80px"
+                                alt="">
                         @else
                             <input type="file" class="form-control-file" id="anh" name="anh">
                         @endif
-                      </div>
+                    </div>
                     <div class="form-group">
                         <label for="mota">Mô tả</label>
                         <textarea class="form-control" id="mota" name="mota" rows="3" placeholder="Nhập mô tả"
@@ -32,8 +33,9 @@
                     </div>
                     <div class="form-group">
                         <label for="gia">Giá</label>
-                        <input type="text" class="form-control" id="gia" name="gia" value="{{ optional($data)->gia }}"
-                            placeholder="Nhập giá bạn" {{ $type == 'view' ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" id="gia" name="gia"
+                            value="{{ optional($data)->gia }}" placeholder="Nhập giá bạn"
+                            {{ $type == 'view' ? 'disabled' : '' }}>
                     </div>
                     <div class="form-group">
                         <label for="idtheloai">Thể loại</label>
@@ -42,17 +44,20 @@
                             <option value="">Chọn thể loại</option>
                             @foreach ($dsTheLoai as $item)
                                 <option value="{{ $item->id }}"
-                                    {{ $item->id == optional($data)->idtheloai ? 'selected' : '' }}>{{ $item->ten }}</option>
+                                    {{ $item->id == optional($data)->idtheloai ? 'selected' : '' }}>
+                                    {{ $item->ten }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="idtheloai">Thương hiệu</label>
-                        <select name="idth" class="form-control" id="idth" {{ $type == 'view' ? 'disabled' : '' }}>
+                        <select name="idth" class="form-control" id="idth"
+                            {{ $type == 'view' ? 'disabled' : '' }}>
                             <option value="">Chọn thương hiệu</option>
                             @foreach ($dsThuongHieu as $item)
                                 <option value="{{ $item->id }}"
-                                    {{ $item->id == optional($data)->idth ? 'selected' : '' }}>{{ $item->ten }}</option>
+                                    {{ $item->id == optional($data)->idth ? 'selected' : '' }}>{{ $item->ten }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
