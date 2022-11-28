@@ -19,8 +19,8 @@
             <div>
                 <x-label for="sdt" :value="__('Số điện thoại')" />
 
-                <x-input id="sdt" class="block mt-1 w-full" type="text" placeholder="Nhập số điện thoại" name="sdt"
-                    :value="old('sdt')" required autofocus />
+                <x-input id="sdt" class="block mt-1 w-full" type="text" placeholder="Nhập số điện thoại"
+                    name="sdt" :value="old('sdt')" required autofocus />
             </div>
 
             <!-- Password -->

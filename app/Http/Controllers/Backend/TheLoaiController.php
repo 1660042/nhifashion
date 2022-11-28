@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\TheLoai;
 use App\Helpers\AppHelper;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,7 @@ class TheLoaiController extends Controller
         $data = [
             'ten' => $request->ten,
             'the_loai_cha_id' => $request->the_loai_cha_id,
+            'slug' => Str::slug($request->ten, '-'),
             'created_by' => auth()->id(),
         ];
         try {
@@ -138,6 +140,7 @@ class TheLoaiController extends Controller
             'ten' => $request->ten,
             'the_loai_cha_id' => $request->the_loai_cha_id,
             'updated_by' => auth()->id(),
+            'slug' => Str::slug($request->ten, '-'),
         ];
         try {
             $theLoai->update($data);

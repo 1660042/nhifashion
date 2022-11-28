@@ -93,7 +93,6 @@ class SanPhamController extends Controller
             'ten' => $request->ten,
             'anh' => $request->anh,
             'the_loai_id' => $request->the_loai_id,
-            'gia_mac_dinh' => $request->gia_mac_dinh,
             'hot' => $request->hot ? '1' : '0',
             'giam_gia' => $request->giam_gia,
             'gioi_thieu' => $request->gioi_thieu,
@@ -101,6 +100,7 @@ class SanPhamController extends Controller
             'size' => $request->has('size') ? explode(',', $request->size) : NULL,
             'gia' => $request->has('gia') ? explode(',', $request->gia) : NULL,
             'trang_thai' => $request->has('trang_thai') ? explode(',', $request->trang_thai) : NULL,
+            'san_pham_slug' => Str::slug($request->ten, '-'),
         ];
 
         $this->rules = AppHelper::getRules(Route::currentRouteName());
@@ -123,11 +123,11 @@ class SanPhamController extends Controller
         $data = [
             'ten' => $params['ten'],
             'the_loai_id' => $params['the_loai_id'],
-            'gia' => $params['gia_mac_dinh'],
             'gioi_thieu' => $params['gioi_thieu'],
             'created_by' => auth()->id(),
             'hot' => $params['hot'],
             'giam_gia' => $params['giam_gia'],
+            'san_pham_slug' => $params['san_pham_slug'],
         ];
         DB::beginTransaction();
         try {
@@ -180,7 +180,6 @@ class SanPhamController extends Controller
             'ten' => $request->ten,
             'anh' => $request->anh,
             'the_loai_id' => $request->the_loai_id,
-            'gia_mac_dinh' => $request->gia_mac_dinh,
             'hot' => $request->hot ? '1' : '0',
             'giam_gia' => $request->giam_gia,
             'gioi_thieu' => $request->gioi_thieu,
@@ -188,6 +187,8 @@ class SanPhamController extends Controller
             'size' => $request->has('size') ? explode(',', $request->size) : NULL,
             'gia' => $request->has('gia') ? explode(',', $request->gia) : NULL,
             'trang_thai' => $request->has('trang_thai') ? explode(',', $request->trang_thai) : NULL,
+            'san_pham_slug' => Str::slug($request->ten, '-'),
+
         ];
 
         // var_dump($request->all());
@@ -254,11 +255,12 @@ class SanPhamController extends Controller
             $data = [
                 'ten' => $params['ten'],
                 'the_loai_id' => $params['the_loai_id'],
-                'gia' => $params['gia_mac_dinh'],
                 'gioi_thieu' => $params['gioi_thieu'],
                 'updated_by' => auth()->id(),
                 'hot' => $params['hot'],
                 'giam_gia' => $params['giam_gia'],
+                'san_pham_slug' => $params['san_pham_slug'],
+
             ];
 
             $sanPham->update($data);

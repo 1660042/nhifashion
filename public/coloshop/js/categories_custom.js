@@ -20,11 +20,12 @@
 jQuery(document).ready(function ($) {
     "use strict";
 
+    initIsotopeFiltering();
     /* 
 
-	1. Vars and Inits
+    1. Vars and Inits
 
-	*/
+    */
 
     var header = $(".header");
     var topNav = $(".top_nav");
@@ -34,6 +35,11 @@ jQuery(document).ready(function ($) {
     var menuActive = false;
     var hamburgerClose = $(".hamburger_close");
     var fsOverlay = $(".fs_menu_overlay");
+
+    var sort = { "sortBy": "created_at", "typeSort": "desc" };
+    var numItem = 8;
+    var sizesChecked = [];
+    var colorsChecked = [];
 
     setHeader();
 
@@ -49,15 +55,14 @@ jQuery(document).ready(function ($) {
     initMenu();
     initFavorite();
     initFixProductBorder();
-    initIsotopeFiltering();
     initPriceSlider();
     initCheckboxes();
 
     /* 
 
-	2. Set Header
+    2. Set Header
 
-	*/
+    */
 
     function setHeader() {
         if (window.innerWidth < 992) {
@@ -80,9 +85,9 @@ jQuery(document).ready(function ($) {
 
     /* 
 
-	3. Init Menu
+    3. Init Menu
 
-	*/
+    */
 
     function initMenu() {
         if (hamburger.length) {
@@ -144,9 +149,9 @@ jQuery(document).ready(function ($) {
 
     /* 
 
-	4. Init Favorite
+    4. Init Favorite
 
-	*/
+    */
 
     function initFavorite() {
         if ($(".favorite").length) {
@@ -174,9 +179,9 @@ jQuery(document).ready(function ($) {
 
     /* 
 
-	5. Init Fix Product Border
+    5. Init Fix Product Border
 
-	*/
+    */
 
     function initFixProductBorder() {
         if ($(".product_filter").length) {
@@ -240,9 +245,9 @@ jQuery(document).ready(function ($) {
 
     /* 
 
-	6. Init Isotope Filtering
+    6. Init Isotope Filtering
 
-	*/
+    */
 
     function initIsotopeFiltering() {
         var sortTypes = $(".type_sorting_btn");
@@ -290,6 +295,7 @@ jQuery(document).ready(function ($) {
                     $(".num_sorting_text").text($(this).text());
                     $(".product-grid").isotope({ filter: numFilter });
                 });
+
             });
 
             // Filter based on the price range slider
@@ -326,9 +332,9 @@ jQuery(document).ready(function ($) {
 
     /* 
 
-	7. Init Price Slider
+    7. Init Price Slider
 
-	*/
+    */
 
     function initPriceSlider() {
         $("#slider-range").slider({
@@ -342,11 +348,11 @@ jQuery(document).ready(function ($) {
                         style: "currency",
                         currency: "VND",
                     }) +
-                        " - " +
-                        ui.values[1].toLocaleString("it-IT", {
-                            style: "currency",
-                            currency: "VND",
-                        })
+                    " - " +
+                    ui.values[1].toLocaleString("it-IT", {
+                        style: "currency",
+                        currency: "VND",
+                    })
                 );
             },
         });
@@ -356,19 +362,19 @@ jQuery(document).ready(function ($) {
                 style: "currency",
                 currency: "VND",
             }) +
-                " - " +
-                $("#slider-range").slider("values", 1).toLocaleString("it-IT", {
-                    style: "currency",
-                    currency: "VND",
-                })
+            " - " +
+            $("#slider-range").slider("values", 1).toLocaleString("it-IT", {
+                style: "currency",
+                currency: "VND",
+            })
         );
     }
 
     /* 
 
-	8. Init Checkboxes
+    8. Init Checkboxes
 
-	*/
+    */
 
     function initCheckboxes() {
         if ($(".checkboxes li").length) {
@@ -398,6 +404,104 @@ jQuery(document).ready(function ($) {
                     checkboxes.toggleClass("active");
                 });
             }
+        }
+    }
+
+    $("#theloai-page").on("click", ".num_sorting_btn", function (e) {
+        e.preventDefault();
+        let theLoaiSlug = $("input[name='the_loai_slug']").val();
+        let url = 'the-loai' + '/' + theLoaiSlug;
+        numItem = $(this).children().text();
+        $(".num_sorting_text").text(numItem);
+        submitForm();
+    });
+
+    $("#theloai-page").on("click", '.type_sorting_btn', function (e) {
+        sort = $(this).data("isotope-option");
+        let theLoaiSlug = $("input[name='the_loai_slug']").val();
+        let url = 'the-loai' + '/' + theLoaiSlug;
+        let typeSortText = $(this).children().text();
+        $(".type_sorting_text").text(typeSortText);
+        submitForm();
+    });
+
+    $("#theloai-page").on("click", '.cb-size', function (e) {
+        // alert("OK");
+        let sizes = $('.cb-size');
+        sizesChecked = [];
+        jQuery.each(sizes, function (i, v) {
+            if ($(this).hasClass("active")) {
+                sizesChecked.push($(this).data("cb-size"));
+            }
+        });
+        submitForm();
+    });
+
+    $("#theloai-page").on("click", '.cb-color', function (e) {
+        let colors = $('.cb-color');
+        colorsChecked = [];
+        jQuery.each(colors, function (i, v) {
+            if ($(this).hasClass("active")) {
+                colorsChecked.push($(this).data("cb-color"));
+            }
+        });
+        submitForm();
+    });
+
+    $("#theloai-page").on("click", '.btn-category', function (e) {
+        e.preventDefault();
+        $(".btn-category").parent(".active").removeClass("active");
+        $(this).parent().addClass("active");
+        $("#title-category").attr("href", $(this).attr("href"));
+        $("#title-category").html('<i class="fa fa-angle-right" aria-hidden="true"></i>' + $.trim($(this).text()));
+        submitForm();
+    });
+
+    function submitForm() {
+        let theLoaiSlug = $(".btn-category").parent(".active").children().data('slug');
+        // let theLoaiSlug = $("input[name='the_loai_slug']").val();
+        let url = 'the-loai' + '/' + theLoaiSlug;
+        let data = {
+            sort: sort,
+            numItem: numItem,
+            sizes: sizesChecked,
+            colors: colorsChecked,
+        }
+        izanagi(
+            url,
+            "post",
+            data,
+            null,
+            callBackSuccess,
+        );
+    }
+
+    function callBackSuccess(res) {
+        $("#list-product").html(res.data.view);
+        refreshProduct();
+    }
+
+    function refreshProduct() {
+        if ($(".product-grid").length) {
+            $(".product-grid").isotope({
+                itemSelector: ".product-item",
+                getSortData: {
+                    price: function (itemElement) {
+                        var priceEle = $(itemElement)
+                            .find(".product_price")
+                            .text()
+                            .replace("$", "VND");
+                        return parseFloat(priceEle);
+                    },
+                    name: ".product_name",
+                },
+                animationOptions: {
+                    duration: 750,
+                    easing: "linear",
+                    queue: false,
+                },
+            });
+
         }
     }
 });

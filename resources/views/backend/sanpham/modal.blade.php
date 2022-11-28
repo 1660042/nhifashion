@@ -39,24 +39,20 @@
                             @endif
                             <input type="file" class="form-control-file" id="anh" name="anh" multiple>
                         </div>
-                        <div class="form-group col-md-12">
-                            <label for="the_loai_id">Thể loại</label>
-                            <select class="form-control select2" name="the_loai_id" id="the_loai_id"
-                                style="width: 100%;">
-                                <option value="">Không</option>
-                                @foreach ($dsTheLoai as $key => $theLoai)
-                                    <option value="{{ $theLoai->id }}"
-                                        {{ $theLoai->id == optional($data)->idTheLoai ? 'selected' : '' }}>
-                                        {{ $theLoai->ten }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="d-flex">
                             <div class="form-group col-md-6">
-                                <label for="ten">Giá ban đầu</label>
-                                <input type="text" class="form-control" id="gia_mac_dinh" name="gia_mac_dinh"
-                                    value="{{ optional($data)->gia }}" />
+                                <label for="the_loai_id">Thể loại</label>
+                                <select class="form-control select2" name="the_loai_id" id="the_loai_id"
+                                    style="width: 100%;">
+                                    <option value="">Không</option>
+                                    @foreach ($dsTheLoai as $key => $theLoai)
+                                        <option value="{{ $theLoai->id }}"
+                                            {{ $theLoai->id == optional($data)->idTheLoai ? 'selected' : '' }}>
+                                            {{ $theLoai->ten }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="ten">Giảm giá (%)</label>

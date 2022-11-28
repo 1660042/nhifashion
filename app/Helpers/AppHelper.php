@@ -35,7 +35,6 @@ class AppHelper
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:san_pham,ten',
                     'the_loai_id' => 'bail|required|integer',
-                    'gia_mac_dinh' => 'bail|required|numeric',
                     'gioi_thieu' => 'bail|nullable|string|max:255',
                     'mau_sac' => 'bail|required|array',
                     'mau_sac.*' => 'bail|required|integer',
@@ -53,7 +52,6 @@ class AppHelper
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:san_pham,ten,' . $option['id'],
                     'the_loai_id' => 'bail|required|integer',
-                    'gia_mac_dinh' => 'bail|required|numeric',
                     'gioi_thieu' => 'bail|nullable|string|max:255',
                     'mau_sac' => 'bail|required|array',
                     'mau_sac.*' => 'bail|required|integer',
@@ -324,7 +322,6 @@ class AppHelper
                     'the_loai_id' => 'Thể loại',
                     'anh' => 'Hình ảnh',
                     'anh.*' => 'HÌnh ảnh',
-                    'gia_mac_dinh' => 'Giá tiền',
                     'gioi_thieu' => 'Giới thiệu',
                     'mau_sac.*' => 'Màu sắc',
                     'size.*' => 'Kích thước',
@@ -338,7 +335,6 @@ class AppHelper
                     'the_loai_id' => 'Thể loại',
                     'anh' => 'Hình ảnh',
                     'anh.*' => 'HÌnh ảnh',
-                    'gia_mac_dinh' => 'Giá tiền',
                     'gioi_thieu' => 'Giới thiệu',
                     'mau_sac.*' => 'Màu sắc',
                     'size.*' => 'Kích thước',

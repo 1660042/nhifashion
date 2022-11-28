@@ -12,7 +12,7 @@ class TheLoai extends Model
     use HasFactory;
 
     protected $table = 'the_loai';
-    protected $fillable = ['ten', 'the_loai_cha_id', 'created_by', 'updated_by'];
+    protected $fillable = ['ten', 'the_loai_cha_id', 'created_by', 'updated_by', 'slug'];
 
     public function searchData($request, $sort = null, $pagination = null, $typeSearch = 'ALL')
     {

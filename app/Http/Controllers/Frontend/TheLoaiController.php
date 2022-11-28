@@ -33,155 +33,54 @@ class TheLoaiController extends Controller
     public function index(Request $request, SanPham $sanPhamModel, SanPhamChiTiet $spChiTietModel, $theLoaiSlug)
     {
         $this->pagination['page'] = $request->has('page') ? $request->page : $this->pagination['page'];
+        $this->pagination['item_per_page'] = $request->has('numItem') ? $request->numItem : 8;
+
+
         $params = [
             'the_loai_slug' => $theLoaiSlug,
         ];
+        if ($request->method() == 'POST') {
+            if ($request->has('sort.sortBy') && $request->has('sort.typeSort')) {
+                $sort = $request->sort;
+                if ($sort['sortBy'] == 'gia') {
+                    $this->sort = [
+                        ['column' => 'giaThapNhat', 'type' => $sort['typeSort']],
+                    ];
+                } else {
+                    $this->sort = [
+                        ['column' => $sort['sortBy'], 'type' => $sort['typeSort']],
+                    ];
+                }
+            }
+            if ($request->has('sizes')) {
+                $params['sizes'] = implode(', ', $request->sizes);
+            }
+
+            if ($request->has('colors')) {
+                $params['colors'] = implode(', ', $request->colors);
+            }
+        }
+
         $dsSanPham = $sanPhamModel->timSanPhamTheoTheLoai($params, $this->pagination, $this->sort);
-        $dsTheLoaiCha = $this->model->dsTheLoaiCha();
-        $dsSize = $spChiTietModel->dsSize();
-        $dsMauSac = MauSac::all();
-        return view('frontend.theloai.index', [
-            'dsSanPham' => $dsSanPham,
-            'dsTheLoaiCha' => $dsTheLoaiCha,
-            'theLoaiSlug' => $params['the_loai_slug'],
-            'dsSize' => $dsSize,
-            'dsMauSac' => $dsMauSac,
-        ]);
-    }
+        $theLoai = $this->model->where('slug', $params['the_loai_slug'])->first();
 
-    public function create()
-    {
-        $dsTheLoaiCha = $this->model->dsTheLoaiCha($this->sort);
-        return response()->json([
-            'view' => view('backend.theloai.modal', [
-                'data' => null,
+        if ($request->method() == 'GET') {
+            $dsTheLoaiCha = $this->model->dsTheLoaiCha();
+            $dsSize = $spChiTietModel->dsSize();
+            $dsMauSac = MauSac::all();
+
+            return view('frontend.theloai.index', [
+                'dsSanPham' => $dsSanPham,
                 'dsTheLoaiCha' => $dsTheLoaiCha,
-                'type_modal' => $this->cfTypeModal['create'],
+                'theLoai' => $theLoai,
+                'dsSize' => $dsSize,
+                'dsMauSac' => $dsMauSac,
+            ]);
+        }
+        return response()->json([
+            'view' => view('frontend.theloai.data', [
+                'dsSanPham' => $dsSanPham,
             ])->render(),
         ], 200);
-    }
-
-    public function edit($id)
-    {
-        $theLoai = $this->model->timTheLoai(['id' => $id]);
-        if (!$theLoai) {
-            return response()->json([
-                'message' => 'Không tìm thấy dữ liệu.'
-            ], 400);
-        }
-        $dsTheLoaiCha = $this->model->dsTheLoaiCha($this->sort);
-        return response()->json([
-            'view' => view('backend.theloai.modal', [
-                'data' => $theLoai,
-                'dsTheLoaiCha' => $dsTheLoaiCha,
-                'type_modal' => $this->cfTypeModal['edit'],
-            ])->render(),
-        ], 200);
-    }
-
-    public function store(Request $request)
-    {
-        $this->rules = AppHelper::getRules(Route::currentRouteName());
-        $this->attributes = AppHelper::getAttributes(Route::currentRouteName());
-        $validator = Validator::make(
-            $request->all(),
-            $this->rules,
-            [
-                'the_loai_cha_id.integer' => ':attribute không hợp lệ.'
-            ],
-            $this->attributes
-        );
-        if ($validator->fails()) {
-            return response([
-                'messages' => $validator->errors(),
-                'message' => 'Lưu thất bại.',
-            ], 400);
-        }
-
-
-        $data = [
-            'ten' => $request->ten,
-            'the_loai_cha_id' => $request->the_loai_cha_id,
-            'created_by' => auth()->id(),
-        ];
-        try {
-            $this->model->create($data);
-            return response()->json([
-                'message' => 'Lưu thành công.',
-            ], 200);
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'message' => 'Lưu thất bại. Vui lòng thử lại sau.'
-                // 'message' => $e->getMessage()
-            ], 400);
-        }
-    }
-
-    public function update(Request $request, $id)
-    {
-        $this->rules = AppHelper::getRules(Route::currentRouteName(), ['id' => $id]);
-        $this->attributes = AppHelper::getAttributes(Route::currentRouteName());
-        $validator = Validator::make(
-            $request->all(),
-            $this->rules,
-            [
-                'the_loai_cha_id.integer' => ':attribute không hợp lệ.'
-            ],
-            $this->attributes
-        );
-        if ($validator->fails()) {
-            return response([
-                'messages' => $validator->errors(),
-                'message' => 'Lưu thất bại.',
-            ], 400);
-        }
-
-        $theLoai = $this->model->timTheLoai(['id' => $id]);
-        if (!$theLoai) {
-            return response()->json([
-                'message' => 'Không tìm thấy dữ liệu.'
-            ], 400);
-        }
-
-        $data = [
-            'ten' => $request->ten,
-            'the_loai_cha_id' => $request->the_loai_cha_id,
-            'updated_by' => auth()->id(),
-        ];
-        try {
-            $theLoai->update($data);
-            return response()->json([
-                'message' => 'Lưu thành công.',
-            ], 200);
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'message' => 'Lưu thất bại. Vui lòng thử lại sau.'
-                // 'message' => $e->getMessage()
-            ], 400);
-        }
-    }
-
-    public function delete(Request $request, $id)
-    {
-        $theLoai = $this->model->timTheLoai(['id' => $id]);
-        if (!$theLoai) {
-            return response()->json([
-                'message' => 'Không tìm thấy dữ liệu.'
-            ], 400);
-        }
-
-        try {
-            $theLoai->delete();
-            return response()->json([
-                'message' => 'Xóa thành công.',
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Xóa thất bại. Vui lòng thử lại sau.'
-                // 'message' => $e->getMessage()
-            ], 400);
-        }
     }
 }

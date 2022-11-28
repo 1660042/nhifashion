@@ -18,15 +18,19 @@
                             <div class="product-item">
                                 <div class="product discount">
                                     <div class="product_image">
-                                        <img src="{{ asset('coloshop/images/product_1.png') }}" alt="">
+                                        <a href="{{ route('frontend.san_pham.index', $sp->san_pham_slug) }}"><img
+                                                src="{{ asset('coloshop/images/product_1.png') }}" alt=""></a>
                                     </div>
                                     <div class="favorite favorite_left"></div>
-                                    <div
-                                        class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-                                        <span>-$20</span>
-                                    </div>
+                                    @if ($sp->giam_gia && $sp->giam_gia > 0)
+                                        <div
+                                            class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                            <span>-{{ $sp->giam_gia }}%</span>
+                                        </div>
+                                    @endif
                                     <div class="product_info">
-                                        <h6 class="product_name"><a href="single.html">{{ $sp->ten }}</a>
+                                        <h6 class="product_name"><a
+                                                href="{{ route('frontend.san_pham.index', $sp->san_pham_slug) }}">{{ $sp->ten }}</a>
                                         </h6>
                                         @if ($sp->giaThapNhat == $sp->giaCaoNhat)
                                             @php

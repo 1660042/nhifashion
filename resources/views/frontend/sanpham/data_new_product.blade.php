@@ -4,15 +4,21 @@
             <div class="product-item men">
                 <div class="product discount product_filter">
                     <div class="product_image">
-                        <img src="{{ asset('coloshop/images/product_1.png') }}" alt="">
+                        <a href="{{ route('frontend.san_pham.index', $sp->san_pham_slug) }}">
+                            <img src="{{ asset('coloshop/images/product_1.png') }}" alt="">
+                        </a>
                     </div>
                     <div class="favorite favorite_left"></div>
-                    <div
-                        class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
-                        <span>-$20</span>
-                    </div>
+                    @if ($sp->giam_gia && $sp->giam_gia > 0)
+                        <div
+                            class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                            <span>-{{ $sp->giam_gia }}%</span>
+                        </div>
+                    @endif
                     <div class="product_info">
-                        <h6 class="product_name"><a href="single.html">{{ $sp->ten }}</a></h6>
+                        <h6 class="product_name"><a
+                                href="{{ route('frontend.san_pham.index', $sp->san_pham_slug) }}">{{ $sp->ten }}</a>
+                        </h6>
                         @if ($sp->giaThapNhat == $sp->giaCaoNhat)
                             @php
                                 $tiLeGiam = $sp->giam_gia == null || $sp->giam_gia == 0 ? $sp->giam_gia : $sp->giam_gia / 100;
@@ -27,8 +33,11 @@
                             </div>
                         @endif
                     </div>
+
                 </div>
-                {{-- <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div> --}}
+                <div class="red_button add_to_cart_button"><a
+                        href="{{ route('frontend.san_pham.index', $sp->san_pham_slug) }}">Chi tiết</a></div>
+
             </div>
         @endforeach
     </div>
