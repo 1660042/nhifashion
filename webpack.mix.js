@@ -145,3 +145,22 @@ mix.copyDirectory("resources/coloshop/images", "public/coloshop/images");
 mix.copy("resources/frontend/js/index.js", "public/frontend/js");
 
 mix.copy("resources/frontend/js/common.js", "public/frontend/js");
+
+mix.copyDirectory(
+    "node_modules/tinymce/tinymce.min.js",
+    "public/admin/tinymce/tinymce.min.js"
+);
+mix.copyDirectory(
+    "node_modules/tinymce/plugins",
+    "public/admin//tinymce/plugins"
+);
+mix.copyDirectory(
+    "node_modules/tinymce/themes",
+    "public/admin//tinymce/themes"
+);
+mix.copyDirectory(
+    "node_modules/tinymce/models/dom",
+    "public/admin/tinymce/models/dom"
+);
+mix.copyDirectory("node_modules/tinymce/icons", "public/admin/tinymce/icons");
+mix.copyDirectory("node_modules/tinymce/skins", "public/admin/tinymce/skins");

@@ -23,4 +23,25 @@ class SanPhamChiTiet extends Model
         $query->groupBy("size");
         return $query->get();
     }
+
+    public function dsSizeTheoSanPham($params)
+    {
+        $joins = [
+            [
+                'databaseName' => 'san_pham as sp',
+                'typeJoin' => 'innerJoin',
+                'on' => ['sp.id' => $this->table . '.id_sp'],
+            ],
+        ];
+
+        $select = DB::raw(
+            $this->table . '.size, GROUP_CONCAT(DISTINCT ' . $this->table . '.id_mau_sac) list_mau'
+        );
+
+        $condition[] = ['column' => 'sp.san_pham_slug', 'compare' => '=', 'value' => $params['san_pham_slug']];
+
+        $groupBy = DB::raw($this->table . '.size');
+
+        return AppHelper::findData($this, $condition, 'ALL', null, null, null, $joins, $select, $groupBy);
+    }
 }

@@ -62,7 +62,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label for="gioi_thieu">Giới thiệu</label>
-                            <textarea class="form-control" id="gioi_thieu" name="gioi_thieu" rows="3"></textarea>
+                            <textarea id="gioi_thieu" class="form-control" id="gioi_thieu" name="gioi_thieu" rows="3">{!! optional($data)->gioi_thieu !!}</textarea>
                         </div>
                         <div class="form-check col-md-12" style="padding-left: 1.75rem">
                             <input type="checkbox" class="form-check-input" id="hot" name="hot" value="1"

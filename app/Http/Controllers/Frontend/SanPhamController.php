@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\SanPhamChiTiet;
+use App\Models\SanPhamHinhAnh;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,12 +33,15 @@ class SanPhamController extends Controller
         $this->model = $model;
     }
 
-    public function index(Request $request, $san_pham_slug)
+    public function index(Request $request, MauSac $mauSacModel, SanPhamChiTiet $spctModel, SanPhamHinhAnh $sphaModel, $san_pham_slug)
     {
         $sanPham = $this->model->timsanPhamTheoSlug(['san_pham_slug' => $san_pham_slug]);
+        $dsHinhAnh = $sphaModel->dsHinhAnh(['san_pham_slug' => $san_pham_slug]);
+        $dsMauSac = $mauSacModel->dsMauSacCuaSanPham(['san_pham_slug' => $san_pham_slug]);
+        $dsSize = $spctModel->dsSizeTheoSanPham(['san_pham_slug' => $san_pham_slug]);
         if (!$sanPham) {
             return abort(404);
         }
-        return view('frontend.sanpham.index', ['sanPham' => $sanPham]);
+        return view('frontend.sanpham.index', ['sanPham' => $sanPham, 'dsMauSac' => $dsMauSac, 'dsSize' => $dsSize, 'dsHinhAnh' => $dsHinhAnh]);
     }
 }

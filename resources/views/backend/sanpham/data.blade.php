@@ -15,7 +15,7 @@
                 <th class="text-center" scope="col">#</th>
                 <th class="text-center" scope="col">Tên sản phẩm</th>
                 <th class="text-center" scope="col">Thể loại</th>
-                <th class="text-center" scope="col">Giá tiền</th>
+                <th class="text-center" scope="col">Giảm giá</th>
                 <th class="text-center" scope="col">Ngày tạo</th>
                 <th class="text-center" scope="col">Người tạo</th>
                 <th class="text-center" scope="col">Chi tiết</th>
@@ -41,7 +41,7 @@
                             {{ optional($item)->tenTheLoai }}
                         </td>
                         <td class="text-center">
-                            {{ optional($item)->gia }}
+                            {{ optional($item)->giam_gia . ' %' }}
                         </td>
                         <td class="text-center">
                             {{ optional($item)->created_at }}

@@ -6,6 +6,13 @@
     jQuery.extend(SanPham.prototype, {
         func_init: function () {
             $(".select2").select2();
+            tinyMCE.remove();
+            tinymce.baseURL = "tinymce";
+            tinymce.init({
+                selector: "textarea#gioi_thieu",
+                toolbar:
+                    "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent",
+            });
         },
         func_callback_error: function (err, data) {
             func_hide_error_validation("#form-modal");
@@ -52,6 +59,7 @@
 
         func_view_modal_callback: function (res) {
             $("#modal-box").html(res.data.view);
+
             $("#my-modal").modal({
                 backdrop: "static",
                 keyboard: false,
@@ -241,6 +249,9 @@ jQuery(document).ready(function () {
             $.each(dsHinhAnh, function (index, value) {
                 formData.append("anh[]", value);
             });
+
+            // console.log();
+            formData.append("gioi_thieu", tinyMCE.activeEditor.getContent());
 
             console.log(formData);
 

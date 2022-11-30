@@ -35,7 +35,7 @@ class AppHelper
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:san_pham,ten',
                     'the_loai_id' => 'bail|required|integer',
-                    'gioi_thieu' => 'bail|nullable|string|max:255',
+                    'gioi_thieu' => 'bail|nullable|string|max:2000',
                     'mau_sac' => 'bail|required|array',
                     'mau_sac.*' => 'bail|required|integer',
                     'size' => 'bail|required|array',
@@ -45,14 +45,14 @@ class AppHelper
                     'trang_thai' => 'bail|required|array',
                     'trang_thai.*' => 'bail|required|integer',
                     'anh' => 'bail|required|array',
-                    'anh.*' => 'bail|required|image|mimes:jpeg,jpg,png,gif|max:10000',
+                    'anh.*' => 'bail|required|image|mimes:jpeg,jpg,png,gif,webp|max:10000',
                 ];
                 break;
             case 'backend.san_pham.update':
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:san_pham,ten,' . $option['id'],
                     'the_loai_id' => 'bail|required|integer',
-                    'gioi_thieu' => 'bail|nullable|string|max:255',
+                    'gioi_thieu' => 'bail|nullable|string|max:2000',
                     'mau_sac' => 'bail|required|array',
                     'mau_sac.*' => 'bail|required|integer',
                     'size' => 'bail|required|array',
@@ -62,7 +62,7 @@ class AppHelper
                     'trang_thai' => 'bail|required|array',
                     'trang_thai.*' => 'bail|required|integer',
                     'anh' => 'bail|nullable|array',
-                    'anh.*' => 'bail|nullable|image|mimes:jpeg,jpg,png,gif|max:10000',
+                    'anh.*' => 'bail|nullable|image|mimes:jpeg,jpg,png,gif,webp|max:10000',
                 ];
                 break;
             case 'customer.store':

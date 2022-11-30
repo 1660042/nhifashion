@@ -110,7 +110,7 @@ class SanPham extends Model
         ];
 
         $select = DB::raw(
-            $this->table . '.*, MIN(spct.gia) as giaThapNhat, MAX(spct.gia) as giaCaoNhat',
+            $this->table . '.*, MIN(spct.gia) as giaThapNhat, MAX(spct.gia) as giaCaoNhat, (SELECT ten_anh FROM san_pham_hinh_anh WHERE id_sp = san_pham.id LIMIT 1) as ten_anh',
         );
 
         $condition = [];
@@ -129,7 +129,7 @@ class SanPham extends Model
         $query = $this->query();
 
         $query->selectRaw(DB::raw(
-            $this->table . '.*, MIN(spct.gia) as giaThapNhat, MAX(spct.gia) as giaCaoNhat',
+            $this->table . '.*, MIN(spct.gia) as giaThapNhat, MAX(spct.gia) as giaCaoNhat, (SELECT ten_anh FROM san_pham_hinh_anh WHERE id_sp = san_pham.id LIMIT 1) as ten_anh',
         ));
         $query->join('san_pham_chi_tiet as spct', 'san_pham.id', '=', 'spct.id_sp');
         $query->groupBy(DB::raw('san_pham.id, san_pham.ten'));
@@ -158,7 +158,7 @@ class SanPham extends Model
         ];
 
         $select = DB::raw(
-            $this->table . '.*, MIN(spct.gia) as giaThapNhat, MAX(spct.gia) as giaCaoNhat',
+            $this->table . '.*, MIN(spct.gia) as giaThapNhat, MAX(spct.gia) as giaCaoNhat, (SELECT ten_anh FROM san_pham_hinh_anh WHERE id_sp = san_pham.id LIMIT 1) as ten_anh',
         );
 
         $condition[] = ['column' => 'tl.slug', 'compare' => '=', 'value' => $params['the_loai_slug']];
@@ -195,5 +195,10 @@ class SanPham extends Model
     public function theLoai()
     {
         return $this->belongsTo(TheLoai::class, 'the_loai_id', 'id');
+    }
+
+    public function hinhAnh()
+    {
+        return $this->hasMany(SanPhamHinhAnh::class, 'id_sp', 'id');
     }
 }
