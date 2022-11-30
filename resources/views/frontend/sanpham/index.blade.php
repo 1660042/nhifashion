@@ -53,6 +53,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="product_details">
+                        <input type="hidden" name="san_pham_slug" value="{{ $sanPham->san_pham_slug }}" />
                         <div class="product_details_title">
                             <h2>{{ $sanPham->ten }}</h2>
                         </div>
@@ -86,7 +87,10 @@
                             <span>Chọn màu:</span>
                             <ul>
                                 @foreach ($dsMauSac as $mauSac)
-                                    <li data-color="{{ $mauSac->id }}" style="background: {{ $mauSac->code }};"></li>
+                                    <li data-color="{{ $mauSac->id }}"
+                                        style="background: {{ $mauSac->code }}; position: relative;">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -94,7 +98,9 @@
                             <span>Chọn size:</span>
                             <ul>
                                 @foreach ($dsSize as $size)
-                                    <li data-color="{{ $size->list_mau }}">{{ $size->size }}</li>
+                                    <li data-color="{{ $size->list_mau }}">{{ $size->size }}
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>

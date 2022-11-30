@@ -80,10 +80,7 @@ class SanPham extends Model
         return $this->hasMany(SanPhamHinhAnh::class, 'id_sp', 'id');
     }
 
-    public function dsSanPhamChiTiet()
-    {
-        return $this->hasMany(SanPhamChiTiet::class, 'id_sp', 'id');
-    }
+
 
     public function dsHangMoiVe($params = null, $limit = 10)
     {
@@ -200,5 +197,10 @@ class SanPham extends Model
     public function hinhAnh()
     {
         return $this->hasMany(SanPhamHinhAnh::class, 'id_sp', 'id');
+    }
+
+    public function dsSanPhamChiTiet()
+    {
+        return $this->hasMany(SanPhamChiTiet::class, 'id_sp', 'id');
     }
 }

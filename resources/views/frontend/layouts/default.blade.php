@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('coloshop/plugins/OwlCarousel2-2.2.1/animate.css') }}">
 
     @yield('css_custom')
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/style.css') }}">
 </head>
 
 <body>

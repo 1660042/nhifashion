@@ -16,6 +16,16 @@
     color: #000;
 }
 
-.navbar_menu > li:hover .submenu {
+.navbar_menu>li:hover .submenu {
     display: block;
+}
+
+
+.product_image {
+    display: flex;
+    justify-content: center;
+}
+
+.product_image img {
+    max-height: 260px;
 }

@@ -91,6 +91,8 @@ Route::namespace('Frontend')->name('frontend.')->group(function () {
         Route::match(['get', 'post'], '/{san_pham_slug}', 'SanPhamController@index')->name('index');
         Route::post('/create', 'SanPhamController@create')->name('create');
     });
+
+    Route::post('/add-cart', 'CartController@add');
 });
 
 

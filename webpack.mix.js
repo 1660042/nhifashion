@@ -19,7 +19,7 @@ mix.js("resources/js/app.js", "public/js").postCss(
 
 mix.styles("resources/css/style.css", "public/css/style.css");
 
-mix.styles("resources/css/frontend/style.css", "public/css/frontend/style.css");
+mix.styles("resources/frontend/css/style.css", "public/frontend/css/style.css");
 
 mix.copyDirectory("resources/js/common.js", "public/js/common.js");
 mix.copyDirectory("resources/js/sweetalert2.js", "public/js/sweetalert2.js");
