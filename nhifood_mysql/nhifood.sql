@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: nhifood
+-- Host: localhost    Database: nhifood
 -- ------------------------------------------------------
--- Server version	8.0.25
+-- Server version	5.7.33-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `chitietdonhang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chitietdonhang` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `madonhang` int NOT NULL,
-  `mamonan` int NOT NULL,
-  `tenmonan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `giatien` int NOT NULL,
-  `soluong` int NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `madonhang` int(11) NOT NULL,
+  `mamonan` int(11) NOT NULL,
+  `tenmonan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `giatien` int(11) NOT NULL,
+  `soluong` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -50,10 +50,10 @@ DROP TABLE IF EXISTS `donhang`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donhang` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `diachi` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `idkh` int NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `diachi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `idkh` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -77,12 +77,12 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
@@ -106,14 +106,14 @@ DROP TABLE IF EXISTS `mau_sac`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mau_sac` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ten` varchar(60) NOT NULL,
   `code` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ten` (`ten`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,13 +134,13 @@ DROP TABLE IF EXISTS `menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `menu` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tenmon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mota` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `anh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gia` int NOT NULL,
-  `idtheloai` int NOT NULL,
-  `idth` int NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tenmon` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mota` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gia` int(11) NOT NULL,
+  `idtheloai` int(11) NOT NULL,
+  `idth` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -164,9 +164,9 @@ DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -189,8 +189,8 @@ DROP TABLE IF EXISTS `password_resets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_resets` (
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -213,12 +213,12 @@ DROP TABLE IF EXISTS `personal_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint unsigned NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -245,20 +245,20 @@ DROP TABLE IF EXISTS `san_pham`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `san_pham` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ten` varchar(60) NOT NULL,
-  `the_loai_id` int NOT NULL,
-  `gioi_thieu` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
+  `the_loai_id` int(11) NOT NULL,
+  `gioi_thieu` varchar(2000) DEFAULT '',
   `hot` tinyint(1) NOT NULL DEFAULT '0',
   `san_pham_slug` varchar(255) NOT NULL,
   `giam_gia` double DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `created_by` int DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ten` (`ten`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +267,7 @@ CREATE TABLE `san_pham` (
 
 LOCK TABLES `san_pham` WRITE;
 /*!40000 ALTER TABLE `san_pham` DISABLE KEYS */;
-INSERT INTO `san_pham` VALUES (17,'Áo sơ minh',5,NULL,0,'ao-so-minh',10,'2022-11-27 00:20:26',1,'2022-11-28 06:53:56',1),(18,'Áo khoác nam',7,'<div class=\"pro-short-desc\">\r\n<div><strong>Chất liệu:&nbsp;</strong>vải dạ&nbsp;cao cấp</div>\r\n<div><strong>Kiểu d&aacute;ng:&nbsp;</strong>&aacute;o kho&aacute;c dạ d&aacute;ng d&agrave;i, cổ bẻ, kết hợp khuy bản to kim loại, tone m&agrave;u n&acirc;u trơn<br><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</div>\r\n<div><strong>Th&ocirc;ng tin người mẫu:&nbsp;</strong>mặc sản phẩm size 2</div>\r\n<div><strong>Sản phẩm kết hợp:&nbsp;</strong>&aacute;o AL91862 - ch&acirc;n v&aacute;y Z11192</div>\r\n</div>',1,'ao-khoac-nam',15,'2022-11-27 06:14:43',1,'2022-11-29 23:23:36',1),(19,'Áo khoác nữ',8,NULL,1,'',10.5,'2022-11-27 06:47:24',1,'2022-11-27 08:33:30',1),(20,'Áo khoác 2',5,NULL,1,'ao-khoac-2',25,'2022-11-28 03:57:02',1,'2022-11-28 06:57:20',1);
+INSERT INTO `san_pham` VALUES (17,'Áo sơ minh',5,NULL,0,'ao-so-minh',10,'2022-11-27 00:20:26',1,'2022-11-28 06:53:56',1),(18,'Áo khoác nam',7,'<div class=\"pro-short-desc\">\r\n<div><strong>Chất liệu:&nbsp;</strong>vải dạ&nbsp;cao cấp</div>\r\n<div><strong>Kiểu d&aacute;ng:&nbsp;</strong>&aacute;o kho&aacute;c dạ d&aacute;ng d&agrave;i, cổ bẻ, kết hợp khuy bản to kim loại, tone m&agrave;u n&acirc;u trơn<br><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</div>\r\n<div><strong>Th&ocirc;ng tin người mẫu:&nbsp;</strong>mặc sản phẩm size 2</div>\r\n<div><strong>Sản phẩm kết hợp:&nbsp;</strong>&aacute;o AL91862 - ch&acirc;n v&aacute;y Z11192</div>\r\n</div>',1,'ao-khoac-nam',15,'2022-11-27 06:14:43',1,'2022-11-29 23:23:36',1),(19,'Áo khoác nữ',8,NULL,1,'',10.5,'2022-11-27 06:47:24',1,'2022-11-27 08:33:30',1),(20,'Áo khoác 2',5,NULL,1,'ao-khoac-2',25,'2022-11-28 03:57:02',1,'2022-11-28 06:57:20',1),(21,'ÁO VEST HỒNG AK09382',8,'<p><strong>Chất liệu:</strong> vải tổng hợp cao cấp Kiểu d&aacute;ng: &aacute;o vest thiết kế d&aacute;ng su&ocirc;ng, tone m&agrave;u hồng trơn&nbsp;</p>\r\n<p><strong>Ph&ugrave; hợp :</strong> đi l&agrave;m, đi sự kiện, hay đi dạo phố, tạo vẻ trẻ trung, hiện đại cho người mặc.</p>\r\n<p><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</p>\r\n<p><strong>Th&ocirc;ng tin người mẫu:</strong> mặc sản phẩm size 2 Sản phẩm kết hợp: quần Q10152</p>',1,'ao-vest-hong-ak09382',NULL,'2022-11-30 04:00:22',1,'2022-11-30 09:43:19',1);
 /*!40000 ALTER TABLE `san_pham` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,15 +279,15 @@ DROP TABLE IF EXISTS `san_pham_chi_tiet`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `san_pham_chi_tiet` (
-  `id_sp_chi_tiet` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `id_sp` int NOT NULL,
-  `id_mau_sac` int NOT NULL,
-  `size` int NOT NULL,
+  `id_sp_chi_tiet` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id_sp` int(11) NOT NULL,
+  `id_mau_sac` int(11) NOT NULL,
+  `size` int(11) NOT NULL,
   `gia` double NOT NULL,
   `trang_thai` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_sp_chi_tiet`) USING BTREE,
   UNIQUE KEY `id_sp_id_mau_sac_size` (`id_sp`,`id_mau_sac`,`size`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +296,7 @@ CREATE TABLE `san_pham_chi_tiet` (
 
 LOCK TABLES `san_pham_chi_tiet` WRITE;
 /*!40000 ALTER TABLE `san_pham_chi_tiet` DISABLE KEYS */;
-INSERT INTO `san_pham_chi_tiet` VALUES (84,19,1,30,300000,1),(89,17,1,12,212121,1),(93,20,2,25,100000,1),(144,18,1,30,200000,1),(145,18,2,60,300000,1);
+INSERT INTO `san_pham_chi_tiet` VALUES (84,19,1,30,300000,1),(89,17,1,12,212121,1),(93,20,2,25,100000,1),(144,18,1,30,200000,1),(145,18,2,60,300000,1),(152,21,1,29,500000,1),(153,21,1,30,500000,1),(154,21,3,28,500000,1);
 /*!40000 ALTER TABLE `san_pham_chi_tiet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,12 +308,12 @@ DROP TABLE IF EXISTS `san_pham_hinh_anh`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `san_pham_hinh_anh` (
-  `id_hinh_anh` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_hinh_anh` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ten_anh` varchar(60) NOT NULL,
-  `id_sp` int NOT NULL,
+  `id_sp` int(11) NOT NULL,
   PRIMARY KEY (`id_hinh_anh`),
   UNIQUE KEY `ten_anh` (`ten_anh`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +322,7 @@ CREATE TABLE `san_pham_hinh_anh` (
 
 LOCK TABLES `san_pham_hinh_anh` WRITE;
 /*!40000 ALTER TABLE `san_pham_hinh_anh` DISABLE KEYS */;
-INSERT INTO `san_pham_hinh_anh` VALUES (49,'1ff64a2e-d997-4e0b-8b3c-5230f023defe_20221127072026.jpg',17),(51,'ad9a5bab-733d-417d-9c04-109b814be0a0_20221127134724.jpg',19),(52,'96130466-fb7e-436a-9405-c573d0e05635_20221128105703.png',20),(77,'44a4115d-ca96-4ba6-8ed1-97070859f9b1_20221130062248.webp',18),(78,'689a170f-7b01-4b39-a773-4678a1ae4da7_20221130062248.jpg',18),(79,'5e416bf0-0756-4daa-b3c2-b700114782c9_20221130062248.webp',18);
+INSERT INTO `san_pham_hinh_anh` VALUES (49,'1ff64a2e-d997-4e0b-8b3c-5230f023defe_20221127072026.jpg',17),(51,'ad9a5bab-733d-417d-9c04-109b814be0a0_20221127134724.jpg',19),(52,'96130466-fb7e-436a-9405-c573d0e05635_20221128105703.png',20),(77,'44a4115d-ca96-4ba6-8ed1-97070859f9b1_20221130062248.webp',18),(78,'689a170f-7b01-4b39-a773-4678a1ae4da7_20221130062248.jpg',18),(79,'5e416bf0-0756-4daa-b3c2-b700114782c9_20221130062248.webp',18),(80,'29ad5f31-31c0-4ff8-a216-c5095f1fca97_20221130110023.webp',21),(81,'8b56cdf3-a263-4974-9974-b17f7a2ed5ba_20221130110023.webp',21),(82,'383918bb-5532-44e1-9c30-4ec8c8c7bd57_20221130110023.webp',21);
 /*!40000 ALTER TABLE `san_pham_hinh_anh` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,17 +334,17 @@ DROP TABLE IF EXISTS `the_loai`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `the_loai` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ten` varchar(60) NOT NULL,
-  `the_loai_cha_id` int DEFAULT NULL,
+  `the_loai_cha_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `created_by` int DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `updated_by` int DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `slug` varchar(255) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `ten` (`ten`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +353,7 @@ CREATE TABLE `the_loai` (
 
 LOCK TABLES `the_loai` WRITE;
 /*!40000 ALTER TABLE `the_loai` DISABLE KEYS */;
-INSERT INTO `the_loai` VALUES (5,'Thời trang nam',NULL,'2022-11-23 10:49:45',1,'2022-11-27 05:04:35',1,'thoi-trang-nam'),(6,'Phụ kiện',NULL,'2022-11-27 05:58:10',1,'2022-11-27 05:58:10',NULL,''),(7,'Áo khoác nam',5,'2022-11-27 05:05:08',1,'2022-11-27 05:05:08',NULL,'ao-khoac-nam'),(8,'Thời trang nữ',NULL,'2022-11-27 05:04:44',1,'2022-11-27 05:04:44',NULL,'');
+INSERT INTO `the_loai` VALUES (5,'Thời trang nam',NULL,'2022-11-23 10:49:45',1,'2022-11-27 05:04:35',1,'thoi-trang-nam'),(6,'Phụ kiện',NULL,'2022-11-27 05:58:10',1,'2022-11-27 05:58:10',NULL,''),(7,'Áo khoác nam',5,'2022-11-27 05:05:08',1,'2022-11-27 05:05:08',NULL,'ao-khoac-nam'),(8,'Thời trang nữ',NULL,'2022-11-27 05:04:44',1,'2022-11-30 04:07:41',1,'thoi-trang-nu');
 /*!40000 ALTER TABLE `the_loai` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -365,9 +365,9 @@ DROP TABLE IF EXISTS `theloai`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `theloai` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `anh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -391,11 +391,11 @@ DROP TABLE IF EXISTS `thuonghieu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `thuonghieu` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `anh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mota` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `diachi` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `anh` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mota` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `diachi` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -419,15 +419,15 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `ten` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sdt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ten` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sdt` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `chuc_vu` int NOT NULL DEFAULT '0',
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chuc_vu` int(11) NOT NULL DEFAULT '0',
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -455,4 +455,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-30  8:52:13
+-- Dump completed on 2022-11-30 18:05:36
