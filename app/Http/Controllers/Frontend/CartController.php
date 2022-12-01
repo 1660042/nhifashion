@@ -6,6 +6,7 @@ use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\SanPham;
+use App\Models\SanPhamChiTiet;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -18,25 +19,63 @@ class CartController extends Controller
         $this->model = $model;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, SanPhamChiTiet $spctModel)
     {
-        // dd(session('cart.product'));
-        $carts = array_values(session('gio_hang.san_pham'));
-        // dd(array_values($a));
-        // $request->session()->flush();
-        // var_dump($carts);
+        // $request->session()->forget('gio_hang.san_pham');
+
+        $sessionCarts = session('gio_hang.san_pham');
+        // print_r($sessionCarts);
         // exit;
+        $carts = [];
+        if ($sessionCarts) {
+            foreach ($sessionCarts as $key => $item) {
+                try {
+                    $sanPham = $this->model->with(['hinhAnh', 'dsSanPhamChiTiet'])->find($item['san_pham_id']);
+                    $spha = $sanPham->hinhAnh;
+                    $spct = $sanPham->dsSanPhamChiTiet()->where([
+                        ['id_mau_sac', '=', $item['id_mau_sac']],
+                        ['size', '=', $item['size']],
+                    ])->first();
+                    if (!$sanPham || count($spha) == 0 || !$spct) {
+                        continue;
+                    }
+
+                    $soLuong = $item['so_luong'];
+
+                    $giamGia = $sanPham->giam_gia ? $sanPham->giam_gia : 0;
+                    $tiLeGiam = $giamGia == 0 ? $giamGia : $giamGia / 100;
+                    $gia = $spct->gia ? $spct->gia : 0;
+                    $thanhTien = ($gia * $soLuong) - ($gia * $soLuong * $tiLeGiam);
+
+                    $carts[$key] = [
+                        'hinh_anh' => $spha[0]->ten_anh,
+                        'ten_san_pham' => $sanPham->ten,
+                        'san_pham_slug' => $sanPham->san_pham_slug,
+                        'mau_sac' => $spct->mauSac->ten,
+                        'size' => $spct->size,
+                        'gia' => $gia,
+                        'giam_gia' => $giamGia,
+                        'so_luong' => $soLuong,
+                        'thanh_tien' => $thanhTien,
+                    ];
+                } catch (\Exception $e) {
+                    var_dump($e->getMessage());
+                    exit;
+                    unset($carts[$key]);
+                }
+            }
+        }
+
         return response()->json([
             'status' => true,
             'view' => view('frontend.cart.modal', ['carts' => $carts])->render(),
+            'num_cart' => count($carts),
         ], 200);
     }
 
     public function add(Request $request)
     {
-        $quantity = $request->quantity;
-
-
+        $soLuong = $request->quantity;
 
         $sanPham = $this->model->with('dsSanPhamChiTiet')->where('san_pham_slug', $request->san_pham_slug)->first();
         if (!$sanPham) {
@@ -51,32 +90,25 @@ class CartController extends Controller
             ['size', '=', $request->size],
         ])->first();
 
-        $spha = $sanPham->hinhAnh;
-
-        if (!$spct || count($spha) == 0) {
+        if (!$spct) {
             return response()->json([
                 'status' => false,
                 'message' => 'Màu sắc và size không tồn tại.',
             ], 404);
         }
-
-        if ($request->session()->exists('gio_hang.san_pham.' . $sanPham->id . '_' . $spct->id_sp_chi_tiet)) {
-            $quantity += Session::get('gio_hang.san_pham.' . $sanPham->id . '_' . $spct->id_sp_chi_tiet . '.qty');
+        $keyCart = $sanPham->id . '_' . $request->color_id . '_' . $request->size;
+        if ($request->session()->exists('gio_hang.san_pham.' . $keyCart)) {
+            $soLuong += Session::get('gio_hang.san_pham.' . $keyCart . '.so_luong');
         }
 
-        $cookie = [
-            'hinh_anh' => $spha[0]->ten_anh,
+        $session = [
             'san_pham_id' => $sanPham->id,
-            'ten_san_pham' => $sanPham->ten,
-            'san_pham_chi_tiet_id' => $spct->id_sp_chi_tiet,
-            'mau_sac' => $spct->mauSac->ten,
-            'size' => $spct->size,
-            'gia' => $spct->gia,
-            'giam_gia' => $sanPham->giam_gia,
-            'qty' => $quantity,
+            'id_mau_sac' => $request->color_id,
+            'size' => $request->size,
+            'so_luong' => $soLuong,
         ];
 
-        $request->session()->put("gio_hang.san_pham." . $sanPham->id . '_' . $spct->id_sp_chi_tiet, $cookie);
+        $request->session()->put("gio_hang.san_pham." . $keyCart, $session);
 
         $numCart = Session::get('gio_hang.san_pham') ? count(Session::get('gio_hang.san_pham')) : 0;
 
@@ -89,52 +121,46 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-        $id = $request->id;
-        $qty = $request->qty;
-
-        $product = $this->menu->find($id);
-        if ($product == null) {
+        if (!$request->has('carts')) {
+            $request->session()->forget('gio_hang.san_pham');
             return response()->json([
-                'status' => false,
-                'icon' => 'error',
-                'title' => __('Error'),
-                'message' => __('Product not found!'),
-            ], 404);
+                'status' => true,
+            ], 200);
         }
 
-        // if ($request->session()->exists('cart.product.' . $product->id)) {
-        //     // dd("OK");
-        //     $qty += Session::get('cart.product.' . $product->id . '.qty');
-        // }
+        $arrKeyCarts = [];
+        foreach ($request->carts as $key => $num) {
+            $arr = explode("_", $key);
+            if (count($arr) != 5) continue;
 
-        $request->session()->put("cart.product." . $product->id, [
-            'id' => $product->id,
-            'tenmon' => $product->tenmon,
-            'gia' => $product->gia,
-            'anh' => $product->anh,
-            'qty' => $qty,
-        ]);
+            $soLuong = (int) $num;
 
+            $keyCart = $arr[2] . '_' . $arr[3] . '_' . $arr[4];
+            $arrKeyCarts[$keyCart] = $soLuong;
+        }
+        $sessionCarts = session('gio_hang.san_pham');
+        if ($sessionCarts) {
+            foreach ($sessionCarts as $key => $cart) {
+                if (in_array($key, array_keys($arrKeyCarts))) {
+                    $session = [
+                        'san_pham_id' => $cart['san_pham_id'],
+                        'id_mau_sac' => $cart['id_mau_sac'],
+                        'size' => $cart['size'],
+                        'so_luong' => $arrKeyCarts[$key],
+                    ];
+                    $request->session()->put("gio_hang.san_pham." . $keyCart, $session);
+                    continue;
+                }
+                $request->session()->forget('gio_hang.san_pham.' . $key);
+            }
+        }
         return response()->json([
             'status' => true,
-            'icon' => 'success',
-            'title' => __('Thành công'),
-            'message' => __('Cập nhật giỏ hàng thành công!'),
         ], 200);
     }
 
-    public function remove(Request $request)
+    public function muaHang()
     {
-        $id = $request->id;
-        $isDelAll = $request->isDelAll;
-
-        $request->session()->forget('cart.product.' . $id);
-
-        return response()->json([
-            'status' => true,
-            'icon' => 'success',
-            'title' => __('Thành công'),
-            'message' => __('Đã xóa thành công!'),
-        ], 200);
+        return view('frontend.cart.mua_hang');
     }
 }

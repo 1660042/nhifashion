@@ -16,7 +16,7 @@
     color: #000;
 }
 
-.navbar_menu > li:hover .submenu {
+.navbar_menu>li:hover .submenu {
     display: block;
 }
 
@@ -31,4 +31,29 @@
 
 #cart-modal .modal-dialog {
     max-width: 80%;
+}
+
+#cart-modal .fa-caret-left,
+#cart-modal .fa-caret-right {
+    position: absolute;
+    top: 18%;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+#cart-modal .fa-caret-left {
+    left: 8px;
+}
+
+#cart-modal .fa-caret-right {
+    right: 8px;
+}
+
+#cart-modal .fa-trash {
+    font-size: 2rem;
+}
+
+#cart-modal .modal-body {
+    max-height: 700px;
+    overflow-y: auto;
 }

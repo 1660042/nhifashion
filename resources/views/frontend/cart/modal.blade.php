@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Giỏ hàng (5 sản phẩm)</h4>
+                <h4 class="modal-title">Giỏ hàng ({{ $carts ? count($carts) : '0' }} sản phẩm)</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -21,71 +21,72 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($carts as $item)
+                            @foreach ($carts as $key => $item)
+                                @php
+                                    
+                                    $hinhAnh = isset($item['hinh_anh']) ? $item['hinh_anh'] : '';
+                                    $tenSanPham = isset($item['ten_san_pham']) ? $item['ten_san_pham'] : '';
+                                    $slug = isset($item['san_pham_slug']) ? $item['san_pham_slug'] : '';
+                                    $size = isset($item['size']) ? $item['size'] : '';
+                                    $mauSac = isset($item['mau_sac']) ? $item['mau_sac'] : '';
+                                    $gia = isset($item['gia']) ? $item['gia'] : '';
+                                    $giamGia = isset($item['giam_gia']) ? $item['giam_gia'] : '0';
+                                    $soLuong = isset($item['so_luong']) ? $item['so_luong'] : '';
+                                    $thanhTien = isset($item['thanh_tien']) ? $item['thanh_tien'] : '';
+                                    
+                                    $tiLeGiam = $giamGia == 0 ? $giamGia : $giamGia / 100;
+                                    
+                                    $thanhTien = $gia * $soLuong - $gia * $soLuong * $tiLeGiam;
+                                @endphp
                                 <tr>
-                                    <td class="text-left"><img src="{{ asset('storage/images/' . $item['hinh_anh']) }}"
+                                    <td class="text-left" style="vertical-align: middle;"><img
+                                            src="{{ asset('storage/images/' . $hinhAnh) }}"
                                             style="max-height: 200px; width: 100px" />
                                     </td>
                                     <td class="text-left" style="vertical-align: middle;">
-                                        <a class="font-weight-bold" href="http://">{{ $item['ten_san_pham'] }}</a></br>
-                                        <small>{{ 'Phiên bản: Size ' . $item['size'] . ' / ' . $item['mau_sac'] }}</small>
+                                        <a class="font-weight-bold" target="_bank"
+                                            href="{{ route('frontend.san_pham.index', $slug) }}">{{ $tenSanPham }}</a></br>
+                                        <small>{{ 'Phân loại: Size ' . $size . ' / ' . $mauSac }}</small>
                                     </td>
-                                    <td class="text-right font-weight-bold">{{ $item['gia'] }}</td>
-                                    <td class="text-center">{{ $item['giam_gia'] . ' %' }}</td>
-                                    <td class="text-center">{{ $item['qty'] }}</td>
+                                    <td class="text-center font-weight-bold" style="vertical-align: middle;">
+                                        {{ number_format($gia, 0, '', ',') . ' VND' }}</td>
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        {{ $giamGia . ' %' }}</td>
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        <div style="width: 100px; text-align:center; margin: auto;">
+                                            <i class="fa fa-caret-left"></i>
+                                            <i class="fa fa-caret-right"></i>
+                                            <input type="text" class="form-control" name="so_luong"
+                                                id="so_luong_{{ $key }}"
+                                                style="width: 100px; text-align:center; margin: auto;"
+                                                value="{{ $soLuong }}" />
+                                        </div>
+                                    </td>
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        {{ number_format($thanhTien, 0, '', ',') . ' VND' }}</td>
+                                    <td class="text-center" style="vertical-align: middle; cursor: pointer"><i
+                                            class="fa fa-trash" aria-hidden="true" title="Xóa"></i>
+                                    </td>
+
                                 </tr>
                             @endforeach
 
                         </tbody>
                     </table>
+                @else
+                    <div class="text-center">
+                        <img src="https://media.istockphoto.com/id/861576608/vector/empty-shopping-bag-icon-online-business-vector-icon-template.jpg?s=612x612&w=0&k=20&c=I7MbHHcjhRH4Dy0NVpf4ZN4gn8FVDnwn99YdRW2x5k0="
+                            alt="">
+                        <h4 class="text-danger">Bạn chưa có sản phẩm nào trong giỏ hàng.</h4>
+                    </div>
                 @endif
-                {{-- <form class="row" id="form-modal" enctype="multipart/form-data">
-                    <div class="col-md-6">
-                        <div class="form-group col-md-12">
-                            <label for="ten">Tên sản phẩm</label>
-                            <input type="text" class="form-control" id="ten" name="ten" value="" />
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="anh">Hình ảnh</label>
-                            <input type="file" class="form-control-file" id="anh" name="anh" multiple>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="form-group col-md-6">
-                                <label for="the_loai_id">Thể loại</label>
-                                <select class="form-control select2" name="the_loai_id" id="the_loai_id"
-                                    style="width: 100%;">
-                                    <option value="">Không</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="ten">Giảm giá (%)</label>
-                                <input type="text" class="form-control" id="giam_gia" name="giam_gia"
-                                    value="" />
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="gioi_thieu">Giới thiệu</label>
-                            <textarea id="gioi_thieu" class="form-control" id="gioi_thieu" name="gioi_thieu" rows="3"></textarea>
-                        </div>
-                        <div class="form-check col-md-12" style="padding-left: 1.75rem">
-                            <input type="checkbox" class="form-check-input" id="hot" name="hot"
-                                value="1">
-                            <label class="form-check-label" for="hot">Sản phẩm bán chạy</label>
-
-                        </div>
-                    </div>
-                    <div class="col-md-6 sanpham-detail">
-
-                        <div class="row mt-2 px-3 d-flex justify-content-center">
-                            <button class="btn btn-primary btn-add-row" style="width: 50%;">Thêm dòng</button>
-                        </div>
-                    </div>
-                </form> --}}
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-success" id="btn-save">Lưu</button>
+                <button type="button" class="btn btn-info" id="update-cart" data-dismiss="modal">Cập nhật giỏ
+                    hàng</button>
+                <a href="{{ route('frontend.index.index') }}" class="btn btn-primary" id="checkout">Tiến hành thành
+                    toán</a>
             </div>
         </div>
         <!-- /.modal-content -->

@@ -95,6 +95,8 @@ Route::namespace('Frontend')->name('frontend.')->group(function () {
     Route::name('cart.')->group(function () {
         Route::get('/get-cart', 'CartController@index')->name('index');
         Route::post('/add-cart', 'CartController@add');
+        Route::post('/update-cart', 'CartController@update');
+        Route::get('/mua-hang', 'CartController@muaHang');
     });
 });
 

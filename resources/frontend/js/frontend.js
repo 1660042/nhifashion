@@ -76,20 +76,28 @@
         },
 
         func_get_cart_callback: function (res, _data) {
-            console.log(res.data.cart);
             $("#modal-area").html(res.data.view);
+            $("#checkout_items").text(res.data.num_cart)
             $("#cart-modal").modal("show");
-            // $(".grid_sorting_button.active").removeClass("active");
-            // $(_data.el).addClass("active");
-            // var selector = $(_data.el).attr("data-filter");
-            // $(".product-grid").isotope({
-            //     filter: selector,
-            //     animationOptions: {
-            //         duration: 750,
-            //         easing: "linear",
-            //         queue: false,
-            //     },
-            // });
+        },
+
+        func_update_cart: function (data) {
+            let url = "update-cart";
+            let method = "post";
+
+            if (url.length == 0) return;
+            izanagi(
+                url,
+                method,
+                data,
+                null,
+                jQuery.Index.func_update_cart_callback,
+                jQuery.Index.func_callback_error
+            );
+        },
+
+        func_update_cart_callback: function (res) {
+            jQuery.Index.func_get_cart();
         },
 
         func_delete_data: function (id) {
@@ -167,6 +175,8 @@ jQuery(document).ready(function () {
     console.log("OK");
     try {
         let $navbar = $(".navbar");
+        let $modalArea = $("#modal-area");
+
         // let $newProduct = $("#index-page #new-product");
         // let $layoutList = $("#index-page #list-area");
         // let $modalBox = $("#index-page #modal-box");
@@ -181,9 +191,42 @@ jQuery(document).ready(function () {
         $navbar.on("click", "#gio_hang", function (e) {
             e.preventDefault();
             jQuery.Index.func_get_cart();
-            // console.log($("#cart-modal"));
-            // $("#cart-modal").modal("show");
         });
+
+        $modalArea.on("click", ".fa-caret-left,.fa-caret-right", function (e) {
+            let input = $(this).siblings("input");
+            if (typeof input == "undefined") return;
+            if ($(this).hasClass("fa-caret-left") && input.val() > 1) {
+                input.val(parseInt(input.val()) - 1);
+            }
+            if ($(this).hasClass("fa-caret-right")) {
+                input.val(parseInt(input.val()) + 1);
+            }
+        });
+
+        $modalArea.on("click", ".fa-trash", function (e) {
+            $(this).parent().parent().remove();
+        });
+
+        $modalArea.on("keyup", "input[name='so_luong']", function (e) {
+
+            let key = event.keyCode || event.charCode;
+            if ((key != 8 && key != 46) && (Math.floor($(this).val()) != $(this).val() || !$.isNumeric($(this).val()))) {
+                $(this).val(1);
+            }
+        });
+
+        $modalArea.on("click", '#update-cart', function (e) {
+            let dsSoLuong = $("input[name='so_luong']");
+            let arr = [];
+            dsSoLuong.each(function (i, el) {
+                arr[el.id] = el.value;
+            })
+            let data = {
+                carts: arr
+            };
+            jQuery.Index.func_update_cart(data);
+        })
     } catch (e) {
         console.log(e);
         alert("The engine can't understand this code, it's invalid");
