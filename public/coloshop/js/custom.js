@@ -355,4 +355,42 @@ jQuery(document).ready(function ($) {
             }
         }
     }
+
+    function func_get_hang_moi_ve(data) {
+        let url = "get-hang-moi-ve";
+        let method = "post";
+
+        if (url.length == 0) return;
+        izanagi(url, method, data, null, func_get_hang_moi_ve_callback);
+    }
+
+    function func_get_hang_moi_ve_callback(res, _data) {
+        $("#data-new-product").html(res.data.view);
+
+        $(".grid_sorting_button.active").removeClass("active");
+        $(_data.el).addClass("active");
+
+        var selector = $(_data.el).attr("data-filter");
+        $(".product-grid").isotope({
+            filter: selector,
+            animationOptions: {
+                duration: 750,
+                easing: "linear",
+                queue: false,
+            },
+        });
+    }
+
+    $("#index-page #new-product").on(
+        "click",
+        ".grid_sorting_button",
+        function () {
+            let idTheLoai = $(this).attr("data-id");
+            let data = {
+                id: idTheLoai,
+                el: this,
+            };
+            func_get_hang_moi_ve(data);
+        }
+    );
 });

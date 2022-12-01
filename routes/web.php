@@ -92,7 +92,10 @@ Route::namespace('Frontend')->name('frontend.')->group(function () {
         Route::post('/create', 'SanPhamController@create')->name('create');
     });
 
-    Route::post('/add-cart', 'CartController@add');
+    Route::name('cart.')->group(function () {
+        Route::get('/get-cart', 'CartController@index')->name('index');
+        Route::post('/add-cart', 'CartController@add');
+    });
 });
 
 

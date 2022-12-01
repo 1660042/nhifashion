@@ -21,12 +21,14 @@ class CartController extends Controller
     public function index(Request $request)
     {
         // dd(session('cart.product'));
-        $cart = array_values(session('cart.product'));
+        $carts = array_values(session('gio_hang.san_pham'));
         // dd(array_values($a));
         // $request->session()->flush();
+        // var_dump($carts);
+        // exit;
         return response()->json([
             'status' => true,
-            'cart' => $cart,
+            'view' => view('frontend.cart.modal', ['carts' => $carts])->render(),
         ], 200);
     }
 
@@ -49,7 +51,9 @@ class CartController extends Controller
             ['size', '=', $request->size],
         ])->first();
 
-        if (!$spct) {
+        $spha = $sanPham->hinhAnh;
+
+        if (!$spct || count($spha) == 0) {
             return response()->json([
                 'status' => false,
                 'message' => 'Màu sắc và size không tồn tại.',
@@ -61,8 +65,12 @@ class CartController extends Controller
         }
 
         $cookie = [
+            'hinh_anh' => $spha[0]->ten_anh,
             'san_pham_id' => $sanPham->id,
+            'ten_san_pham' => $sanPham->ten,
             'san_pham_chi_tiet_id' => $spct->id_sp_chi_tiet,
+            'mau_sac' => $spct->mauSac->ten,
+            'size' => $spct->size,
             'gia' => $spct->gia,
             'giam_gia' => $sanPham->giam_gia,
             'qty' => $quantity,

@@ -6,6 +6,7 @@ use App\Models\TheLoai;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,7 +36,8 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['frontend.layouts.header'], function ($view) {
             $theLoaiModel = new TheLoai();
             $dsTheLoai = $theLoaiModel->with(['theLoaiCon'])->get();
-            $view->with('dsTheLoai', $dsTheLoai);
+            $numCart = Session::get('gio_hang.san_pham') ? count(Session::get('gio_hang.san_pham')) : 0;
+            $view->with(['dsTheLoai' => $dsTheLoai, 'numCart' => $numCart]);
         });
     }
 }

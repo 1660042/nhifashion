@@ -142,9 +142,8 @@ mix.copyDirectory("resources/coloshop/js", "public/coloshop/js");
 
 mix.copyDirectory("resources/coloshop/images", "public/coloshop/images");
 
-mix.copy("resources/frontend/js/index.js", "public/frontend/js");
-
 mix.copy("resources/frontend/js/common.js", "public/frontend/js");
+mix.copy("resources/frontend/js/frontend.js", "public/frontend/js");
 
 mix.copyDirectory(
     "node_modules/tinymce/tinymce.min.js",

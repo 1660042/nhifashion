@@ -309,5 +309,5 @@
 @endsection
 @section('js_custom')
     <script src="{{ asset('coloshop/js/single_custom.js') }}"></script>
-    <script src="{{ asset('frontend/js/index.js') }}"></script>
+    {{-- <script src="{{ asset('frontend/js/index.js') }}"></script> --}}
 @endsection

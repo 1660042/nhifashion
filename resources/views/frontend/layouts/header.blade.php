@@ -93,10 +93,10 @@
                         <ul class="navbar_user">
                             <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
                             <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                            <li class="checkout">
-                                <a href="#">
+                            <li class="checkout" id="gio_hang">
+                                <a href="">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                    <span id="checkout_items" class="checkout_items"></span>
+                                    <span id="checkout_items" class="checkout_items">{{ $numCart }}</span>
                                 </a>
                             </li>
                         </ul>

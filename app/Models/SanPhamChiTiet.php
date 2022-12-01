@@ -44,4 +44,9 @@ class SanPhamChiTiet extends Model
 
         return AppHelper::findData($this, $condition, 'ALL', null, null, null, $joins, $select, $groupBy);
     }
+
+    public function mauSac()
+    {
+        return $this->belongsTo(MauSac::class, 'id_mau_sac', 'id');
+    }
 }

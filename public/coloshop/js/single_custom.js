@@ -17,8 +17,7 @@
 
 ******************************/
 
-jQuery(document).ready(function($)
-{
+jQuery(document).ready(function ($) {
 	"use strict";
 
 	/* 
@@ -37,13 +36,11 @@ jQuery(document).ready(function($)
 
 	setHeader();
 
-	$(window).on('resize', function()
-	{
+	$(window).on('resize', function () {
 		setHeader();
 	});
 
-	$(document).on('scroll', function()
-	{
+	$(document).on('scroll', function () {
 		setHeader();
 	});
 
@@ -60,32 +57,24 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function setHeader()
-	{
-		if(window.innerWidth < 992)
-		{
-			if($(window).scrollTop() > 100)
-			{
-				header.css({'top':"0"});
+	function setHeader() {
+		if (window.innerWidth < 992) {
+			if ($(window).scrollTop() > 100) {
+				header.css({ 'top': "0" });
 			}
-			else
-			{
-				header.css({'top':"0"});
+			else {
+				header.css({ 'top': "0" });
 			}
 		}
-		else
-		{
-			if($(window).scrollTop() > 100)
-			{
-				header.css({'top':"-50px"});
+		else {
+			if ($(window).scrollTop() > 100) {
+				header.css({ 'top': "-50px" });
 			}
-			else
-			{
-				header.css({'top':"0"});
+			else {
+				header.css({ 'top': "0" });
 			}
 		}
-		if(window.innerWidth > 991 && menuActive)
-		{
+		if (window.innerWidth > 991 && menuActive) {
 			closeMenu();
 		}
 	}
@@ -96,78 +85,60 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function initMenu()
-	{
-		if(hamburger.length)
-		{
-			hamburger.on('click', function()
-			{
-				if(!menuActive)
-				{
+	function initMenu() {
+		if (hamburger.length) {
+			hamburger.on('click', function () {
+				if (!menuActive) {
 					openMenu();
 				}
 			});
 		}
 
-		if(fsOverlay.length)
-		{
-			fsOverlay.on('click', function()
-			{
-				if(menuActive)
-				{
+		if (fsOverlay.length) {
+			fsOverlay.on('click', function () {
+				if (menuActive) {
 					closeMenu();
 				}
 			});
 		}
 
-		if(hamburgerClose.length)
-		{
-			hamburgerClose.on('click', function()
-			{
-				if(menuActive)
-				{
+		if (hamburgerClose.length) {
+			hamburgerClose.on('click', function () {
+				if (menuActive) {
 					closeMenu();
 				}
 			});
 		}
 
-		if($('.menu_item').length)
-		{
+		if ($('.menu_item').length) {
 			var items = document.getElementsByClassName('menu_item');
 			var i;
 
-			for(i = 0; i < items.length; i++)
-			{
-				if(items[i].classList.contains("has-children"))
-				{
-					items[i].onclick = function()
-					{
+			for (i = 0; i < items.length; i++) {
+				if (items[i].classList.contains("has-children")) {
+					items[i].onclick = function () {
 						this.classList.toggle("active");
 						var panel = this.children[1];
-					    if(panel.style.maxHeight)
-					    {
-					    	panel.style.maxHeight = null;
-					    }
-					    else
-					    {
-					    	panel.style.maxHeight = panel.scrollHeight + "px";
-					    }
+						if (panel.style.maxHeight) {
+							panel.style.maxHeight = null;
+						}
+						else {
+							panel.style.maxHeight = panel.scrollHeight + "px";
+						}
 					}
-				}	
+				}
 			}
 		}
 	}
 
-	function openMenu()
-	{
+	function openMenu() {
 		menu.addClass('active');
 		// menu.css('right', "0");
 		fsOverlay.css('pointer-events', "auto");
 		menuActive = true;
 	}
 
-	function closeMenu()
-	{
+	function closeMenu() {
 		menu.removeClass('active');
 		fsOverlay.css('pointer-events', "none");
 		menuActive = false;
@@ -179,25 +150,21 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function initThumbnail()
-	{
-		if($('.single_product_thumbnails ul li').length)
-		{
+	function initThumbnail() {
+		if ($('.single_product_thumbnails ul li').length) {
 			var thumbs = $('.single_product_thumbnails ul li');
 			var singleImage = $('.single_product_image_background');
 
-			thumbs.each(function()
-			{
+			thumbs.each(function () {
 				var item = $(this);
-				item.on('click', function()
-				{
+				item.on('click', function () {
 					thumbs.removeClass('active');
 					item.addClass('active');
 					var img = item.find('img').data('image');
 					singleImage.css('background-image', 'url(' + img + ')');
 				});
 			});
-		}	
+		}
 	}
 
 	/* 
@@ -206,25 +173,20 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function initQuantity()
-	{
-		if($('.plus').length && $('.minus').length)
-		{
+	function initQuantity() {
+		if ($('.plus').length && $('.minus').length) {
 			var plus = $('.plus');
 			var minus = $('.minus');
 			var value = $('#quantity_value');
 
-			plus.on('click', function()
-			{
+			plus.on('click', function () {
 				var x = parseInt(value.text());
 				value.text(x + 1);
 			});
 
-			minus.on('click', function()
-			{
+			minus.on('click', function () {
 				var x = parseInt(value.text());
-				if(x > 1)
-				{
+				if (x > 1) {
 					value.text(x - 1);
 				}
 			});
@@ -237,27 +199,21 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function initStarRating()
-	{
-		if($('.user_star_rating li').length)
-		{
+	function initStarRating() {
+		if ($('.user_star_rating li').length) {
 			var stars = $('.user_star_rating li');
 
-			stars.each(function()
-			{
+			stars.each(function () {
 				var star = $(this);
 
-				star.on('click', function()
-				{
+				star.on('click', function () {
 					var i = star.index();
 
-					stars.find('i').each(function()
-					{
+					stars.find('i').each(function () {
 						$(this).removeClass('fa-star');
 						$(this).addClass('fa-star-o');
 					});
-					for(var x = 0; x <= i; x++)
-					{
+					for (var x = 0; x <= i; x++) {
 						$(stars[x]).find('i').removeClass('fa-star-o');
 						$(stars[x]).find('i').addClass('fa-star');
 					};
@@ -272,14 +228,11 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function initFavorite()
-	{
-		if($('.product_favorite').length)
-		{
+	function initFavorite() {
+		if ($('.product_favorite').length) {
 			var fav = $('.product_favorite');
 
-			fav.on('click', function()
-			{
+			fav.on('click', function () {
 				fav.toggleClass('active');
 			});
 		}
@@ -291,22 +244,17 @@ jQuery(document).ready(function($)
 
 	*/
 
-	function initTabs()
-	{
-		if($('.tabs').length)
-		{
+	function initTabs() {
+		if ($('.tabs').length) {
 			var tabs = $('.tabs li');
 			var tabContainers = $('.tab_container');
 
-			tabs.each(function()
-			{
+			tabs.each(function () {
 				var tab = $(this);
 				var tab_id = tab.data('active-tab');
 
-				tab.on('click', function()
-				{
-					if(!tab.hasClass('active'))
-					{
+				tab.on('click', function () {
+					if (!tab.hasClass('active')) {
 						tabs.removeClass('active');
 						tabContainers.removeClass('active');
 						tab.addClass('active');
@@ -315,5 +263,116 @@ jQuery(document).ready(function($)
 				});
 			});
 		}
+	}
+
+	$(".product_color").on("click", "li", function (e) {
+		let liSize = $(".product_size li");
+		if ($(this).hasClass("active")) {
+			$(this).removeClass("active");
+			liSize.removeClass("disabled");
+			return;
+		}
+		if ($(this).hasClass("disabled")) {
+			return;
+		}
+		$(this).siblings().removeClass("active");
+		$(this).addClass("active");
+		let idColor = $(this).data('color');
+		liSize.removeClass("disabled");
+		liSize.each(function (i, el) {
+			let strId = $(el).data('color');
+			let ids = [];
+			console.log(strId);
+			if ($.isNumeric(strId)) {
+				ids.push(strId);
+			} else if (strId.indexOf(',') != -1) {
+				ids = strId.split(',');
+			}
+			console.log(ids);
+			if ($.inArray(idColor, ids) != -1) {
+
+			} else {
+				$(el).addClass("disabled")
+			}
+		});
+	});
+
+	$(".product_size").on("click", "li", function (e) {
+		let liColor = $(".product_color li");
+		if ($(this).hasClass("active")) {
+			$(this).removeClass("active");
+			liColor.removeClass("disabled");
+			return;
+		}
+		if ($(this).hasClass("disabled")) {
+			return;
+		}
+		$(this).siblings().removeClass("active");
+		$(this).addClass("active");
+
+		let strId = $(this).data('color');
+		let ids = [];
+		if ($.isNumeric(strId)) {
+			ids.push(strId);
+		} else if (strId.indexOf(',') != -1) {
+			ids = strId.split(',');
+		}
+
+		liColor.addClass("disabled");
+		liColor.each(function (i, el) {
+			let idColor = $(el).data('color');
+			console.log(idColor);
+			console.log(ids);
+			console.log($.inArray(idColor, ids) != -1);
+			if ($.inArray(idColor, ids) != -1) {
+				$(el).removeClass("disabled");
+			} else {
+			}
+		});
+	});
+
+	$(".product_details").on("click", '.add_to_cart_button', function (e) {
+		let liSize = $(".product_size li.active");
+		let liColor = $(".product_color li.active");
+		if (liColor.length == 0) {
+			swalAlert("error", "Lỗi", "Vui lòng chọn màu sắc.");
+			return;
+		}
+		if (liSize.length == 0) {
+			swalAlert("error", "Lỗi", "Vui lòng chọn size.");
+			return;
+		}
+
+		let data = {
+			color_id: liColor.data('color'),
+			size: liSize.text(),
+			quantity: $("#quantity_value").text(),
+			san_pham_slug: $("input[name='san_pham_slug']").val(),
+		}
+
+		submitForm(data);
+
+
+	});
+
+	function submitForm(data) {
+		let url = 'add-cart';
+		izanagi(
+			url,
+			"post",
+			data,
+			null,
+			callBackSuccess,
+			callBackError
+		);
+	}
+
+	function callBackSuccess(res) {
+		swalAlert("success", "Thành công", res.data.message);
+		$("#checkout_items").text(res.data.num_cart);
+	}
+
+	function callBackError(err) {
+		swalAlert("error", "Lỗi", err.data.message);
 	}
 });

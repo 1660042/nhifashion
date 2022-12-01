@@ -33,7 +33,6 @@
 
         @include('frontend.layouts.benefit')
 
-
         <!-- Footer -->
 
         @include('frontend.layouts.footer')
@@ -53,6 +52,8 @@
     <script src="{{ asset('frontend/js/common.js') }}"></script>
     <script src="{{ asset('js/sweetalert2.js') }}"></script>
     @yield('js_custom')
+    <script src="{{ asset('frontend/js/frontend.js') }}"></script>
+
 </body>
 
 </html>
