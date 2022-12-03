@@ -11,4 +11,5 @@ DB_PASSWORD=pass </br>
 8/ Cấu hình web vào máy ảo (như xampp), cấu hình tên miền (domain ảo) thành nhifashion.test </br>
 link google: https://www.google.com/search?client=firefox-b-d&q=h%C6%B0%E1%BB%9Bng+d%E1%BA%ABn+c%C3%A0i+t%C3%AAn+mi%E1%BB%81n+%E1%BA%A3o+cho+xampp  </br>
 9/ Khởi động lại xampp  </br>
-10/ Mở web và thưởng thức. </br> 
+10/ Mở web login vào admin theo đường dẫn: tenmien/admin/san-pham. và bổ sung thêm sản phẩm, hình ảnh vào cho đầy đủ</br> 
+Nên dựa theo sản phẩm của web nemshop.vn
