@@ -2,15 +2,11 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/style.css": "/css/style.css",
-    "/frontend/css/style.css": "/frontend/css/style.css",
     "/js/common.js": "/js/common.js",
     "/js/sweetalert2.js": "/js/sweetalert2.js",
-    "/js/menu.js": "/js/menu.js",
-    "/js/order.js": "/js/order.js",
-    "/js/order-placed.js": "/js/order-placed.js",
-    "/js/product-admin.js": "/js/product-admin.js",
     "/js/theloai.js": "/js/theloai.js",
     "/js/sanpham.js": "/js/sanpham.js",
+    "/js/donhang.js": "/js/donhang.js",
     "/adminlte3-1-0/plugins/jquery/jquery.min.js": "/adminlte3-1-0/plugins/jquery/jquery.min.js",
     "/adminlte3-1-0/plugins/jquery-ui/jquery-ui.min.js": "/adminlte3-1-0/plugins/jquery-ui/jquery-ui.min.js",
     "/adminlte3-1-0/plugins/bootstrap/js/bootstrap.bundle.min.js": "/adminlte3-1-0/plugins/bootstrap/js/bootstrap.bundle.min.js",
@@ -275,5 +271,6 @@
     "/admin/tinymce/skins/ui/tinymce-5-dark/skin.css": "/admin/tinymce/skins/ui/tinymce-5-dark/skin.css",
     "/admin/tinymce/skins/ui/tinymce-5-dark/skin.min.css": "/admin/tinymce/skins/ui/tinymce-5-dark/skin.min.css",
     "/admin/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.css": "/admin/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.css",
-    "/admin/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.css": "/admin/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.css"
+    "/admin/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.css": "/admin/tinymce/skins/ui/tinymce-5-dark/skin.shadowdom.min.css",
+    "/frontend/css/style.css": "/frontend/css/style.css"
 }
