@@ -65,209 +65,16 @@ class AppHelper
                     'anh.*' => 'bail|nullable|image|mimes:jpeg,jpg,png,gif,webp|max:10000',
                 ];
                 break;
-            case 'customer.store':
+            case 'frontend.cart.dat_hang':
                 return [
-                    'customer_id' => [
-                        'bail', 'required', 'regex:/^[a-zA-Z0-9]+$/', 'max:20', 'unique:' . config('constants.mCustomer') . ',customer_id,NULL,customer_id,company_id,' . Auth::user()->company_id . ',delete_flg,' . $cfDeleteFlg['ACTIVE']
-                    ],
-                    'link_id' => [
-                        'bail', 'nullable', 'regex:/^[a-zA-Z0-9]+$/', 'max:20', 'unique:' . config('constants.mCustomer') . ',link_id,NULL,customer_id,company_id,' . Auth::user()->company_id . ',delete_flg,' . $cfDeleteFlg['ACTIVE']
-                    ],
-                    'office_id' => 'bail|required|integer|between:0,9999|exists:' . config('constants.mOffice') . ',office_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id,
-                    'customer_name' => 'bail|required|string|max:60',
-                    'customer_kana' => 'bail|nullable|string|max:60',
-                    // 'customer_kana' => ['bail', 'nullable', 'regex:/^[\0-9\x{30A0}-\x{30FF}\s]*$/u', 'max:60'],
-                    'valve_status' => 'bail|nullable|integer|between:0,9',
-                    'customer_zip' => ['bail', 'nullable', 'regex:/^[0-9-]{0,8}+$/'],
-                    'customer_addr' => 'bail|nullable|string|max:60',
-                    'customer_tel' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    'vendor_id' => 'bail|required|integer|exists:' . config('constants.tComVendor') . ',vendor_id,company_id,' . Auth::user()->company_id,
-                    'meter_no' => 'bail|nullable|string|max:15',
-                    'unit_id' => 'bail|nullable|string|max:20|exists:' . config('constants.mDevice') . ',unit_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id . '|unique:' . config('constants.mCustomer') . ',unit_id,NULL,customer_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id,
-                    'information_status' => 'bail|in:0,1,9|integer',
-                    'monthly_inspection_date' => 'bail|nullable|integer|between:1,31',
-                    'customer_memo' => 'bail|nullable|string',
-                ];
-                break;
-            case 'customer.update':
-                return [
-                    'customer_id' => [
-                        'bail', 'required', 'regex:/^[a-zA-Z0-9]+$/', 'max:20',
-                    ],
-                    'link_id' => [
-                        'bail', 'nullable', 'regex:/^[a-zA-Z0-9]+$/', 'max:20', 'unique:' . config('constants.mCustomer') . ',link_id,' . $id . ',customer_id,company_id,' . Auth::user()->company_id . ',delete_flg,' . $cfDeleteFlg['ACTIVE']
-                    ],
-                    'office_id' => 'bail|required|integer|between:0,9999|exists:' . config('constants.mOffice') . ',office_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id,
-                    'customer_name' => 'bail|nullable|string|max:60',
-                    'customer_kana' => 'bail|nullable|string|max:60',
-                    // 'customer_kana' => ['bail', 'nullable', 'regex:/^[\0-9\x{30A0}-\x{30FF}\s]*$/u', 'max:60'],
-                    'valve_status' => 'bail|nullable|integer|between:0,9',
-                    'customer_zip' => ['bail', 'nullable', 'regex:/^[0-9-]{0,8}+$/'],
-                    'customer_addr' => 'bail|nullable|string|max:60',
-                    'customer_tel' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    'vendor_id' => 'bail|required|integer|exists:' . config('constants.tComVendor') . ',vendor_id,company_id,' . Auth::user()->company_id,
-                    'meter_no' => 'bail|nullable|string|max:15',
-                    'unit_id' => 'bail|nullable|string|max:20|exists:' . config('constants.mDevice') . ',unit_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id . '|unique:' . config('constants.mCustomer') . ',unit_id,' . $id . ',customer_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id,
-                    'information_status' => 'bail|in:0,1,9|integer',
-                    'monthly_inspection_date' => 'bail|nullable|integer|between:1,31',
-                    'customer_memo' => 'bail|nullable|string',
-                ];
-                break;
-            case 'customer.set-request':
-                return [
-                    'customer_id' => [
-                        'bail', 'required', 'regex:/^[a-zA-Z0-9]+$/', 'max:20',
-                    ],
-                    'input_request' => 'bail|required|string',
-                    'uuid' => 'bail|required|string',
-                ];
-                break;
-            case 'device.store':
-                return [
-                    'unit_id' => 'bail|required|string|min:11|max:20|unique:' . config('constants.mDevice') . ',unit_id,NULL,unit_id',
-                    'office_id' => 'bail|required|integer|between:0,9999|exists:' . config('constants.mOffice') . ',office_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id,
-                    'product_name' => 'bail|nullable|string|max:50',
-                    'model' => 'bail|nullable|string|max:20',
-                    'sim_id' => 'bail|nullable|string|max:20',
-                    'production_date' => 'bail|nullable|date',
-                    'acceptance_date' => 'bail|nullable|date',
-                    'abolished_date' => 'bail|nullable|date',
-                    'device_memo' => 'bail|string|max:2000|nullable',
-                ];
-                break;
-            case 'device.update':
-                return [
-                    'unit_id' => 'bail|required|string|min:11|max:20|unique:m_device,unit_id,' . $id . ',unit_id',
-                    'office_id' => 'bail|required_unless:roll_code,' . config('constants.roll_code.MEMBER.value') . '|integer|between:0,9999|exists:' . config('constants.mOffice') . ',office_id,delete_flg,' . $cfDeleteFlg['ACTIVE'] . ',company_id,' . Auth::user()->company_id,
-                    'product_name' => 'bail|nullable|string|max:50',
-                    'model' => 'bail|nullable|string|max:20',
-                    'sim_id' => 'bail|nullable|string|max:20',
-                    'production_date' => 'bail|nullable|date',
-                    'acceptance_date' => 'bail|nullable|date',
-                    'abolished_date' => 'bail|nullable|date',
-                    'device_memo' => 'bail|string|max:2000|nullable',
-                ];
-                break;
-            case 't_com_vendor.create':
-                return [
-                    'company_id' => 'bail|required|numeric|between:1,99999',
-                    'vendor_id' => 'bail|required|integer|between:0,99999',
-                ];
-                break;
-            case 't_com_vendor.store':
-                $cfRequestMethod = config('constants.request_method');
-                return [
-                    'company_id' => 'bail|required|numeric|between:1,99999|exists:' . config('constants.mCompany') . ',company_id',
-                    'vendor_id' => 'bail|required|integer|exists:' . config('constants.mVendor') . ',vendor_id|unique:' . config('constants.tComVendor') . ',vendor_id,NULL,id,company_id,' . $id_2,
-                    'memo' => 'bail|nullable|string|max:200',
-
-                    'api_key_name' => 'bail|nullable|string|max:40|required_if:request_method,' . $cfRequestMethod['API']['value'],
-                    'api_key_value' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['API']['value'],
-                    'api_url' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['API']['value'],
-
-                    'send_path' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'receive_path' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'ftp_user' => 'bail|nullable|string|max:40|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'ftp_password' => 'bail|nullable|string|max:40|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'client_id' => 'bail|nullable|string|max:20',
-                    'password' => 'bail|nullable|string|max:20',
-                ];
-                break;
-            case 't_com_vendor.update':
-                $cfRequestMethod = config('constants.request_method');
-                return [
-                    'memo' => 'bail|nullable|string|max:200',
-
-                    'api_key_name' => 'bail|nullable|string|max:40|required_if:request_method,' . $cfRequestMethod['API']['value'],
-                    'api_key_value' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['API']['value'],
-                    'api_url' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['API']['value'],
-
-                    'send_path' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'receive_path' => 'bail|nullable|string|max:200|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'ftp_user' => 'bail|nullable|string|max:40|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'ftp_password' => 'bail|nullable|string|max:40|required_if:request_method,' . $cfRequestMethod['FTP']['value'],
-                    'client_id' => 'bail|nullable|string|max:20',
-                    'password' => 'bail|nullable|string|max:20',
-                    'active_flag' => 'bail|nullable|integer|between:0,1',
-                ];
-                break;
-            case 'company.check-company':
-                return [
-                    'company_id' => 'bail|required|numeric|between:1,99999',
-                ];
-                break;
-            case 'company.edit':
-                return [
-                    'company_id' => 'bail|required|numeric|between:1,99999',
-                ];
-                break;
-            case 'company.update':
-                return [
-                    'company_id' => 'bail|required|numeric|between:1,99999',
-                    // 'company_kana' => 'bail|required|string|max:50',
-                    'company_zip' => ['bail', 'required', 'regex:/^[0-9-]{0,8}+$/'],
-                    'company_addr' => 'bail|required|string|max:60',
-                    'company_tel' => ['bail', 'required', 'regex:/^[0-9-]{0,15}+$/'],
-                    'company_fax' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    // 'company_email' => 'bail|nullable|email|max:80',
-                    // 'contract_from' => 'bail|nullable|date',
-                    // 'contract_to' => 'bail|nullable|date',
-                    'company_memo' => 'bail|nullable|string|max:2000',
-                ];
-                break;
-            case 'office.store':
-                return [
-                    'office_id' => 'bail|required|integer|between:0,9999|unique:' . config('constants.mOffice') . ',office_id,NULL,office_id,company_id,' . Auth::user()->company_id,
-                    'office_name' => 'bail|required|string|max:60',
-                    // 'office_kana' => ['bail', 'nullable', 'regex:/^[\0-9\x{30A0}-\x{30FF}\s]*$/u', 'max:60'],
-                    'office_kana' => 'bail|nullable|string|max:60',
-                    'office_zip' => ['bail', 'nullable', 'regex:/^[0-9-]{0,8}+$/'],
-                    'office_addr' => 'bail|nullable|string|max:60',
-                    'office_tel' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    'office_fax' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    'office_memo' => 'bail|nullable|string|max:2000',
-                    'delete_flg' => 'bail|required|integer|digits_between:0,1',
-                ];
-                break;
-            case 'office.delete':
-                return [
-                    'office_id' => 'bail|required|integer|between:0,9999',
-                ];
-            case 'office.edit':
-                return [
-                    'office_id' => 'bail|required|integer|between:0,9999',
-                ];
-                break;
-            case 'office.search':
-                return [
-                    'office_id' => 'bail|nullable|integer',
-                ];
-                break;
-            case 'office.update':
-                return [
-                    'office_id' => 'bail|required|integer|between:0,9999',
-                    'office_name' => 'bail|required|string|max:60',
-                    // 'office_kana' => ['bail', 'nullable', 'regex:/^[\0-9\x{30A0}-\x{30FF}\s]*$/u', 'max:60'],
-                    'office_kana' => 'bail|nullable|string|max:60',
-                    'office_zip' => ['bail', 'nullable', 'regex:/^[0-9-]{0,8}+$/'],
-                    'office_addr' => 'bail|nullable|string|max:60',
-                    'office_tel' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    'office_fax' => ['bail', 'nullable', 'regex:/^[0-9-]{0,15}+$/'],
-                    'office_memo' => 'bail|nullable|string|max:2000',
-                    'delete_flg' => 'bail|required|integer|digits_between:0,1',
-                ];
-                break;
-            case 'crontab_customer_request_api_3':
-                return [
-                    'customer_id' => [
-                        'bail', 'nullable', 'regex:/^[a-zA-Z0-9]+$/', 'max:20'
-                    ],
-                    'usage_amount' => 'bail|nullable|numeric|between:0,99999999',
-                    'date' => 'bail|required|date_format:Y-m-d H:i:s',
-                    'values' => 'bail|required|numeric|between:0,99999999',
-                    'prev_date' => 'bail|nullable|date_format:Y-m-d H:i:s',
-                    'prev_values' => 'bail|nullable|numeric|between:0,99999999',
-                    'number_decimal' => 'bail|nullable|integer|max:9',
+                    'hoTen' => 'bail|required|min:4|max:60',
+                    'email' => 'bail|required|email',
+                    'soDienThoai' => 'bail|required|numeric|digits:10',
+                    'diaChi' => 'bail|required|string|max:255',
+                    'tinh' => 'bail|required|string|max:60',
+                    'huyen' => 'bail|required|string|max:60',
+                    'xa' => 'bail|required|string|max:60',
+                    'phuong_thuc' => 'bail|required|integer'
                 ];
                 break;
         }
@@ -340,6 +147,18 @@ class AppHelper
                     'size.*' => 'Kích thước',
                     'gia.*' => 'Giá',
                     'trang_thai.*' => 'Trạng thái',
+                ];
+                break;
+            case 'frontend.cart.dat_hang':
+                return [
+                    'hoTen' => 'Họ tên',
+                    'email' => 'Email',
+                    'soDienThoai' => 'Số điện thoại',
+                    'diaChi' => 'Địa chỉ',
+                    'tinh' => 'Tỉnh/Thành phố',
+                    'huyen' => 'Quận/Huyện',
+                    'xa' => 'Phường/Xã',
+                    'phuong_thuc' => 'Phương thức thanh toán'
                 ];
                 break;
         }

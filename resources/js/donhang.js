@@ -1,9 +1,9 @@
 (function ($) {
-    let SanPham = function () {
-        this.baseUrl = "san-pham";
+    let DonHang = function () {
+        this.baseUrl = "don-hang";
     };
-    jQuery.SanPham = new SanPham();
-    jQuery.extend(SanPham.prototype, {
+    jQuery.DonHang = new DonHang();
+    jQuery.extend(DonHang.prototype, {
         func_init: function () {
             $(".select2").select2();
             tinyMCE.remove();
@@ -17,7 +17,7 @@
         func_callback_error: function (err, data) {
             func_hide_error_validation("#form-modal");
             if (err.data.messages) {
-                jQuery.SanPham.func_show_error_validation(
+                jQuery.DonHang.func_show_error_validation(
                     err.data.messages,
                     "#form-modal"
                 );
@@ -30,12 +30,12 @@
         func_search: function (data = {}, page = 1) {
             data.page = page;
             izanagi(
-                jQuery.SanPham.baseUrl,
+                jQuery.DonHang.baseUrl,
                 "post",
                 data,
                 null,
-                jQuery.SanPham.func_search_callback,
-                jQuery.SanPham.func_callback_error
+                jQuery.DonHang.func_search_callback,
+                jQuery.DonHang.func_callback_error
             );
         },
         func_search_callback: function (res) {
@@ -43,17 +43,14 @@
         },
 
         func_view_modal: function (data = {}) {
-            let url = "/create";
-            if (data.type_modal == modal_edit) {
-                url = "/edit" + "/" + data.id;
-            }
+            let url = "/edit" + "/" + data.id;
             izanagi(
-                jQuery.SanPham.baseUrl + url,
+                jQuery.DonHang.baseUrl + url,
                 "get",
                 data,
                 null,
-                jQuery.SanPham.func_view_modal_callback,
-                jQuery.SanPham.func_callback_error
+                jQuery.DonHang.func_view_modal_callback,
+                jQuery.DonHang.func_callback_error
             );
         },
 
@@ -65,7 +62,7 @@
                 keyboard: false,
             });
             $("#my-modal").modal("show");
-            jQuery.SanPham.func_init();
+            jQuery.DonHang.func_init();
         },
 
         func_submit_form: function (data) {
@@ -82,12 +79,12 @@
 
             if (url.length == 0) return;
             izanagi(
-                jQuery.SanPham.baseUrl + url,
+                jQuery.DonHang.baseUrl + url,
                 method,
                 data,
                 null,
-                jQuery.SanPham.func_submit_form_callback,
-                jQuery.SanPham.func_callback_error
+                jQuery.DonHang.func_submit_form_callback,
+                jQuery.DonHang.func_callback_error
             );
         },
 
@@ -96,26 +93,26 @@
             swalAlert("success", "Thành công", res.data.message);
             if (res.data.typeModal == modal_create) {
                 func_clear_form($("#form-search"));
-                jQuery.SanPham.page = 1;
+                jQuery.DonHang.page = 1;
             }
             let data = func_get_value_form("#form-search");
-            jQuery.SanPham.func_search(data, jQuery.SanPham.page);
+            jQuery.DonHang.func_search(data, jQuery.DonHang.page);
         },
 
         func_delete_data: function (id) {
             izanagi(
-                jQuery.SanPham.baseUrl + "/delete/" + id,
+                jQuery.DonHang.baseUrl + "/delete/" + id,
                 "delete",
                 null,
                 null,
-                jQuery.SanPham.func_delete_data_callback,
-                jQuery.SanPham.func_callback_error
+                jQuery.DonHang.func_delete_data_callback,
+                jQuery.DonHang.func_callback_error
             );
         },
         func_delete_data_callback: function (res) {
             swalAlert("success", "Thành công", res.data.message);
             let data = func_get_value_form("#form-search");
-            jQuery.SanPham.func_search(data, jQuery.SanPham.page);
+            jQuery.DonHang.func_search(data, jQuery.DonHang.page);
         },
 
         func_reload_num_id: function (el, isAddRow = true) {
@@ -175,28 +172,27 @@
 
 jQuery(document).ready(function () {
     try {
-        let $layoutSearch = $("#sanpham-page #search-area");
-        let $layoutList = $("#sanpham-page #list-area");
-        let $modalBox = $("#sanpham-page #modal-box");
-        let $myCart = $(".my-cart");
-        let $pagination = $("#sanpham-page .pagination-custom");
+        let $layoutSearch = $("#don-hang-page #search-area");
+        let $layoutList = $("#don-hang-page #list-area");
+        let $modalBox = $("#don-hang-page #modal-box");
+        let $pagination = $("#don-hang-page .pagination-custom");
 
         let idFormSearch = "#form-search";
         let idFormModal = "#form-modal";
 
-        jQuery.SanPham.func_init();
+        jQuery.DonHang.func_init();
 
         //clear search form
         $layoutSearch.on("click", ".button-clear", function () {
             func_clear_form(idFormSearch);
             let data = func_get_value_form(idFormSearch);
-            jQuery.SanPham.func_search(data, 1);
+            jQuery.DonHang.func_search(data, 1);
         });
 
         //button search form
         $layoutSearch.on("click", ".button-search", function () {
             let data = func_get_value_form(idFormSearch);
-            jQuery.SanPham.func_search(data, 1);
+            jQuery.DonHang.func_search(data, 1);
         });
 
         $layoutList.on("click", "#btn-add", function () {
@@ -204,7 +200,7 @@ jQuery(document).ready(function () {
             let data = {
                 type_modal: modal_create,
             };
-            jQuery.SanPham.func_view_modal(data);
+            jQuery.DonHang.func_view_modal(data);
         });
 
         $layoutList.on("click", ".btn-edit", function () {
@@ -217,31 +213,10 @@ jQuery(document).ready(function () {
                 swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
-            jQuery.SanPham.func_view_modal(data);
+            jQuery.DonHang.func_view_modal(data);
         });
 
         $modalBox.on("click", "#btn-save", function (e) {
-            let list = $(".sanpham-item");
-            let exists = [];
-            let isExist = false;
-            $.each(list, function (i, v) {
-                let mau_sac = $(v).find("select[name='mau_sac[]']").val();
-                let size = $(v).find("input[name='size[]']").val();
-                if (i == 0) {
-                    exists.push(mau_sac + "_" + size);
-                } else {
-                    console.log($.inArray(mau_sac + "_" + size, exists));
-                    if ($.inArray(mau_sac + "_" + size, exists) != -1) {
-                        isExist = true;
-                        return false;
-                    }
-                }
-            });
-            if (isExist) {
-                swalAlert("error", "Lỗi", "Sản phẩm bị trùng màu sắc và size.");
-                return;
-            }
-
             let data = func_get_value_form(idFormModal);
             if (
                 typeof data.type_modal === "undefined" ||
@@ -276,7 +251,7 @@ jQuery(document).ready(function () {
 
             console.log(formData);
 
-            jQuery.SanPham.func_submit_form(formData);
+            jQuery.DonHang.func_submit_form(formData);
         });
 
         $layoutList.on("click", ".btn-delete", function (e) {
@@ -291,7 +266,7 @@ jQuery(document).ready(function () {
                         swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                         return;
                     }
-                    jQuery.SanPham.func_delete_data(id);
+                    jQuery.DonHang.func_delete_data(id);
                 }
             });
         });
@@ -303,9 +278,9 @@ jQuery(document).ready(function () {
             if (page == false || liActive == true) {
                 return;
             }
-            jQuery.SanPham.page = page;
+            jQuery.DonHang.page = page;
             let data = func_get_value_form(idFormSearch);
-            jQuery.SanPham.func_search(data, jQuery.SanPham.page);
+            jQuery.DonHang.func_search(data, jQuery.DonHang.page);
         });
 
         $modalBox.on("click", ".btn-add-row", function (e) {
@@ -319,8 +294,8 @@ jQuery(document).ready(function () {
             let clone = $(spItem.last()).clone();
 
             clone.insertAfter($(spItem.last()));
-            jQuery.SanPham.func_reload_num_id("#modal-box .sanpham-item");
-            jQuery.SanPham.func_init();
+            jQuery.DonHang.func_reload_num_id("#modal-box .sanpham-item");
+            jQuery.DonHang.func_init();
         });
         $modalBox.on("click", ".btn-remove-row", function (e) {
             e.preventDefault();
@@ -330,7 +305,7 @@ jQuery(document).ready(function () {
                 return;
             }
             $(this).parent().parent().remove();
-            jQuery.SanPham.func_reload_num_id(
+            jQuery.DonHang.func_reload_num_id(
                 "#modal-box .sanpham-item",
                 false
             );

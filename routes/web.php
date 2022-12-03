@@ -25,43 +25,29 @@ Route::get('/link-storage', function () {
 
 Route::middleware(['auth'])->prefix('admin')->name('backend.')->namespace('Backend')->group(function () {
     Route::redirect('/dashboard', '/menu')->name('home');
-    Route::prefix('menu')->name('menu.')->group(function () {
-        Route::get('/', 'MenuController@index')->name('index');
-        Route::post('/search', 'MenuController@search')->name('search');
-        Route::post('/detail/{id}', 'MenuController@detail')->name('detail');
-        Route::post('/get-data', 'MenuController@getData')->name('get-data');
+    Route::prefix('don-hang')->name('don_hang.')->group(function () {
+        Route::get('/', 'DonHangController@index')->name('index');
+        Route::get('/edit/{id}', 'DonHangController@edit')->name('edit');
+
+        // Route::post('/search', 'MenuController@search')->name('search');
+        // Route::post('/detail/{id}', 'MenuController@detail')->name('detail');
+        // Route::post('/get-data', 'MenuController@getData')->name('get-data');
     });
     Route::prefix('the-loai')->name('the_loai.')->group(function () {
         Route::match(['get', 'post'], '/', 'TheLoaiController@index')->name('index');
-        Route::post('/create', 'TheLoaiController@create')->name('create');
+        Route::get('/create', 'TheLoaiController@create')->name('create');
         Route::post('/store', 'TheLoaiController@store')->name('store');
-        Route::post('/edit/{id}', 'TheLoaiController@edit')->name('edit');
+        Route::get('/edit/{id}', 'TheLoaiController@edit')->name('edit');
         Route::put('/update/{id}', 'TheLoaiController@update')->name('update');
         Route::delete('/delete/{id}', 'TheLoaiController@delete')->name('delete');
     });
     Route::prefix('san-pham')->name('san_pham.')->group(function () {
         Route::match(['get', 'post'], '/', 'SanPhamController@index')->name('index');
-        Route::post('/create', 'SanPhamController@create')->name('create');
+        Route::get('/create', 'SanPhamController@create')->name('create');
         Route::post('/store', 'SanPhamController@store')->name('store');
-        Route::post('/edit/{id}', 'SanPhamController@edit')->name('edit');
+        Route::get('/edit/{id}', 'SanPhamController@edit')->name('edit');
         Route::put('/update/{id}', 'SanPhamController@update')->name('update');
         Route::delete('/delete/{id}', 'SanPhamController@delete')->name('delete');
-    });
-    Route::prefix('cart')->name('cart.')->group(function () {
-        // Route::get('/', 'CartController@index')->name('index');
-        // Route::post('/search', 'MenuController@search')->name('search');
-        Route::get('/', 'CartController@index')->name('index');
-        Route::post('/add', 'CartController@add')->name('add');
-        Route::put('/update', 'CartController@update')->name('update');
-        Route::post('/remove', 'CartController@remove')->name('add');
-    });
-
-    Route::prefix('order')->name('order.')->group(function () {
-        Route::get('/', 'OrderController@index')->name('index');
-        Route::post('/get-data', 'OrderController@getData')->name('get-data');
-        Route::post('/order', 'OrderController@order')->name('order');
-        Route::get('/placed', 'OrderController@placed')->name('placed');
-        Route::post('/placed-detail', 'OrderController@placedDetail')->name('order');
     });
 
     Route::prefix('admin')->name('admin.')->middleware('can:check-user-is-admin')->group(function () {
@@ -96,7 +82,9 @@ Route::namespace('Frontend')->name('frontend.')->group(function () {
         Route::get('/get-cart', 'CartController@index')->name('index');
         Route::post('/add-cart', 'CartController@add');
         Route::post('/update-cart', 'CartController@update');
-        Route::get('/mua-hang', 'CartController@muaHang');
+        Route::get('/mua-hang', 'CartController@muaHang')->name('mua_hang');
+        Route::match(['get', 'post'], '/get-dia-ly', 'CartController@diaLy');
+        Route::post('/dat-hang', 'CartController@datHang')->name('dat_hang');
     });
 });
 

@@ -1,11 +1,11 @@
 (function ($) {
     let TheLoai = function () {
-        this.baseUrl = 'the-loai';
+        this.baseUrl = "the-loai";
     };
     jQuery.TheLoai = new TheLoai();
     jQuery.extend(TheLoai.prototype, {
         func_init: function () {
-            $('.select2').select2();
+            $(".select2").select2();
         },
         func_callback_error: function (err, data) {
             func_hide_error_validation("#form-modal");
@@ -13,7 +13,7 @@
                 func_show_error_validation(err.data.messages, "#form-modal");
             }
             if (err.data.message) {
-                swalAlert('error', 'Lỗi', err.data.message);
+                swalAlert("error", "Lỗi", err.data.message);
             }
         },
 
@@ -33,13 +33,13 @@
         },
 
         func_view_modal: function (data = {}) {
-            let url = '/create';
+            let url = "/create";
             if (data.type_modal == modal_edit) {
-                url = '/edit' + '/' + data.id;
+                url = "/edit" + "/" + data.id;
             }
             izanagi(
                 jQuery.TheLoai.baseUrl + url,
-                "post",
+                "get",
                 data,
                 null,
                 jQuery.TheLoai.func_view_modal_callback,
@@ -48,13 +48,12 @@
         },
 
         func_view_modal_callback: function (res) {
-
             $("#modal-box").html(res.data.view);
             $("#my-modal").modal({
-                backdrop: 'static',
-                keyboard: false
+                backdrop: "static",
+                keyboard: false,
             });
-            $('#my-modal').modal('show');
+            $("#my-modal").modal("show");
             jQuery.TheLoai.func_init();
         },
 
@@ -106,7 +105,6 @@
             let data = func_get_value_form("#form-search");
             jQuery.TheLoai.func_search(data, jQuery.TheLoai.page);
         },
-
     });
 })(jQuery);
 
@@ -122,7 +120,6 @@ jQuery(document).ready(function () {
         let idFormModal = "#form-modal";
 
         jQuery.TheLoai.func_init();
-
 
         //clear search form
         $layoutSearch.on("click", ".button-clear", function () {
@@ -140,7 +137,7 @@ jQuery(document).ready(function () {
         $layoutList.on("click", "#btn-add", function () {
             func_clear_form(idFormModal);
             let data = {
-                type_modal: modal_create
+                type_modal: modal_create,
             };
             jQuery.TheLoai.func_view_modal(data);
         });
@@ -148,11 +145,11 @@ jQuery(document).ready(function () {
         $layoutList.on("click", ".btn-edit", function () {
             func_clear_form(idFormModal);
             let data = {
-                type_modal: modal_edit
+                type_modal: modal_edit,
             };
             data.id = $(this).parent().parent("tr").attr("data-id");
             if (typeof data.id === "undefined" || $.trim(data.id).length == 0) {
-                swalAlert('error', 'Lỗi', 'Không tìm thấy dữ liệu.');
+                swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
             jQuery.TheLoai.func_view_modal(data);
@@ -160,8 +157,11 @@ jQuery(document).ready(function () {
 
         $modalBox.on("click", "#btn-save", function (e) {
             let data = func_get_value_form(idFormModal);
-            if (typeof data.type_modal === "undefined" || $.trim(data.type_modal).length == 0) {
-                swalAlert('error', 'Lỗi', 'Không tìm thấy dữ liệu.');
+            if (
+                typeof data.type_modal === "undefined" ||
+                $.trim(data.type_modal).length == 0
+            ) {
+                swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
             jQuery.TheLoai.func_submit_form(data);
@@ -169,19 +169,20 @@ jQuery(document).ready(function () {
 
         $layoutList.on("click", ".btn-delete", function (e) {
             e.preventDefault();
-            const $mess = "Hành động xóa sẽ không thể khôi phục.</br>Bạn có chắc chắn muốn xóa?";
-            const sw_confirm = swalConfirm($mess, 'Thông báo');
-            sw_confirm.fire({}).then(result => {
+            const $mess =
+                "Hành động xóa sẽ không thể khôi phục.</br>Bạn có chắc chắn muốn xóa?";
+            const sw_confirm = swalConfirm($mess, "Thông báo");
+            sw_confirm.fire({}).then((result) => {
                 if (result.value) {
                     let id = $(this).parent().parent("tr").attr("data-id");
                     if (typeof id === "undefined" || $.trim(id).length == 0) {
-                        swalAlert('error', 'Lỗi', 'Không tìm thấy dữ liệu.');
+                        swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                         return;
                     }
                     jQuery.TheLoai.func_delete_data(id);
                 }
             });
-        })
+        });
 
         $layoutList.on("click", ".page-link", function (e) {
             e.preventDefault();

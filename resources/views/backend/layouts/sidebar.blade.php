@@ -1,11 +1,5 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <!-- Brand Logo -->
-      <a href="{{ route('backend.menu.index') }}" class="brand-link">
-          <img src="{{ asset('adminlte3-1-0/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-              class="brand-image img-circle elevation-3" style="opacity: .8">
-          <span class="brand-text font-weight-light">Nhi Fashion</span>
-      </a>
 
       <!-- Sidebar -->
       <div class="sidebar">
@@ -28,35 +22,33 @@
                   <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                   <li class="nav-item">
-                      <a href="{{ route('backend.menu.index') }}"
-                          class="nav-link {{ \Request::route()->getName() == 'menu.index' ? 'active' : '' }}">
+                      <a href="{{ route('backend.the_loai.index') }}"
+                          class="nav-link {{ \Request::route()->getName() == 'the_loai.index' ? 'active' : '' }}">
                           <i class="fas fa-book-reader"></i>&nbsp;
                           <p>
-                              Thực đơn
+                              Thể loại
                           </p>
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ route('backend.order.index') }}"
-                          class="nav-link {{ \Request::route()->getName() == 'order.index' ? 'active' : '' }}">
+                      <a href="{{ route('backend.san_pham.index') }}"
+                          class="nav-link {{ \Request::route()->getName() == 'san_pham.index' ? 'active' : '' }}">
                           <i class="fas fa-shopping-cart"></i>&nbsp;
                           <p>
-                              Giỏ hàng
-                              <span
-                                  class="right badge badge-danger qty-product-in-cart">{{ session('cart.product') != null ? count(session('cart.product')) : 0 }}</span>
+                              Sản phẩm
                           </p>
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ route('backend.order.placed') }}"
-                          class="nav-link {{ \Request::route()->getName() == 'order.placed' ? 'active' : '' }}">
+                      <a href="{{ route('backend.don_hang.index') }}"
+                          class="nav-link {{ \Request::route()->getName() == 'don_hang.index' ? 'active' : '' }}">
                           <i class="fas fa-list-ol"></i>&nbsp;
                           <p>
                               Đơn hàng của bạn
                           </p>
                       </a>
                   </li>
-                  @can('check-user-is-admin')
+                  {{-- @can('check-user-is-admin')
                       <li
                           class="nav-item {{ in_array(\Request::route()->getName(), ['admin.index', 'admin.order-placed', 'admin.product.index']) ? 'menu-open' : '' }}">
                           <a href="#"
@@ -91,7 +83,7 @@
                               </li>
                           </ul>
                       </li>
-                  @endcan
+                  @endcan --}}
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

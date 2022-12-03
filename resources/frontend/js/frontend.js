@@ -4,15 +4,25 @@
     };
     jQuery.Index = new Index();
     jQuery.extend(Index.prototype, {
-        func_init: function () {
-            // $(".select2").select2();
-        },
         func_callback_error: function (err, data) {
             func_hide_error_validation("#form-modal");
             if (err.data.messages) {
                 jQuery.Index.func_show_error_validation(
                     err.data.messages,
                     "#form-modal"
+                );
+            }
+            if (err.data.message) {
+                swalAlert("error", "Lỗi", err.data.message);
+            }
+        },
+
+        func_submit_callback_error: function (err, data) {
+            func_hide_error_validation("#mua-hang-form");
+            if (err.data.messages) {
+                jQuery.Index.func_show_error_validation(
+                    err.data.messages,
+                    "#mua-hang-form"
                 );
             }
             if (err.data.message) {
@@ -77,7 +87,7 @@
 
         func_get_cart_callback: function (res, _data) {
             $("#modal-area").html(res.data.view);
-            $("#checkout_items").text(res.data.num_cart)
+            $("#checkout_items").text(res.data.num_cart);
             $("#cart-modal").modal("show");
         },
 
@@ -96,24 +106,69 @@
             );
         },
 
-        func_update_cart_callback: function (res) {
+        func_update_cart_callback: function (res, _data) {
+            if (_data.is_reload_page) {
+                location.reload(true);
+                return;
+            }
             jQuery.Index.func_get_cart();
         },
 
-        func_delete_data: function (id) {
+        func_init_dia_ly: function () {
+            let tinh = $("#tinh").val();
+            let huyen = $("#huyen").val();
+            if (tinh == "") {
+                $("#mua-hang-page #huyen").html(
+                    "<option value=''>Chọn Quận/Huyện</option>"
+                );
+                $("#mua-hang-page #xa").html(
+                    "<option value=''>Chọn Phường/Xã</option>"
+                );
+            }
+            let data = {
+                tinh: tinh,
+                huyen: huyen,
+            };
             izanagi(
-                jQuery.Index.baseUrl + "/delete/" + id,
-                "delete",
+                "get-dia-ly",
+                "post",
+                data,
                 null,
-                null,
-                jQuery.Index.func_delete_data_callback,
+                jQuery.Index.func_init_dia_ly_callback,
                 jQuery.Index.func_callback_error
             );
         },
-        func_delete_data_callback: function (res) {
-            swalAlert("success", "Thành công", res.data.message);
-            let data = func_get_value_form("#form-search");
-            jQuery.Index.func_search(data, jQuery.Index.page);
+        func_init_dia_ly_callback: function (res) {
+            if (res.data.xa && res.data.xa.length > 0) {
+                let html = "<option value=''>Chọn Phường/Xã</option>";
+                let ds = res.data.xa;
+                jQuery.each(ds, function (i, row) {
+                    html +=
+                        "<option value='" +
+                        row.Id +
+                        "'>" +
+                        row.Name +
+                        "</option>";
+                });
+                $("#mua-hang-page #xa").html(html);
+                return;
+            }
+            if (res.data.huyen && res.data.huyen.length > 0) {
+                let html = "<option value=''>Chọn Quận/Huyện</option>";
+                let ds = res.data.huyen;
+                jQuery.each(ds, function (i, row) {
+                    html +=
+                        "<option value='" +
+                        row.Id +
+                        "'>" +
+                        row.Name +
+                        "</option>";
+                });
+                $("#mua-hang-page #huyen").html(html);
+                $("#mua-hang-page #xa").html(
+                    "<option value=''>Chọn Phường/Xã</option>"
+                );
+            }
         },
 
         func_reload_num_id: function (el, isAddRow = true) {
@@ -168,6 +223,42 @@
                 }
             });
         },
+
+        func_submit_form: function (data) {
+            let url = "dat-hang";
+            let method = "post";
+
+            if (url.length == 0) return;
+            izanagi(
+                url,
+                method,
+                data,
+                null,
+                jQuery.Index.func_submit_form_callback,
+                jQuery.Index.func_submit_callback_error
+            );
+        },
+
+        func_submit_form_callback: function (res, _data) {
+            // swalAlert("success", "Thành công", res.data.message);
+
+            const $mess = res.data.message;
+            const sw_confirm = swalConfirm(
+                $mess,
+                "Thành công",
+                "success",
+                "OK",
+                "",
+                "#007bff",
+                "#007bff",
+                false
+            );
+            sw_confirm.fire({}).then((result) => {
+                if (result.value) {
+                    location.reload(true);
+                }
+            });
+        },
     });
 })(jQuery);
 
@@ -177,16 +268,9 @@ jQuery(document).ready(function () {
         let $navbar = $(".navbar");
         let $modalArea = $("#modal-area");
 
-        // let $newProduct = $("#index-page #new-product");
-        // let $layoutList = $("#index-page #list-area");
-        // let $modalBox = $("#index-page #modal-box");
-        // let $myCart = $(".my-cart");
-        // let $pagination = $("#index-page .pagination-custom");
-
-        // let idFormSearch = "#form-search";
-        // let idFormModal = "#form-modal";
-
-        // jQuery.Index.func_init();
+        $("#mua-hang-page").on("change", "#tinh, #huyen", function () {
+            jQuery.Index.func_init_dia_ly();
+        });
 
         $navbar.on("click", "#gio_hang", function (e) {
             e.preventDefault();
@@ -209,24 +293,61 @@ jQuery(document).ready(function () {
         });
 
         $modalArea.on("keyup", "input[name='so_luong']", function (e) {
-
             let key = event.keyCode || event.charCode;
-            if ((key != 8 && key != 46) && (Math.floor($(this).val()) != $(this).val() || !$.isNumeric($(this).val()))) {
+            if (
+                key != 8 &&
+                key != 46 &&
+                (Math.floor($(this).val()) != $(this).val() ||
+                    !$.isNumeric($(this).val()))
+            ) {
                 $(this).val(1);
             }
         });
 
-        $modalArea.on("click", '#update-cart', function (e) {
+        $modalArea.on("click", "#update-cart", function (e) {
             let dsSoLuong = $("input[name='so_luong']");
             let arr = [];
             dsSoLuong.each(function (i, el) {
                 arr[el.id] = el.value;
-            })
+            });
+
+            let is_reload_page = false;
+            if ($("#mua-hang-page").length > 0) {
+                is_reload_page = true;
+            }
+
+            console.log(is_reload_page);
             let data = {
-                carts: arr
+                carts: arr,
+                is_reload_page: is_reload_page,
             };
+
             jQuery.Index.func_update_cart(data);
-        })
+        });
+
+        $("#mua-hang-page").on("click", "#cap-nhat-gio-hang", function (e) {
+            e.preventDefault();
+            let data = {
+                id: "cap-nhat-gio-hang",
+            };
+            jQuery.Index.func_get_cart(data);
+        });
+        $("#mua-hang-page").on("click", "#dat-hang", function (e) {
+            e.preventDefault();
+            let data = func_get_value_form("#mua-hang-form");
+
+            if (data.tinh && data.tinh.length > 0) {
+                data.tinh = $("#tinh option:selected").text();
+            }
+            if (data.huyen && data.huyen.length > 0) {
+                data.huyen = $("#huyen option:selected").text();
+            }
+            if (data.xa && data.xa.length > 0) {
+                data.xa = $("#xa option:selected").text();
+            }
+
+            jQuery.Index.func_submit_form(data);
+        });
     } catch (e) {
         console.log(e);
         alert("The engine can't understand this code, it's invalid");

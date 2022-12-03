@@ -49,4 +49,9 @@ class SanPhamChiTiet extends Model
     {
         return $this->belongsTo(MauSac::class, 'id_mau_sac', 'id');
     }
+
+    public function sanPham()
+    {
+        return $this->belongsTo(SanPham::class, 'id_sp', 'id');
+    }
 }

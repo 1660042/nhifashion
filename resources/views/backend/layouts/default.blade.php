@@ -48,49 +48,12 @@
                     </li>
                 @endif
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ route('backend.menu.index') }}" class="nav-link">Thực đơn</a>
+                    {{-- <a href="{{ route('backend.menu.index') }}" class="nav-link">Thực đơn</a> --}}
                 </li>
             </ul>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item dropdown my-cart">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span
-                            class="badge badge-danger navbar-badge qty-product-in-cart">{{ session('cart.product') != null ? count(session('cart.product')) : 0 }}</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right list-product-in-cart">
-                        @if (session('cart.product') != null)
-                            @foreach (session('cart.product') as $key => $item)
-                                <a href="#" class="dropdown-item cart-item" data-id={{ $item['id'] }}>
-                                    <!-- Message Start -->
-                                    <div class="media">
-                                        <img src="{{ $item['anh'] }}" alt="Image product"
-                                            class="img-size-50 mr-3 img-circle">
-                                        <div class="media-body">
-                                            <h3 class="dropdown-item-title text-wrap">
-                                                {{ $item['tenmon'] }}
-                                            </h3>
-                                            <p class="text-sm">Số lượng: {{ $item['qty'] }}</p>
-                                            <p class="text-sm text-muted"><i class="fas fa-dollar-sign"></i> Giá:
-                                                {{ $item['gia'] }} VND
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <!-- Message End -->
-                                </a>
-                                <div class="dropdown-divider"></div>
-                            @endforeach
-                        @else
-                            <div class="dropdown-item text-center">Giỏ hàng trống</div>
-                        @endif
-                        <a href="{{ route('backend.order.index') }}" class="dropdown-item dropdown-footer">Tới trang
-                            giỏ
-                            hàng</a>
-                    </div>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}" alt="Đăng xuất" title="Đăng xuất">
                         <i class="fas fa-sign-out-alt"></i>

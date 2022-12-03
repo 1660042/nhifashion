@@ -16,7 +16,7 @@
     color: #000;
 }
 
-.navbar_menu>li:hover .submenu {
+.navbar_menu > li:hover .submenu {
     display: block;
 }
 
@@ -56,4 +56,17 @@
 #cart-modal .modal-body {
     max-height: 700px;
     overflow-y: auto;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+#mua-hang-page .danh-sach-san-pham {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#mua-hang-page .single_product_container .row {
+    max-height: calc(100vh - 350px);
 }

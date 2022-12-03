@@ -34,4 +34,14 @@ return [
         'create' => '1',
         'edit' => '2',
     ],
+
+    'trang_thai' => [
+        'hoa_don' => [
+            '0' => 'Chờ xác nhận',
+            '1' => 'Chuẩn bị hàng',
+            '2' => 'Đang giao hàng',
+            '3' => 'Giao thành công',
+            '4' => 'Giao thất bại'
+        ]
+    ]
 ];

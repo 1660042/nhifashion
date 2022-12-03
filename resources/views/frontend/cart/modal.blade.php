@@ -85,7 +85,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                 <button type="button" class="btn btn-info" id="update-cart" data-dismiss="modal">Cập nhật giỏ
                     hàng</button>
-                <a href="{{ route('frontend.index.index') }}" class="btn btn-primary" id="checkout">Tiến hành thành
+                <a href="{{ route('frontend.cart.mua_hang') }}" class="btn btn-primary" id="checkout">Tiến hành thành
                     toán</a>
             </div>
         </div>

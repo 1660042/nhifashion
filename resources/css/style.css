@@ -173,3 +173,12 @@ body.modal-open {
     width: 100px !important;
     margin: 10px;
 }
+
+#sanpham-page #modal-box .modal-body {
+    max-height: calc(100vh - 215px);
+    overflow-y: auto;
+}
+
+#don-hang-page .modal-dialog {
+    max-width: 80%;
+}

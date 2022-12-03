@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Menu;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\HoaDon;
 use App\Models\SanPham;
+use App\Helpers\AppHelper;
+use Illuminate\Http\Request;
+use App\Models\HoaDonSanPham;
 use App\Models\SanPhamChiTiet;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -24,8 +31,6 @@ class CartController extends Controller
         // $request->session()->forget('gio_hang.san_pham');
 
         $sessionCarts = session('gio_hang.san_pham');
-        // print_r($sessionCarts);
-        // exit;
         $carts = [];
         if ($sessionCarts) {
             foreach ($sessionCarts as $key => $item) {
@@ -148,7 +153,7 @@ class CartController extends Controller
                         'size' => $cart['size'],
                         'so_luong' => $arrKeyCarts[$key],
                     ];
-                    $request->session()->put("gio_hang.san_pham." . $keyCart, $session);
+                    $request->session()->put("gio_hang.san_pham." . $key, $session);
                     continue;
                 }
                 $request->session()->forget('gio_hang.san_pham.' . $key);
@@ -159,8 +164,190 @@ class CartController extends Controller
         ], 200);
     }
 
-    public function muaHang()
+    public function muaHang(Request $request)
     {
-        return view('frontend.cart.mua_hang');
+        $sessionCarts = session('gio_hang.san_pham');
+        $carts = [];
+        if ($sessionCarts) {
+            foreach ($sessionCarts as $key => $item) {
+                try {
+                    $sanPham = $this->model->with(['hinhAnh', 'dsSanPhamChiTiet'])->find($item['san_pham_id']);
+                    $spha = $sanPham->hinhAnh;
+                    $spct = $sanPham->dsSanPhamChiTiet()->where([
+                        ['id_mau_sac', '=', $item['id_mau_sac']],
+                        ['size', '=', $item['size']],
+                    ])->first();
+                    if (!$sanPham || count($spha) == 0 || !$spct) {
+                        continue;
+                    }
+
+                    $soLuong = $item['so_luong'];
+
+                    $giamGia = $sanPham->giam_gia ? $sanPham->giam_gia : 0;
+                    $tiLeGiam = $giamGia == 0 ? $giamGia : $giamGia / 100;
+                    $gia = $spct->gia ? $spct->gia : 0;
+                    $thanhTien = ($gia * $soLuong) - ($gia * $soLuong * $tiLeGiam);
+
+                    $carts[$key] = [
+                        'hinh_anh' => $spha[0]->ten_anh,
+                        'ten_san_pham' => $sanPham->ten,
+                        'san_pham_slug' => $sanPham->san_pham_slug,
+                        'mau_sac' => $spct->mauSac->ten,
+                        'size' => $spct->size,
+                        'gia' => $gia,
+                        'giam_gia' => $giamGia,
+                        'so_luong' => $soLuong,
+                        'thanh_tien' => $thanhTien,
+                    ];
+                } catch (\Exception $e) {
+                    unset($carts[$key]);
+                }
+            }
+        }
+        $dsTinh = $this->diaLy($request);
+        return view('frontend.cart.mua_hang', ['carts' => $carts, 'dsTinh' => $dsTinh]);
+    }
+
+    public function datHang(HoaDon $hoaDonModel, HoaDonSanPham $hdctModel, SanPhamChiTiet $spctModel, Request $request)
+    {
+        $sessionCarts = session('gio_hang.san_pham');
+        if (!$sessionCarts) {
+            return response([
+                'message' => 'Giỏ hàng trống.',
+            ], 400);
+        }
+        $rules = AppHelper::getRules(Route::currentRouteName());
+        $attributes = AppHelper::getAttributes(Route::currentRouteName());
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+            [
+                'soDienThoai.*' => ':attribute gồm 10 số',
+                'tinh.*' => ':attribute phải là chữ tối đa 60 ký tự',
+                'huyen.*' => ':attribute phải là chữ tối đa 60 ký tự',
+                'xa.*' => ':attribute phải là chữ tối đa 60 ký tự'
+            ],
+            $attributes
+        );
+        if ($validator->fails()) {
+            return response([
+                'messages' => $validator->errors(),
+                'message' => 'Đặt hàng không thành công.',
+            ], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $data = [
+                'ten' => $request->hoTen,
+                'sdt' => $request->soDienThoai,
+                'email' => $request->email,
+                'dia_chi' => $request->diaChi,
+                'phuong_thuc_thanh_toan' => $request->phuong_thuc,
+                'tinh' => $request->tinh,
+                'huyen' => $request->huyen,
+                'xa' => $request->xa,
+            ];
+
+            $hoaDon = $hoaDonModel->create($data);
+            if (!$hoaDon) {
+                DB::rollBack();
+                return response([
+                    'message' => 'Không thể tạo hóa đơn.',
+                ], 400);
+            }
+
+            $dataChiTiet = [];
+            foreach ($sessionCarts as $key => $item) {
+                $spct = $spctModel->with('sanPham')->where([
+                    ['id_mau_sac', '=', $item['id_mau_sac']],
+                    ['size', '=', $item['size']],
+                ])->first();
+                if (!$spct) {
+                    DB::rollBack();
+                    return response([
+                        'message' => 'Không thể tạo hóa đơn.',
+                    ], 400);
+                }
+
+                $sanPham = $spct->sanPham;
+
+                if (!$sanPham) {
+                    DB::rollBack();
+                    return response([
+                        'message' => 'Không thể tạo hóa đơn.',
+                    ], 400);
+                }
+
+                $soLuong = $item['so_luong'];
+
+                $giamGia = $sanPham->giam_gia ? $sanPham->giam_gia : 0;
+                $tiLeGiam = $giamGia == 0 ? $giamGia : $giamGia / 100;
+                $gia = $spct->gia ? $spct->gia : 0;
+                $thanhTien = ($gia * $soLuong) - ($gia * $soLuong * $tiLeGiam);
+
+                $dataChiTiet[] = [
+                    'hoa_don_id' => $hoaDon->id,
+                    'san_pham_chi_tiet_id' => $spct->id_sp_chi_tiet,
+                    'so_luong' => $soLuong,
+                    'thanh_tien' => $thanhTien,
+                ];
+            }
+            DB::enableQueryLog();
+            $hoaDon->hoaDonSanPham()->createMany($dataChiTiet);
+            DB::commit();
+            $request->session()->forget('gio_hang.san_pham');
+            return response([
+                'message' => "Đặt hàng thành công. </br>Vui lòng chờ nhân viên cửa hàng liên hệ để xác nhận đơn hàng.",
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response([
+                'message' => 'Đặt hàng không thành công.',
+            ], 400);
+        }
+    }
+
+    public function diaLy(Request $request)
+    {
+
+        if ($request->session()->exists('dia_ly')) {
+            $data = Session::get('dia_ly');
+        } else {
+            $response = Http::get('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');
+            $data = $response->object();
+            $request->session()->put("dia_ly", $data);
+        }
+
+        if ($request->ajax()) {
+            $tinhId = $request->tinh;
+            $huyenId = $request->huyen;
+            $huyen = [];
+            $xa = [];
+            if ($tinhId) {
+                foreach ($data as $key => $row) {
+                    if ($row->Id == $tinhId) {
+                        $huyen = $row->Districts;
+                        if ($huyenId) {
+                            foreach ($huyen as $key => $rowHuyen) {
+                                if ($rowHuyen->Id == $huyenId) {
+                                    $xa = $rowHuyen->Wards;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                return response()->json([
+                    'huyen' => $huyen,
+                    'xa' => $xa,
+                ], 200);
+            }
+        }
+        if ($request->method() == 'GET') {
+            return $data;
+        }
+        // dd($data);
     }
 }

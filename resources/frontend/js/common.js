@@ -132,13 +132,14 @@ function swalConfirm(
     confirmButtonText = "Xóa",
     cancelButtonText = "Hủy",
     confirmButtonColor = "#dc3545",
-    cancelButtonColor = "#6e7881"
+    cancelButtonColor = "#6e7881",
+    showCancelButton = true
 ) {
     return swal.mixin({
         title: title,
         html: message,
         icon: icon,
-        showCancelButton: true,
+        showCancelButton: showCancelButton,
         confirmButtonText: confirmButtonText,
         confirmButtonColor: confirmButtonColor,
         cancelButtonColor: cancelButtonColor,
