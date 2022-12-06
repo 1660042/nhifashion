@@ -15,6 +15,6 @@
 @endsection
 
 @section('js_custom')
-    <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('admin/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('js/sanpham.js') }}"></script>
 @endsection

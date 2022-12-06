@@ -7,8 +7,8 @@
         func_init: function () {
             $(".select2").select2();
             tinyMCE.remove();
-            tinymce.baseURL = "tinymce";
-            tinymce.init({
+            tinyMCE.baseURL = "tinymce";
+            tinyMCE.init({
                 selector: "textarea#gioi_thieu",
                 toolbar:
                     "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent",
