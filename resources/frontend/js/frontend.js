@@ -18,6 +18,7 @@
         },
 
         func_submit_callback_error: function (err, data) {
+            $("#dat-hang").attr("disabled", false);
             func_hide_error_validation("#mua-hang-form");
             if (err.data.messages) {
                 jQuery.Index.func_show_error_validation(
@@ -251,6 +252,7 @@
                 "",
                 "#007bff",
                 "#007bff",
+                false,
                 false
             );
             sw_confirm.fire({}).then((result) => {
@@ -345,7 +347,7 @@ jQuery(document).ready(function () {
             if (data.xa && data.xa.length > 0) {
                 data.xa = $("#xa option:selected").text();
             }
-
+            $(this).attr("disabled", true);
             jQuery.Index.func_submit_form(data);
         });
     } catch (e) {

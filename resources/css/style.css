@@ -125,7 +125,7 @@ body.modal-open {
 }
 
 #sanpham-page .modal-dialog {
-    max-width: 80%;
+    max-width: 90%;
 }
 
 #sanpham-page #modal-box .sanpham-detail {
@@ -181,4 +181,20 @@ body.modal-open {
 
 #don-hang-page .modal-dialog {
     max-width: 80%;
+}
+
+.w-5per {
+    width: 5%;
+}
+
+.w-10per {
+    width: 10%;
+}
+
+.w-15per {
+    width: 15%;
+}
+
+.w-20per {
+    width: 20%;
 }

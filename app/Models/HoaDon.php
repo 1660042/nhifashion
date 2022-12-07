@@ -24,6 +24,7 @@ class HoaDon extends Model
         'tinh',
         'huyen',
         'xa',
+        'trang_thai'
     ];
 
 
@@ -54,9 +55,17 @@ class HoaDon extends Model
 
         $condition = [];
 
-        // if ($request->ten_search !== null) {
-        //     $condition[] = ['column' => 'ten', 'compare' => 'like', 'value' => $request->ten_search];
-        // }
+        if ($request->ten_khach_hang_search !== null) {
+            $condition[] = ['column' => 'ten', 'compare' => 'like', 'value' => $request->ten_khach_hang_search];
+        }
+
+        if ($request->so_dien_thoai_search !== null) {
+            $condition[] = ['column' => 'sdt', 'compare' => 'like', 'value' => $request->so_dien_thoai_search];
+        }
+
+        if ($request->trang_thai_search !== null) {
+            $condition[] = ['column' => 'trang_thai', 'compare' => '=', 'value' => $request->trang_thai_search];
+        }
 
         return AppHelper::findData($this, $condition, 'ALL', $pagination, $sort, $relations, $joins, $select);
     }

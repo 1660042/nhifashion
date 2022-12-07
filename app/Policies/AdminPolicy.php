@@ -94,6 +94,6 @@ class AdminPolicy
 
     public function checkIsAdmin(User $user)
     {
-        return auth()->user()->chuc_vu === 1 ? Response::allow() : Response::deny('Trang này dành cho Admin! Bạn không có quyền truy cập!');
+        // return auth()->user()->chuc_vu === 1 ? Response::allow() : Response::deny('Trang này dành cho Admin! Bạn không có quyền truy cập!');
     }
 }

@@ -24,10 +24,13 @@ Route::get('/link-storage', function () {
 });
 
 Route::middleware(['auth'])->prefix('admin')->name('backend.')->namespace('Backend')->group(function () {
-    Route::redirect('/dashboard', '/menu')->name('home');
+    Route::get('/home', function () {
+        return redirect()->route('backend.don_hang.index');
+    })->name('home');
     Route::prefix('don-hang')->name('don_hang.')->group(function () {
-        Route::get('/', 'DonHangController@index')->name('index');
+        Route::match(['get', 'post'], '/', 'DonHangController@index')->name('index');
         Route::get('/edit/{id}', 'DonHangController@edit')->name('edit');
+        Route::put('/update/{id}', 'DonHangController@update')->name('update');
 
         // Route::post('/search', 'MenuController@search')->name('search');
         // Route::post('/detail/{id}', 'MenuController@detail')->name('detail');
@@ -50,18 +53,18 @@ Route::middleware(['auth'])->prefix('admin')->name('backend.')->namespace('Backe
         Route::delete('/delete/{id}', 'SanPhamController@delete')->name('delete');
     });
 
-    Route::prefix('admin')->name('admin.')->middleware('can:check-user-is-admin')->group(function () {
-        Route::get('/', 'AdminController@index')->name('index');
-        Route::get('/order-placed', 'OrderController@placed')->name('order-placed');
-        Route::get('/products/', 'AdminController@product')->name('product.index');
-        Route::post('products/search', 'AdminController@search')->name('product.search');
-        Route::post('products/detail/{id}', 'AdminController@detail')->name('detail');
-        Route::post('products/add', 'AdminController@add')->name('add');
-        Route::post('products/store', 'AdminController@store')->name('store');
-        Route::post('products/edit/{id}', 'AdminController@edit')->name('edit');
-        Route::post('products/update/{id}', 'AdminController@update')->name('edit');
-        Route::delete('products/delete', 'AdminController@delete')->name('delete');
-    });
+    // Route::prefix('admin')->name('admin.')->middleware('can:check-user-is-admin')->group(function () {
+    //     Route::get('/', 'AdminController@index')->name('index');
+    //     Route::get('/order-placed', 'OrderController@placed')->name('order-placed');
+    //     Route::get('/products/', 'AdminController@product')->name('product.index');
+    //     Route::post('products/search', 'AdminController@search')->name('product.search');
+    //     Route::post('products/detail/{id}', 'AdminController@detail')->name('detail');
+    //     Route::post('products/add', 'AdminController@add')->name('add');
+    //     Route::post('products/store', 'AdminController@store')->name('store');
+    //     Route::post('products/edit/{id}', 'AdminController@edit')->name('edit');
+    //     Route::post('products/update/{id}', 'AdminController@update')->name('edit');
+    //     Route::delete('products/delete', 'AdminController@delete')->name('delete');
+    // });
 });
 
 Route::namespace('Frontend')->name('frontend.')->group(function () {

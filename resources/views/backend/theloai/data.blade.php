@@ -40,7 +40,7 @@
                             {{ optional($item)->the_loai_cha ? optional($item)->the_loai_cha : 'Không' }}
                         </td>
                         <td class="text-center">
-                            {{ optional($item)->created_at }}
+                            {{ \Carbon\Carbon::parse(optional($item)->created_at)->format('d-m-Y') }}
                         </td>
                         <td class="text-center">
                             {{ optional($item)->nguoiTao }}

@@ -44,7 +44,7 @@
                             {{ optional($item)->giam_gia . ' %' }}
                         </td>
                         <td class="text-center">
-                            {{ optional($item)->created_at }}
+                            {{ \Carbon\Carbon::parse(optional($item)->created_at)->format('d-m-Y') }}
                         </td>
                         <td class="text-center">
                             {{ optional($item)->nguoiTao }}

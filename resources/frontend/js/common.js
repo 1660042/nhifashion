@@ -116,12 +116,13 @@ function izanagi(
         });
 }
 
-function swalAlert(type, title, message) {
+function swalAlert(type, title, message, allowOutsideClick = true) {
     swal.fire({
         icon: type,
         title: title,
         html: message,
         confirmButtonText: "Đóng",
+        allowOutsideClick: allowOutsideClick,
     });
 }
 
@@ -133,7 +134,8 @@ function swalConfirm(
     cancelButtonText = "Hủy",
     confirmButtonColor = "#dc3545",
     cancelButtonColor = "#6e7881",
-    showCancelButton = true
+    showCancelButton = true,
+    allowOutsideClick = true
 ) {
     return swal.mixin({
         title: title,
@@ -145,6 +147,7 @@ function swalConfirm(
         cancelButtonColor: cancelButtonColor,
         cancelButtonText: cancelButtonText,
         reverseButtons: true,
+        allowOutsideClick: allowOutsideClick,
     });
 }
 

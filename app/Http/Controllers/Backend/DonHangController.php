@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ChiTietDonHang;
 use App\Models\HoaDon;
+use App\Models\HoaDonSanPham;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,11 +45,11 @@ class DonHangController extends Controller
         return view('backend.donhang.index', ['data' => $data]);
     }
 
-    public function edit(TheLoai $theLoaiModel, MauSac $mauSacModel, $id)
+    public function edit(HoaDonSanPham $hdspModel, $id)
     {
-        $donHang = $this->model->where('id', $id)->with('hoaDonSanPham')->first();
-        $donHangSanPham = $donHang->hoaDonSanPham;
-        if (!$donHang || !$donHangSanPham) {
+        $donHang = $this->model->where('id', $id)->first();
+        $donHangSanPham = $hdspModel->getHoaDonSanPham(['hoa_don_id' => $donHang->id]);
+        if (!$donHang || count($donHangSanPham) == 0) {
             return response()->json([
                 'message' => 'Không tìm thấy dữ liệu.'
             ], 400);
@@ -61,112 +63,20 @@ class DonHangController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
-    {
-        $params = [
-            'ten' => $request->ten,
-            'anh' => $request->anh,
-            'the_loai_id' => $request->the_loai_id,
-            'hot' => $request->hot ? '1' : '0',
-            'giam_gia' => $request->giam_gia,
-            'gioi_thieu' => $request->gioi_thieu,
-            'mau_sac' => $request->has('mau_sac') ? explode(',', $request->mau_sac) : NULL,
-            'size' => $request->has('size') ? explode(',', $request->size) : NULL,
-            'gia' => $request->has('gia') ? explode(',', $request->gia) : NULL,
-            'trang_thai' => $request->has('trang_thai') ? explode(',', $request->trang_thai) : NULL,
-            'san_pham_slug' => Str::slug($request->ten, '-'),
-        ];
-
-        $this->rules = AppHelper::getRules(Route::currentRouteName());
-        $this->attributes = AppHelper::getAttributes(Route::currentRouteName());
-        $validator = Validator::make(
-            $params,
-            $this->rules,
-            [
-                'the_loai_cha_id.integer' => ':attribute không hợp lệ.'
-            ],
-            $this->attributes
-        );
-        if ($validator->fails()) {
-            return response([
-                'messages' => $validator->errors(),
-                'message' => 'Lưu thất bại.',
-            ], 400);
-        }
-
-        $data = [
-            'ten' => $params['ten'],
-            'the_loai_id' => $params['the_loai_id'],
-            'gioi_thieu' => $params['gioi_thieu'],
-            'created_by' => auth()->id(),
-            'hot' => $params['hot'],
-            'giam_gia' => $params['giam_gia'],
-            'san_pham_slug' => $params['san_pham_slug'],
-        ];
-        DB::beginTransaction();
-        try {
-            $sanPham = $this->model->create($data);
-            if (!$sanPham) {
-                DB::rollBack();
-                return response()->json([
-                    'message' => 'Không thể tạo sản phẩm.',
-                ], 400);
-            }
-            $files = [];
-            foreach ($request->file('anh') as $file) {
-                $name = Str::uuid() . '_' . date('YmdHis') .   '.' . $file->extension();
-                $file->move(storage_path('app') . '/public/images', $name);
-                $files[] = [
-                    'ten_anh' => $name,
-                    'id_sp' => $sanPham->id,
-                ];
-            }
-            $sanPham->dsHinhAnh()->createMany($files);
-            $dataChiTiet = $this->getDataSanPhamChiTiet($params, $sanPham->id);
-            if (count($dataChiTiet) == 0) {
-                if (isset($files))
-                    $this->removeFile($files);
-                DB::rollBack();
-                return response()->json([
-                    'message' => 'Lỗi khi tạo chi tiết sản phẩm.',
-                ], 400);
-            }
-            $sanPham->dsSanPhamChiTiet()->insertOrIgnore($dataChiTiet);
-            DB::commit();
-            return response()->json([
-                'message' => 'Lưu thành công.',
-            ], 200);
-        } catch (\Exception $e) {
-            var_dump($e->getMessage());
-            if (isset($files))
-                $this->removeFile($files);
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Lưu thất bại. Vui lòng thử lại sau.'
-            ], 400);
-        }
-    }
-
     public function update(Request $request, $id)
     {
 
         $params = [
             'ten' => $request->ten,
-            'anh' => $request->anh,
-            'the_loai_id' => $request->the_loai_id,
-            'hot' => $request->hot ? '1' : '0',
-            'giam_gia' => $request->giam_gia,
-            'gioi_thieu' => $request->gioi_thieu,
-            'mau_sac' => $request->has('mau_sac') ? explode(',', $request->mau_sac) : NULL,
-            'size' => $request->has('size') ? explode(',', $request->size) : NULL,
-            'gia' => $request->has('gia') ? explode(',', $request->gia) : NULL,
-            'trang_thai' => $request->has('trang_thai') ? explode(',', $request->trang_thai) : NULL,
-            'san_pham_slug' => Str::slug($request->ten, '-'),
-
+            'sdt' => $request->sdt,
+            'email' => $request->email,
+            'phuong_thuc_thanh_toan' => $request->phuong_thuc_thanh_toan,
+            'dia_chi' => $request->dia_chi,
+            'xa' => $request->xa,
+            'huyen' => $request->huyen,
+            'tinh' => $request->tinh,
+            'trang_thai' => $request->trang_thai,
         ];
-
-        // var_dump($request->all());
-        // exit;
 
         $this->rules = AppHelper::getRules(Route::currentRouteName(), ['id' => $id]);
         $this->attributes = AppHelper::getAttributes(Route::currentRouteName());
@@ -185,78 +95,14 @@ class DonHangController extends Controller
             ], 400);
         }
 
-        $sanPham = $this->model->timSanPham(['id' => $id]);
-        if (!$sanPham) {
+        $hoaDon = $this->model->find($id);
+        if (!$hoaDon) {
             return response()->json([
                 'message' => 'Không tìm thấy dữ liệu.'
             ], 400);
         }
 
-        DB::beginTransaction();
-        try {
-            if ($request->hasfile('anh')) {
-                $oldFiles = [];
-                foreach ($sanPham->dsHinhAnh as $hinhAnh) {
-                    $oldFiles[] = [
-                        'ten_anh' => $hinhAnh->ten_anh
-                    ];
-                }
-                $files = [];
-                foreach ($request->file('anh') as $file) {
-                    $name = Str::uuid() . '_' . date('YmdHis') .   '.' . $file->extension();
-                    $file->move(storage_path('app') . '/public/images', $name);
-                    $files[] = [
-                        'ten_anh' => $name,
-                        'id_sp' => $sanPham->id,
-                    ];
-                }
-                $sanPham->dsHinhAnh()->delete();
-                $sanPham->dsHinhAnh()->createMany($files);
-            }
-
-            $sanPham->dsSanPhamChiTiet()->delete();
-            $dataChiTiet = $this->getDataSanPhamChiTiet($params, $sanPham->id);
-            if (count($dataChiTiet) == 0) {
-                if (isset($files))
-                    $this->removeFile($files);
-                DB::rollBack();
-                return response()->json([
-                    'message' => 'Lỗi khi tạo chi tiết sản phẩm.',
-                ], 400);
-            }
-            $sanPham->dsSanPhamChiTiet()->insertOrIgnore($dataChiTiet);
-
-            $data = [
-                'ten' => $params['ten'],
-                'the_loai_id' => $params['the_loai_id'],
-                'gioi_thieu' => $params['gioi_thieu'],
-                'updated_by' => auth()->id(),
-                'hot' => $params['hot'],
-                'giam_gia' => $params['giam_gia'],
-                'san_pham_slug' => $params['san_pham_slug'],
-
-            ];
-
-            $sanPham->update($data);
-            // var_dump($oldFiles);
-            // exit;
-            if (isset($oldFiles)) {
-                $this->removeFile($oldFiles);
-            }
-            DB::commit();
-            return response()->json([
-                'message' => 'Lưu thành công.',
-            ], 200);
-        } catch (\Exception $e) {
-            var_dump($e->getMessage() . ' - ' . $e->getLine());
-            DB::rollBack();
-            if (isset($files))
-                $this->removeFile($files);
-            return response()->json([
-                'message' => 'Lưu thất bại. Vui lòng thử lại sau.'
-                // 'message' => $e->getMessage()
-            ], 400);
-        }
+        $hoaDon->update($params);
     }
 
     public function delete(Request $request, $id)

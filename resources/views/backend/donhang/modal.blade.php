@@ -12,7 +12,6 @@
             </div>
             <div class="modal-body">
                 <form class="row" id="form-modal">
-                    @method('PUT')
                     <input type="hidden" name="id" value="{{ optional($donHang)->id }}">
 
                     <div class="col-md-6">
@@ -39,72 +38,85 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="anh">Phương thức thanh toán</label>
-                                    <select class="form-control select2" name="phuong_thuc" id="phuong_thuc"
-                                        style="width: 100%;">
+                                    <select class="form-control select2" name="phuong_thuc_thanh_toan"
+                                        id="phuong_thuc_thanh_toan" style="width: 100%;">
                                         <option value="">Không</option>
-                                        @foreach (config('constant.trang_thai.hoa_don') as $key => $phuongThuc)
-                                            <option value="{{ $phuongThuc }}"
-                                                {{ $key == optional($donHang)->phuong_thuc ? 'selected' : '' }}>
-                                                {{ $phuongThuc }}
-                                            </option>
-                                        @endforeach
+                                        <option value="1"
+                                            {{ optional($donHang)->phuong_thuc_thanh_toan == '1' ? 'selected' : '' }}>
+                                            Tiền mặt</option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                         <div class="form-group col-md-12">
                             <label for="anh">Dịa chỉ</label>
-                            <input type="text" class="form-control" id="dia_Chi"
-                                value="{{ optional($donHang)->dia_chi . ', ' . optional($donHang)->tinh . ', ' . optional($donHang)->huyen . ', ' . optional($donHang)->xa }}"
-                                name="dia_Chi" />
+                            <input type="text" class="form-control" id="dia_chi"
+                                value="{{ optional($donHang)->dia_chi }}" name="dia_chi" />
                         </div>
-
-                    </div>
-                    <div class="col-md-6 sanpham-detail">
-                        {{-- @foreach ($dsSanPhamChiTiet as $line => $item)
-                            <div class="row sanpham-item">
-                                <div class="form-group col-md-3">
-                                    <label for="the_loai_id">Màu sắc</label>
-                                    <select class="form-control select2" name="mau_sac[]"
-                                        id="mau_sac_{{ $line }}" style="width: 100%;">
-                                        <option value="">Chọn màu</option>
-                                        @foreach ($dsMauSac as $key => $mauSac)
-                                            <option value="{{ $mauSac->id }}"
-                                                {{ $mauSac->id == optional($item)->id_mau_sac ? 'selected' : '' }}>
-                                                {{ $mauSac->ten }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="anh">Phường/Xã</label>
+                                    <input type="text" class="form-control" id="xa" name="xa"
+                                        value="{{ optional($donHang)->xa }}" />
                                 </div>
-                                <div class="form-group col-md-2">
-                                    <label for="ten">Size</label>
-                                    <input type="text" class="form-control" id="size_{{ $line }}"
-                                        name="size[]" value="{{ optional($item)->size }}" />
+                                <div class="form-group col-md-4">
+                                    <label for="anh">Quận/Huyện</label>
+                                    <input type="text" class="form-control" id="huyen"
+                                        value="{{ optional($donHang)->huyen }}" name="huyen" />
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label for="ten">Giá tiền</label>
-                                    <input type="text" class="form-control" id="gia_{{ $line }}"
-                                        name="gia[]" value="{{ optional($item)->gia }}" />
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="trang_thai">Trạng thái</label>
-                                    <select class="form-control select2" name="trang_thai[]"
-                                        id="trang_thai_{{ $line }}"
-                                        style="width:
-                                        100%;">
-                                        <option>
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-1 remove-row">
-                                    <button class="btn btn-danger btn-remove-row"><i class="fas fa-trash"></i></button>
+                                <div class="form-group col-md-4">
+                                    <label for="anh">Tỉnh/Thành phố</label>
+                                    <input type="text" class="form-control" id="tinh"
+                                        value="{{ optional($donHang)->tinh }}" name="tinh" />
                                 </div>
                             </div>
-                        @endforeach --}}
-                        <div class="row mt-2 px-3 d-flex justify-content-center">
-                            <button class="btn btn-primary btn-add-row" style="width: 50%;">Thêm dòng</button>
                         </div>
+                        <div class="form-group col-md-12">
+                            <label for="anh">Trạng thái đơn hàng</label>
+                            <select class="form-control select2" name="trang_thai" id="trang_thai" style="width: 100%;">
+                                <option value="">Không</option>
+                                @foreach (config('constant.trang_thai.hoa_don') as $key => $trangThai)
+                                    <option value="{{ $key }}"
+                                        {{ $key == optional($donHang)->trang_thai ? 'selected' : '' }}>
+                                        {{ $trangThai }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 sanpham-detail">
+                        <table class="table">
+                            <tbody>
+                                @foreach ($donHangSanPham as $key => $item)
+                                    <tr>
+                                        <td class="text-left" style="vertical-align: middle;"><img
+                                                src="{{ asset('storage/images/' . $item->hinh_anh) }}"
+                                                style="max-height: 100px; width: 50px" />
+                                        </td>
+                                        <td class="text-left" style="vertical-align: middle;">
+                                            {{ $item->ten }}</br>
+                                            <small>{{ 'Phân loại: Size ' . $item->size . ' / ' . $item->mau_sac }}</small>
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            {{ $item->so_luong }}
+                                        </td>
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            {!! $item->gia > $item->thanh_tien
+                                                ? '<span class="text-red" style="text-decoration: line-through;">' .
+                                                    number_format($item->gia, 0, '', ',') .
+                                                    ' VND' .
+                                                    '</span></br>'
+                                                : '' !!}
+                                            {{ number_format($item->thanh_tien, 0, '', ',') . ' VND' }}
+                                        </td>
+
+
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
                     </div>
                 </form>
             </div>

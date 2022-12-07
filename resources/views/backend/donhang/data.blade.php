@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 <div class="d-flex justify-content-between">
     <div>
         {{-- <button class="btn btn-success" id="btn-add">
@@ -26,36 +29,36 @@
         <tbody>
             @if (count($data) == 0)
                 <tr>
-                    <td class="text-center text-red text-bold" colspan="6">
+                    <td class="text-center text-red text-bold" colspan="9">
                         Không tìm thấy dữ liệu nào.
                     </td>
                 </tr>
             @else
                 @foreach ($data as $item)
                     <tr style="" data-id="{{ $item->id }}">
-                        <td class="text-center">
+                        <td class="text-center w-5per">
                             {{ optional($item)->id }}
                         </td>
-                        <td class="text-left">
+                        <td class="text-left w-10per">
                             {{ optional($item)->ten }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-center w-10per">
                             {{ optional($item)->sdt }}
                         </td>
-                        <td class="text-left">
+                        <td class="text-left w-20per">
                             {{ optional($item)->dia_chi . ', ' . optional($item)->xa . ', ' . optional($item)->huyen . ', ' . optional($item)->tinh }}
                         </td>
 
-                        <td class="text-center">
+                        <td class="text-center w-10per">
                             {{ optional($item)->email }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-center w-10per">
                             {{ number_format(optional($item)->hoaDonSanPham->sum('thanh_tien'), 0, '', ',') . ' VND' }}
                         </td>
-                        <td class="text-center">
-                            {{ optional($item)->created_at }}
+                        <td class="text-center w-5per">
+                            {{ Carbon::parse(optional($item)->created_at)->format('d-m-Y') }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-center w-10per">
                             {{ config('constant.trang_thai.hoa_don')[optional($item)->trang_thai] }}
                         </td>
                         <td class="text-center">

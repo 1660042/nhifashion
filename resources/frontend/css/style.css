@@ -68,5 +68,5 @@ button:hover {
 }
 
 #mua-hang-page .single_product_container .row {
-    max-height: calc(100vh - 350px);
+    /* max-height: calc(100vh - 350px); */
 }

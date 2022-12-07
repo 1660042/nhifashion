@@ -65,6 +65,19 @@ class AppHelper
                     'anh.*' => 'bail|nullable|image|mimes:jpeg,jpg,png,gif,webp|max:10000',
                 ];
                 break;
+            case 'backend.don_hang.update':
+                return [
+                    'ten' => 'bail|required|min:4|max:255',
+                    'phuong_thuc_thanh_toan' => 'bail|required|integer|max:9',
+                    'sdt' => 'bail|required|numeric',
+                    'email' => 'bail|required|email',
+                    'dia_chi' => 'bail|required|string|max:255',
+                    'xa' => 'bail|required|string|max:60',
+                    'huyen' => 'bail|required|string|max:60',
+                    'tinh' => 'bail|required|string|max:60',
+                    'trang_thai' => 'bail|required|integer|max:9',
+                ];
+                break;
             case 'frontend.cart.dat_hang':
                 return [
                     'hoTen' => 'bail|required|min:4|max:60',
@@ -159,6 +172,19 @@ class AppHelper
                     'huyen' => 'Quận/Huyện',
                     'xa' => 'Phường/Xã',
                     'phuong_thuc' => 'Phương thức thanh toán'
+                ];
+                break;
+            case 'backend.don_hang.update':
+                return [
+                    'ten' => 'Tên khách hàng',
+                    'phuong_thuc_thanh_toan' => 'Phương thức thanh toán',
+                    'sdt' => 'Số điện thoại',
+                    'email' => 'Email',
+                    'dia_chi' => 'Địa chỉ',
+                    'xa' => 'Phường/Xã',
+                    'huyen' => 'Quận/Huyện',
+                    'tinh' => 'Tỉnh/Thành phố',
+                    'trang_thai' => 'Trạng thái đơn hàng',
                 ];
                 break;
         }

@@ -21,7 +21,7 @@
                         @method('PUT')
                         <input type="hidden" name="id" value="{{ optional($data)->id }}">
                     @endif
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group col-md-12">
                             <label for="ten">Tên sản phẩm</label>
                             <input type="text" class="form-control" id="ten" name="ten"
@@ -71,7 +71,7 @@
 
                         </div>
                     </div>
-                    <div class="col-md-6 sanpham-detail">
+                    <div class="col-md-7 sanpham-detail">
                         @foreach ($dsSanPhamChiTiet as $line => $item)
                             <div class="row sanpham-item">
                                 <div class="form-group col-md-3">

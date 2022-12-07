@@ -42,11 +42,11 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
                             class="fas fa-bars"></i></a>
                 </li>
-                @if (auth()->user()->chuc_vu == 1)
+                {{-- @if (auth()->user()->chuc_vu == 1)
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="{{ route('backend.admin.index') }}" class="nav-link">Trang quản trị Admin</a>
                     </li>
-                @endif
+                @endif --}}
                 <li class="nav-item d-none d-sm-inline-block">
                     {{-- <a href="{{ route('backend.menu.index') }}" class="nav-link">Thực đơn</a> --}}
                 </li>

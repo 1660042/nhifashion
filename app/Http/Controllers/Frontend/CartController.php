@@ -262,6 +262,7 @@ class CartController extends Controller
                 $spct = $spctModel->with('sanPham')->where([
                     ['id_mau_sac', '=', $item['id_mau_sac']],
                     ['size', '=', $item['size']],
+                    ['id_sp', '=', $item['san_pham_id']],
                 ])->first();
                 if (!$spct) {
                     DB::rollBack();
@@ -288,12 +289,16 @@ class CartController extends Controller
 
                 $dataChiTiet[] = [
                     'hoa_don_id' => $hoaDon->id,
-                    'san_pham_chi_tiet_id' => $spct->id_sp_chi_tiet,
+                    'san_pham_id' => $sanPham->id,
+                    'id_mau_sac' => $item['id_mau_sac'],
+                    'size' => $item['size'],
                     'so_luong' => $soLuong,
+                    'gia' => $gia,
                     'thanh_tien' => $thanhTien,
+                    'giam_gia' => $sanPham->giam_gia
                 ];
             }
-            DB::enableQueryLog();
+            // DB::enableQueryLog();
             $hoaDon->hoaDonSanPham()->createMany($dataChiTiet);
             DB::commit();
             $request->session()->forget('gio_hang.san_pham');
