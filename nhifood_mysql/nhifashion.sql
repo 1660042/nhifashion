@@ -120,7 +120,7 @@ CREATE TABLE `hoa_don` (
   `xa` varchar(60) NOT NULL DEFAULT '',
   `trang_thai` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `hoa_don` (
 
 LOCK TABLES `hoa_don` WRITE;
 /*!40000 ALTER TABLE `hoa_don` DISABLE KEYS */;
-INSERT INTO `hoa_don` VALUES (18,NULL,'Lương Bao','0355007111','nhoxxinhtrai98@gmail.com','124rdfdfs',1,'2022-12-02 16:43:20','2022-12-02 16:43:20','Tỉnh Bắc Giang','Huyện Yên Thế','Xã An Thượng',0),(19,NULL,'Lương Bao','0355007111','nhoxxinhtrai98@gmail.com','124rdfdfs',1,'2022-12-02 16:43:45','2022-12-02 16:43:45','Tỉnh Bắc Giang','Huyện Yên Thế','Xã An Thượng',0),(20,NULL,'LuongBao','0355007111','nhoxxinhtrai98@gmail.com','nhoxxinhtrai98@gmail.com',1,'2022-12-02 16:46:35','2022-12-02 16:46:35','Tỉnh Tuyên Quang','Huyện Lâm Bình','Xã Khuôn Hà',0),(21,NULL,'Luong Bao','0355007111','nhoxxinhtrai98@gmail.com','12dsdasd',1,'2022-12-02 19:25:23','2022-12-02 19:25:23','Tỉnh Phú Thọ','Huyện Hạ Hoà','Xã Yên Luật',0);
+INSERT INTO `hoa_don` VALUES (28,NULL,'Luong Bao','0355007111','admin@gmail.com','12112121',1,'2022-12-07 21:29:05','2022-12-07 21:29:05','Tỉnh Sơn La','Huyện Mộc Châu','Xã Nà Mường',0),(29,NULL,'Luong','0355007111','admin@gmail.com','12112121',1,'2022-12-07 21:41:15','2022-12-07 22:13:07','Tỉnh Sơn La','Huyện Mai Sơn','Xã Chiềng Mai',4),(30,NULL,'Luong Bao','0355007111','admin@gmail.com','12112121',1,'2022-12-07 22:26:39','2022-12-07 22:26:39','Tỉnh Lai Châu','Thành phố Lai Châu','Phường Quyết Thắng',0),(31,NULL,'Luong Bao','0355007111','nhoxxinhtrai98@gmail.com','12112121',1,'2022-12-07 22:27:20','2022-12-07 22:27:20','Thành phố Hà Nội','Quận Ba Đình','Phường Phúc Xá',0),(32,NULL,'Luong Bao','0355007111','admin@gmail.com','12112121',1,'2022-12-07 22:31:03','2022-12-07 22:31:03','Tỉnh Yên Bái','Huyện Trạm Tấu','Xã Làng Nhì',0);
 /*!40000 ALTER TABLE `hoa_don` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,11 +143,15 @@ DROP TABLE IF EXISTS `hoa_don_san_pham`;
 CREATE TABLE `hoa_don_san_pham` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `hoa_don_id` int NOT NULL,
-  `san_pham_chi_tiet_id` int NOT NULL,
+  `san_pham_id` int NOT NULL,
+  `id_mau_sac` int NOT NULL,
+  `size` int NOT NULL,
   `so_luong` int NOT NULL,
+  `gia` double NOT NULL,
   `thanh_tien` double NOT NULL,
+  `giam_gia` double DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +160,7 @@ CREATE TABLE `hoa_don_san_pham` (
 
 LOCK TABLES `hoa_don_san_pham` WRITE;
 /*!40000 ALTER TABLE `hoa_don_san_pham` DISABLE KEYS */;
-INSERT INTO `hoa_don_san_pham` VALUES (4,18,84,1,268500),(5,19,84,1,268500),(6,20,84,1,268500),(7,21,84,1,268500),(8,21,145,1,255000);
+INSERT INTO `hoa_don_san_pham` VALUES (16,28,21,2,29,5,23232,116160,NULL),(17,28,18,1,30,2,200000,340000,15),(18,29,19,1,30,2,300000,537000,10.5),(19,29,21,2,29,5,23232,116160,NULL),(20,30,19,1,30,1,300000,268500,10.5),(21,31,20,2,25,1,100000,75000,25),(22,32,20,2,25,1,100000,75000,25);
 /*!40000 ALTER TABLE `hoa_don_san_pham` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +333,7 @@ CREATE TABLE `san_pham` (
 
 LOCK TABLES `san_pham` WRITE;
 /*!40000 ALTER TABLE `san_pham` DISABLE KEYS */;
-INSERT INTO `san_pham` VALUES (17,'Áo sơ minh',5,NULL,0,'ao-so-minh',10,'2022-11-27 00:20:26',1,'2022-11-28 06:53:56',1),(18,'Áo khoác nam',7,'<div class=\"pro-short-desc\">\r\n<div><strong>Chất liệu:&nbsp;</strong>vải dạ&nbsp;cao cấp</div>\r\n<div><strong>Kiểu d&aacute;ng:&nbsp;</strong>&aacute;o kho&aacute;c dạ d&aacute;ng d&agrave;i, cổ bẻ, kết hợp khuy bản to kim loại, tone m&agrave;u n&acirc;u trơn<br><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</div>\r\n<div><strong>Th&ocirc;ng tin người mẫu:&nbsp;</strong>mặc sản phẩm size 2</div>\r\n<div><strong>Sản phẩm kết hợp:&nbsp;</strong>&aacute;o AL91862 - ch&acirc;n v&aacute;y Z11192</div>\r\n</div>',1,'ao-khoac-nam',15,'2022-11-27 06:14:43',1,'2022-11-29 23:23:36',1),(19,'Áo khoác nữ',8,NULL,1,'',10.5,'2022-11-27 06:47:24',1,'2022-11-27 08:33:30',1),(20,'Áo khoác 2',5,NULL,1,'ao-khoac-2',25,'2022-11-28 03:57:02',1,'2022-11-28 06:57:20',1),(21,'ÁO VEST HỒNG AK09382',8,'<p><strong>Chất liệu:</strong> vải tổng hợp cao cấp Kiểu d&aacute;ng: &aacute;o vest thiết kế d&aacute;ng su&ocirc;ng, tone m&agrave;u hồng trơn&nbsp;</p>\r\n<p><strong>Ph&ugrave; hợp :</strong> đi l&agrave;m, đi sự kiện, hay đi dạo phố, tạo vẻ trẻ trung, hiện đại cho người mặc.</p>\r\n<p><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</p>\r\n<p><strong>Th&ocirc;ng tin người mẫu:</strong> mặc sản phẩm size 2 Sản phẩm kết hợp: quần Q10152</p>',1,'ao-vest-hong-ak09382',NULL,'2022-11-30 04:00:22',1,'2022-11-30 09:43:19',1);
+INSERT INTO `san_pham` VALUES (17,'Áo sơ minh',5,NULL,0,'ao-so-minh',10,'2022-11-27 00:20:26',1,'2022-11-28 06:53:56',1),(18,'Áo khoác nam',7,'<div class=\"pro-short-desc\">\r\n<div><strong>Chất liệu:&nbsp;</strong>vải dạ&nbsp;cao cấp</div>\r\n<div><strong>Kiểu d&aacute;ng:&nbsp;</strong>&aacute;o kho&aacute;c dạ d&aacute;ng d&agrave;i, cổ bẻ, kết hợp khuy bản to kim loại, tone m&agrave;u n&acirc;u trơn<br><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</div>\r\n<div><strong>Th&ocirc;ng tin người mẫu:&nbsp;</strong>mặc sản phẩm size 2</div>\r\n<div><strong>Sản phẩm kết hợp:&nbsp;</strong>&aacute;o AL91862 - ch&acirc;n v&aacute;y Z11192</div>\r\n</div>',1,'ao-khoac-nam',15,'2022-11-27 06:14:43',1,'2022-11-29 23:23:36',1),(19,'Áo khoác nữ',8,NULL,1,'ao-khoac-nu',10.5,'2022-11-27 06:47:24',1,'2022-12-07 20:56:12',1),(20,'Áo khoác 2',5,NULL,1,'ao-khoac-2',25,'2022-11-28 03:57:02',1,'2022-11-28 06:57:20',1),(21,'ÁO VEST HỒNG AK09382',8,'<p><strong>Chất liệu:</strong> vải tổng hợp cao cấp Kiểu d&aacute;ng: &aacute;o vest thiết kế d&aacute;ng su&ocirc;ng, tone m&agrave;u hồng trơn&nbsp;</p>\r\n<p><strong>Ph&ugrave; hợp :</strong> đi l&agrave;m, đi sự kiện, hay đi dạo phố, tạo vẻ trẻ trung, hiện đại cho người mặc.</p>\r\n<p><strong>Sản phẩm thuộc d&ograve;ng sản phẩm :&nbsp;</strong>NEM NEW</p>\r\n<p><strong>Th&ocirc;ng tin người mẫu:</strong> mặc sản phẩm size 2 Sản phẩm kết hợp: quần Q10152</p>',1,'ao-vest-hong-ak09382',NULL,'2022-11-30 04:00:22',1,'2022-11-30 09:43:19',1);
 /*!40000 ALTER TABLE `san_pham` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,7 +353,7 @@ CREATE TABLE `san_pham_chi_tiet` (
   `trang_thai` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_sp_chi_tiet`) USING BTREE,
   UNIQUE KEY `id_sp_id_mau_sac_size` (`id_sp`,`id_mau_sac`,`size`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +362,7 @@ CREATE TABLE `san_pham_chi_tiet` (
 
 LOCK TABLES `san_pham_chi_tiet` WRITE;
 /*!40000 ALTER TABLE `san_pham_chi_tiet` DISABLE KEYS */;
-INSERT INTO `san_pham_chi_tiet` VALUES (84,19,1,30,300000,1),(89,17,1,12,212121,1),(93,20,2,25,100000,1),(144,18,1,30,200000,1),(145,18,2,60,300000,1),(174,21,2,29,23232,1);
+INSERT INTO `san_pham_chi_tiet` VALUES (89,17,1,12,212121,1),(144,18,1,30,200000,1),(145,18,2,60,300000,1),(175,20,2,25,100000,1),(177,21,2,29,23232,1),(178,19,1,30,300000,1);
 /*!40000 ALTER TABLE `san_pham_chi_tiet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,7 +379,7 @@ CREATE TABLE `san_pham_hinh_anh` (
   `id_sp` int NOT NULL,
   PRIMARY KEY (`id_hinh_anh`),
   UNIQUE KEY `ten_anh` (`ten_anh`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,7 +388,7 @@ CREATE TABLE `san_pham_hinh_anh` (
 
 LOCK TABLES `san_pham_hinh_anh` WRITE;
 /*!40000 ALTER TABLE `san_pham_hinh_anh` DISABLE KEYS */;
-INSERT INTO `san_pham_hinh_anh` VALUES (49,'1ff64a2e-d997-4e0b-8b3c-5230f023defe_20221127072026.jpg',17),(51,'ad9a5bab-733d-417d-9c04-109b814be0a0_20221127134724.jpg',19),(52,'96130466-fb7e-436a-9405-c573d0e05635_20221128105703.png',20),(77,'44a4115d-ca96-4ba6-8ed1-97070859f9b1_20221130062248.webp',18),(78,'689a170f-7b01-4b39-a773-4678a1ae4da7_20221130062248.jpg',18),(79,'5e416bf0-0756-4daa-b3c2-b700114782c9_20221130062248.webp',18),(83,'0d1d1dc9-6bd2-42a3-939b-b3dd0ed2ffa5_20221202210355.jpg',21);
+INSERT INTO `san_pham_hinh_anh` VALUES (49,'1ff64a2e-d997-4e0b-8b3c-5230f023defe_20221127072026.jpg',17),(52,'96130466-fb7e-436a-9405-c573d0e05635_20221128105703.png',20),(77,'44a4115d-ca96-4ba6-8ed1-97070859f9b1_20221130062248.webp',18),(78,'689a170f-7b01-4b39-a773-4678a1ae4da7_20221130062248.jpg',18),(79,'5e416bf0-0756-4daa-b3c2-b700114782c9_20221130062248.webp',18),(84,'d473769a-5d9d-412d-b9ac-263aa14c441d_20221208031604.webp',21),(85,'96cb2463-cdb2-428c-ab88-2e3824fc4b12_20221208031604.jpg',21),(86,'6c41b0cb-8d24-4a3f-b82a-be49ea03af11_20221208031604.webp',21),(87,'f764f888-6b23-48f4-908f-9147470ffa57_20221208035612.webp',19);
 /*!40000 ALTER TABLE `san_pham_hinh_anh` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -517,4 +521,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-03  7:22:14
+-- Dump completed on 2022-12-08  5:34:10
