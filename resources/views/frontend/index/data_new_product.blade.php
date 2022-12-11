@@ -23,9 +23,13 @@
                             @php
                                 $tiLeGiam = $sp->giam_gia == null || $sp->giam_gia == 0 ? $sp->giam_gia : $sp->giam_gia / 100;
                                 $giaTien = $sp->giaCaoNhat - $sp->giaCaoNhat * $tiLeGiam;
+                                $isShow = true;
+                                if ($giaTien == $sp->giaCaoNhat) {
+                                    $isShow = false;
+                                }
                             @endphp
                             <div class="product_price">
-                                {{ number_format($giaTien, 0, '', ',') . ' VND' }}<span>{{ number_format($sp->giaCaoNhat, 0, '', ',') . ' VND' }}</span>
+                                {{ number_format($giaTien, 0, '', ',') . ' VND' }} {!! $isShow ? '<span>' . number_format($sp->giaCaoNhat, 0, '', ',') . ' VND' . '</span>' : '' !!}
                             </div>
                         @else
                             <div class="product_price">

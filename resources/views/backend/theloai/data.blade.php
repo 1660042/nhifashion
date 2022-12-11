@@ -15,6 +15,7 @@
                 <th class="text-center" scope="col">#</th>
                 <th class="text-center" scope="col">Tên thể loại</th>
                 <th class="text-center" scope="col">Thể loại cha</th>
+                <th class="text-center" scope="col">Hiển thị ở trang chủ</th>
                 <th class="text-center" scope="col">Ngày tạo</th>
                 <th class="text-center" scope="col">Người tạo</th>
                 <th class="text-center" scope="col">Chi tiết</th>
@@ -38,6 +39,9 @@
                         </td>
                         <td class="text-center{{ $item->the_loai_cha_id ? '' : ' text-red' }}">
                             {{ optional($item)->the_loai_cha ? optional($item)->the_loai_cha : 'Không' }}
+                        </td>
+                        <td class="text-center{{ $item->is_show ? '' : ' text-red' }}">
+                            {{ optional($item)->is_show ? 'Có' : 'Không' }}
                         </td>
                         <td class="text-center">
                             {{ \Carbon\Carbon::parse(optional($item)->created_at)->format('d-m-Y') }}

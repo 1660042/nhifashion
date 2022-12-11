@@ -12,7 +12,7 @@ class TheLoai extends Model
     use HasFactory;
 
     protected $table = 'the_loai';
-    protected $fillable = ['ten', 'the_loai_cha_id', 'created_by', 'updated_by', 'slug'];
+    protected $fillable = ['ten', 'the_loai_cha_id', 'created_by', 'updated_by', 'slug', 'ten_anh', 'is_show'];
 
     public function searchData($request, $sort = null, $pagination = null, $typeSearch = 'ALL')
     {
@@ -27,8 +27,8 @@ class TheLoai extends Model
                 'databaseName' => $this->table . ' as the_loai_cha',
                 'typeJoin' => 'leftJoin',
                 'on' => [
-                    $this->table . '.id' => 'the_loai_cha.id',
-                    'RAW' => 'the_loai_cha.the_loai_cha_id is not null',
+                    $this->table . '.the_loai_cha_id' => 'the_loai_cha.id',
+                    // 'RAW' => 'the_loai_cha.the_loai_cha_id is not null',
                 ],
             ],
         ];

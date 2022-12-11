@@ -307,6 +307,7 @@ class CartController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            // var_dump($e->getMessage());
             return response([
                 'message' => 'Đặt hàng không thành công.',
             ], 400);

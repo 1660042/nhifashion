@@ -161,7 +161,14 @@ class SanPham extends Model
         $condition[] = ['column' => 'tl.slug', 'compare' => '=', 'value' => $params['the_loai_slug']];
 
         if (isset($params['sizes']) && $params['sizes'] != null) {
-            $condition[] = ['type' => 'RAW', 'value' => 'spct.size IN (' . $params['sizes'] . ')'];
+            $sizeStr = '';
+            foreach ($params['sizes'] as $key => $size) {
+                if ($key > 0) {
+                    $sizeStr .= ", ";
+                }
+                $sizeStr .= '"' . $size . '"';
+            }
+            $condition[] = ['type' => 'RAW', 'value' => 'spct.size IN (' . $sizeStr . ')'];
         }
 
         if (isset($params['colors']) && $params['colors'] != null) {

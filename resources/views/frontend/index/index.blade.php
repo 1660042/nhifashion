@@ -22,12 +22,12 @@
         <div class="banner">
             <div class="container">
                 <div class="row">
-                    @foreach ($dsTheLoaiCha as $theLoaiCha)
+                    @foreach ($dsTheLoaiTieuBieu as $theLoai)
                         <div class="col-md-4">
                             <div class="banner_item align-items-center"
-                                style="background-image:url({{ asset('coloshop/images/banner_1.jpg') }})">
+                                style="background-image:url({{ asset('storage/images/the_loai/' . optional($theLoai)->ten_anh) }})">
                                 <div class="banner_category">
-                                    <a href="categories.html">{{ $theLoaiCha->ten }}</a>
+                                    <a href="{{ route('frontend.the_loai.index', $theLoai->slug) }}">{{ $theLoai->ten }}</a>
                                 </div>
                             </div>
                         </div>
@@ -54,10 +54,10 @@
                                 <li
                                     class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked">
                                     Tất cả</li>
-                                @foreach ($dsTheLoaiCha as $theLoaiCha)
-                                    <li data-id="{{ $theLoaiCha->id }}"
+                                @foreach ($dsTheLoaiTieuBieu as $theLoai)
+                                    <li data-id="{{ $theLoai->id }}"
                                         class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center">
-                                        {{ $theLoaiCha->ten }}
+                                        {{ $theLoai->ten }}
                                     </li>
                                 @endforeach
                             </ul>

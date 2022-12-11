@@ -32,11 +32,11 @@ class IndexController extends Controller
     public function index(TheLoai $theLoaiModel, Request $request)
     {
         $this->pagination['page'] = $request->has('page') ? $request->page : $this->pagination['page'];
-        $dsTheLoaiCha = $theLoaiModel->whereNull('the_loai_cha_id')->take(3)->get();
+        $dsTheLoaiTieuBieu = $theLoaiModel->where('is_show', '1')->get();
         $dsHangMoiVe = $this->model->dsHangMoiVe();
         $dsHangHot = $this->model->dsHangHot();
         return view('frontend.index.index', [
-            'dsTheLoaiCha' => $dsTheLoaiCha,
+            'dsTheLoaiTieuBieu' => $dsTheLoaiTieuBieu,
             'dsHangMoiVe' => $dsHangMoiVe,
             'dsHangHot' => $dsHangHot
         ]);

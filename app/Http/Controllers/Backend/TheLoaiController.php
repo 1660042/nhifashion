@@ -89,13 +89,28 @@ class TheLoaiController extends Controller
             ], 400);
         }
 
+        if ($request->is_show == '1') {
+            $totalShow = $this->model->where('is_show', '1')->count();
+            if ($totalShow >= 3) {
+                return response([
+                    'message' => 'Hiện thể loại ở trang chủ giới hạn 3 thể loại. Vui lòng bỏ tick ở thể loại khác trước.',
+                ], 400);
+            }
+        }
+
+        $file = $request->file('ten_anh');
+        $name = Str::uuid() . '_' . date('YmdHis') .   '.' . $file->extension();
+        $file->move(storage_path('app') . '/public/images/the_loai', $name);
 
         $data = [
             'ten' => $request->ten,
             'the_loai_cha_id' => $request->the_loai_cha_id,
             'slug' => Str::slug($request->ten, '-'),
             'created_by' => auth()->id(),
+            'ten_anh' => $name,
+            'is_show' => $request->is_show,
         ];
+
         try {
             $this->model->create($data);
             return response()->json([
@@ -136,14 +151,39 @@ class TheLoaiController extends Controller
             ], 400);
         }
 
+        if ($request->is_show == '1') {
+            $totalShow = $this->model->where([
+                ['is_show', '=', '1'],
+                ['id', '!=', $id],
+            ])->count();
+            if ($totalShow >= 3) {
+                return response([
+                    'message' => 'Hiện thể loại ở trang chủ giới hạn 3 thể loại. Vui lòng bỏ tick ở thể loại khác trước.',
+                ], 400);
+            }
+        }
+
         $data = [
             'ten' => $request->ten,
             'the_loai_cha_id' => $request->the_loai_cha_id,
             'updated_by' => auth()->id(),
             'slug' => Str::slug($request->ten, '-'),
+            'is_show' => $request->is_show,
         ];
+
+        if ($request->has('ten_anh')) {
+            $file = $request->file('ten_anh');
+            $name = Str::uuid() . '_' . date('YmdHis') .   '.' . $file->extension();
+            $file->move(storage_path('app') . '/public/images/the_loai', $name);
+            $data['ten_anh'] = $name;
+            $tenAnhCu = $theLoai->ten_anh;
+        }
+
         try {
             $theLoai->update($data);
+            if (isset($data['ten_anh'])) {
+                $this->removeFile($tenAnhCu);
+            }
             return response()->json([
                 'message' => 'Lưu thành công.',
             ], 200);
@@ -165,8 +205,10 @@ class TheLoaiController extends Controller
             ], 400);
         }
 
+        $tenAnhCu = $theLoai->ten_anh;
         try {
             $theLoai->delete();
+            $this->removeFile($tenAnhCu);
             return response()->json([
                 'message' => 'Xóa thành công.',
             ], 200);
@@ -175,6 +217,14 @@ class TheLoaiController extends Controller
                 'message' => 'Xóa thất bại. Vui lòng thử lại sau.'
                 // 'message' => $e->getMessage()
             ], 400);
+        }
+    }
+
+    private function removeFile($tenAnh)
+    {
+        $path = storage_path('app') . '/public/images/the_loai';
+        if (file_exists($path . '/' . $tenAnh)) {
+            unlink($path . '/' . $tenAnh);
         }
     }
 }

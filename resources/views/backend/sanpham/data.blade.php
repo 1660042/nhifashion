@@ -41,7 +41,7 @@
                             {{ optional($item)->tenTheLoai }}
                         </td>
                         <td class="text-center">
-                            {{ optional($item)->giam_gia . ' %' }}
+                            {{ optional($item)->giam_gia ? optional($item)->giam_gia . ' %' : '-' }}
                         </td>
                         <td class="text-center">
                             {{ \Carbon\Carbon::parse(optional($item)->created_at)->format('d-m-Y') }}

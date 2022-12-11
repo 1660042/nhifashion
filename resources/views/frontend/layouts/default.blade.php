@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-    <title>Colo Shop</title>
+    <title>Nhi Fashion</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Colo Shop Template">
+    <meta name="description" content="Nhi Fashion">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ asset('coloshop/styles/bootstrap4/bootstrap.min.css') }}">
     <link href="{{ asset('coloshop/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet"

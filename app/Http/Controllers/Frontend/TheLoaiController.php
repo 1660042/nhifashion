@@ -53,7 +53,7 @@ class TheLoaiController extends Controller
                 }
             }
             if ($request->has('sizes')) {
-                $params['sizes'] = implode(', ', $request->sizes);
+                $params['sizes'] = $request->sizes;
             }
 
             if ($request->has('colors')) {

@@ -22,13 +22,15 @@ class AppHelper
             case 'backend.the_loai.store':
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:the_loai,ten',
-                    'the_loai_cha_id' => 'bail|nullable|integer'
+                    'the_loai_cha_id' => 'bail|nullable|integer',
+                    'ten_anh' => 'bail|required|image|mimes:jpeg,jpg,png,gif,webp|max:10000',
                 ];
                 break;
             case 'backend.the_loai.update':
                 return [
                     'ten' => 'bail|required|min:4|max:60|unique:the_loai,ten,' . $option['id'],
-                    'the_loai_cha_id' => 'bail|nullable|integer'
+                    'the_loai_cha_id' => 'bail|nullable|integer',
+                    'ten_anh' => 'bail|nullable|image|mimes:jpeg,jpg,png,gif,webp|max:10000',
                 ];
                 break;
             case 'backend.san_pham.store':
@@ -39,7 +41,7 @@ class AppHelper
                     'mau_sac' => 'bail|required|array',
                     'mau_sac.*' => 'bail|required|integer',
                     'size' => 'bail|required|array',
-                    'size.*' => 'bail|required|numeric',
+                    'size.*' => 'bail|required|string',
                     'gia' => 'bail|required|array',
                     'gia.*' => 'bail|required|numeric',
                     'trang_thai' => 'bail|required|array',
@@ -56,7 +58,7 @@ class AppHelper
                     'mau_sac' => 'bail|required|array',
                     'mau_sac.*' => 'bail|required|integer',
                     'size' => 'bail|required|array',
-                    'size.*' => 'bail|required|numeric',
+                    'size.*' => 'bail|required|string',
                     'gia' => 'bail|required|array',
                     'gia.*' => 'bail|required|numeric',
                     'trang_thai' => 'bail|required|array',
@@ -127,13 +129,15 @@ class AppHelper
             case 'backend.the_loai.store':
                 return [
                     'ten' => 'Tên thể loại',
-                    'the_loai_cha_id' => 'Thể loại cha'
+                    'the_loai_cha_id' => 'Thể loại cha',
+                    'ten_anh' => 'Hình ảnh'
                 ];
                 break;
             case 'backend.the_loai.update':
                 return [
                     'ten' => 'Tên thể loại',
-                    'the_loai_cha_id' => 'Thể loại cha'
+                    'the_loai_cha_id' => 'Thể loại cha',
+                    'ten_anh' => 'Hình ảnh'
                 ];
                 break;
             case 'backend.san_pham.store':

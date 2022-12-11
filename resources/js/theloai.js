@@ -60,12 +60,11 @@
         func_submit_form: function (data) {
             let url = "";
             let method = "post";
-            if (data.type_modal == modal_create) {
+            if (data.get("type_modal") == modal_create) {
                 url = "/store";
             }
-            if (data.type_modal == modal_edit) {
-                url = "/update/" + data.id;
-                method = "put";
+            if (data.get("type_modal") == modal_edit) {
+                url = "/update/" + data.get("id");
             }
 
             if (url.length == 0) return;
@@ -156,14 +155,21 @@ jQuery(document).ready(function () {
         });
 
         $modalBox.on("click", "#btn-save", function (e) {
-            let data = func_get_value_form(idFormModal);
+            // let data = func_get_value_form(idFormModal);'
+            // alert("OK");
+            let data = new FormData($(idFormModal)[0]);
             if (
-                typeof data.type_modal === "undefined" ||
-                $.trim(data.type_modal).length == 0
+                typeof data.get("type_modal") === "undefined" ||
+                $.trim(data.get("type_modal")).length == 0
             ) {
                 swalAlert("error", "Lỗi", "Không tìm thấy dữ liệu.");
                 return;
             }
+            if (!data.get("is_show")) {
+                data.append("is_show", "0");
+            }
+            // console.log(data);
+            // return;s
             jQuery.TheLoai.func_submit_form(data);
         });
 
