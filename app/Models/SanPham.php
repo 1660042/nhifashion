@@ -92,7 +92,8 @@ class SanPham extends Model
             [
                 'databaseName' => 'the_loai as the_loai_2',
                 'typeJoin' => 'leftJoin',
-                'on' => ['RAW' => 'the_loai.the_loai_cha_id = the_loai_2.id OR the_loai.id = the_loai_2.the_loai_cha_id',],
+                'on' => ['the_loai.id' => 'the_loai_2.the_loai_cha_id'],
+                // 'on' => ['RAW' => 'the_loai.the_loai_cha_id = the_loai_2.id OR the_loai.id = the_loai_2.the_loai_cha_id',],
             ],
             [
                 'databaseName' => 'san_pham',
@@ -113,7 +114,7 @@ class SanPham extends Model
         $condition = [];
 
         if (isset($params['id']) && $params['id'] != null) {
-            $condition[] = ['column' => 'the_loai.id', 'compare' => 'like', 'value' => $params['id']];
+            $condition[] = ['column' => 'the_loai.id', 'compare' => '=', 'value' => $params['id']];
         }
 
         $groupBy = DB::raw('san_pham.id, san_pham.ten');
