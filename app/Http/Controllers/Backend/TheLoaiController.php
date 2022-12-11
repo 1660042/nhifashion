@@ -181,14 +181,13 @@ class TheLoaiController extends Controller
 
         try {
             $theLoai->update($data);
-            if (isset($data['ten_anh'])) {
+            if (isset($tenAnhCu) && strlen(trim($tenAnhCu)) > 0) {
                 $this->removeFile($tenAnhCu);
             }
             return response()->json([
                 'message' => 'Lưu thành công.',
             ], 200);
         } catch (\Exception $e) {
-
             return response()->json([
                 'message' => 'Lưu thất bại. Vui lòng thử lại sau.'
                 // 'message' => $e->getMessage()
